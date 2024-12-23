@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../features/start/views/start_page.dart';
+import '../features/start/views/register_login_page.dart';
 
 class AppRoutes {
   static const String start = '/';
   static const String login = '/login';
+  static const String registerLogin = '/register_login';
   static const String register = '/register';
   static const String home = '/home';
   static const String search = '/search';
@@ -15,9 +17,8 @@ class AppRoutes {
     switch (settings.name) {
       case start:
         return MaterialPageRoute(builder: (context) => const StartPage());
-      // Add more routes here
-      // case login:
-      //   return MaterialPageRoute(builder: (context) => LoginPage());
+      case registerLogin:
+        return MaterialPageRoute(builder: (context) => RegisterLoginPage());
       default:
         return MaterialPageRoute(
           builder: (context) => const Scaffold(
