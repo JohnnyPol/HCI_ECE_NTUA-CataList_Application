@@ -36,10 +36,23 @@ class LoginPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 28.h),
-                      Text(
-                        "CataList",
-                        style: theme.textTheme.displayMedium,
+                      Container(
+                        width: double.maxFinite,
+                        margin: EdgeInsets.symmetric(horizontal: 60.h),
+                        padding: EdgeInsets.symmetric(vertical: 6.h),
+                        decoration: AppDecoration.calmbluedarker.copyWith(
+                          borderRadius: BorderRadiusStyle.roundedBorder40,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(height: 3.h),
+                            Text(
+                              "CataList",
+                              style: theme.textTheme.displayMedium,
+                            ),
+                          ],
+                        ),
                       ),
                       Spacer(),
                       _buildUsernameInput(context),
@@ -61,19 +74,11 @@ class LoginPage extends StatelessWidget {
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 36.h,
-      leading: GestureDetector(
+      leading: AppbarLeadingImage(
+        imagePath: ImageConstant.imgArrowLeft,
         onTap: () {
           Navigator.pushNamed(context, AppRoutes.registerLogin);
         },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            ImageConstant.imgArrowLeft,
-            height: 24.h,
-            width: 24.h,
-            fit: BoxFit.contain,
-          ),
-        ),
       ),
     );
   }
@@ -138,6 +143,42 @@ class LoginPage extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [_buildCompleteButton(context)],
+      ),
+    );
+  }
+}
+
+class AppbarLeadingImage extends StatelessWidget {
+  AppbarLeadingImage(
+      {Key? key,
+      this.imagePath,
+      this.height,
+      this.width,
+      this.onTap,
+      this.margin})
+      : super(
+          key: key,
+        );
+  final double? height;
+  final double? width;
+  final String? imagePath;
+  final Function? onTap;
+  final EdgeInsetsGeometry? margin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: margin ?? EdgeInsets.zero,
+      child: InkWell(
+        onTap: () {
+          onTap?.call();
+        },
+        child: CustomImageView(
+          imagePath: imagePath!,
+          height: height ?? 32.h,
+          width: width ?? 36.h,
+          fit: BoxFit.contain,
+        ),
       ),
     );
   }

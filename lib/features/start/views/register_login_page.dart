@@ -20,7 +20,9 @@ class RegisterLoginPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(height: 64.h), // spacer flex: 21
+              SizedBox(
+                height: 64.h,
+              ), // spacer flex: 21
               Container(
                 width: double.maxFinite,
                 margin: EdgeInsets.symmetric(horizontal: 60.h),
