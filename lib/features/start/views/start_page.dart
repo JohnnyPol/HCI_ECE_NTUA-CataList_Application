@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
-import 'package:flutter_application_1/shared/widgets/custom_elevated_button.dart';
+import 'package:flutter_application_1/shared/widgets/start_buttons.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
@@ -41,6 +41,9 @@ class StartPage extends StatelessWidget {
               Spacer(),
               CustomElevatedButton(
                 text: "Start",
+                onPressed: () {
+                  Navigator.pushNamed(context, AppRoutes.registerLogin);
+                },
               ),
             ],
           ),
