@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app_export.dart';
-import './base_button.dart';
+import 'base_button.dart';
+import '../../app_export.dart';
 
 class CustomElevatedButton extends BaseButton {
   CustomElevatedButton({
@@ -45,7 +45,7 @@ class CustomElevatedButton extends BaseButton {
   }
 
   Widget get buildElevatedButtonWidget => Container(
-        height: this.height ?? 50.0,
+        height: this.height ?? 50.h,
         width: this.width ?? double.maxFinite,
         margin: margin,
         decoration: decoration,
@@ -67,8 +67,4 @@ class CustomElevatedButton extends BaseButton {
           ),
         ),
       );
-}
-
-class CustomTextStyles {
-  static var titleLargeRobotoOnErrorContainer;
 }

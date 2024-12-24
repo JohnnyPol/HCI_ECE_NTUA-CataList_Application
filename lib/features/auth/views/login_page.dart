@@ -4,44 +4,48 @@
 // TextEditingController usernameInputController = TextEditingController();
 // TextEditingController passwordInputController = TextEditingController();
 
-// @override
-// Widget build(BuildContext context) {
-//   return Scaffold(
-//     backgroundColor: AppColors.startBGcolor,
-//     resizeToAvoidBottomInset: false,
-//     appBar: _buildAppBar(context),
-//     body: SafeArea(
-//       top: false,
-//       child: SizedBox(
-//         width: double.maxFinite,
-//         child: Column(
-//           children: [
-//             Expanded(
-//               child: Container(
-//                 width: double.maxFinite,
-//                 padding: EdgeInsets.symmetric(
-//                   horizontal: 8.0,
-//                   vertical: 76.0,
-//                 ),
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     SizedBox(height: 28.0),
-//                     _buildCatalistButton(context),
-//                     Spacer(),
-//                     _buildUsernameInput(context),
-//                     SizedBox(height: 22.0),
-//                     _buildPasswordInput(context),
-//                   ],
+// class LoginPage extends StatelessWidget {
+//   const LoginPage({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: AppColors.startBGcolor,
+//       resizeToAvoidBottomInset: false,
+//       appBar: _buildAppBar(context),
+//       body: SafeArea(
+//         top: false,
+//         child: SizedBox(
+//           width: double.maxFinite,
+//           child: Column(
+//             children: [
+//               Expanded(
+//                 child: Container(
+//                   width: double.maxFinite,
+//                   padding: EdgeInsets.symmetric(
+//                     horizontal: 8.0,
+//                     vertical: 76.0,
+//                   ),
+//                   child: Column(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: [
+//                       SizedBox(height: 28.0),
+//                       _buildCatalistButton(context),
+//                       Spacer(),
+//                       _buildUsernameInput(context),
+//                       SizedBox(height: 22.0),
+//                       _buildPasswordInput(context),
+//                     ],
+//                   ),
 //                 ),
 //               ),
-//             ),
-//           ],
+//             ],
+//           ),
 //         ),
 //       ),
-//     ),
-//     bottomNavigationBar: _buildCompleteSection(context),
-//   );
+//       bottomNavigationBar: _buildCompleteSection(context),
+//     );
+//   }
 // }
 
 // /// Section Widget

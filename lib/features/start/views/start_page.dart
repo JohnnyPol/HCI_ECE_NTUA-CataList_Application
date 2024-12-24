@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
+import 'package:flutter_application_1/shared/widgets/custom_elevated_button.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
@@ -7,7 +8,7 @@ class StartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.startBGcolor,
+      backgroundColor: appTheme.startBGcolor,
       body: SafeArea(
         child: Container(
           width: double.maxFinite,
@@ -29,31 +30,17 @@ class StartPage extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(height: 10.h),
+                    SizedBox(height: 3.h),
                     Text(
                       "CataList",
-                      style: AppTextStyles.displayMedium,
+                      style: theme.textTheme.displayMedium,
                     ),
                   ],
                 ),
               ),
               Spacer(),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.registerLogin);
-                },
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 150, vertical: 16),
-                  backgroundColor: AppColors.lightBlueColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                ),
-                child: const Text(
-                  "Start",
-                  style: AppTextStyles.buttonText,
-                ),
+              CustomElevatedButton(
+                text: "Start",
               ),
             ],
           ),

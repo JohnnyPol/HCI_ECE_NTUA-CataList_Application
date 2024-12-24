@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../features/start/views/start_page.dart';
 import '../features/start/views/register_login_page.dart';
+import '../features/auth/views/login_page.dart';
 
 class AppRoutes {
   static const String start = '/';
@@ -19,6 +20,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => const StartPage());
       case registerLogin:
         return MaterialPageRoute(builder: (context) => RegisterLoginPage());
+      case login:
+        return MaterialPageRoute(builder: (context) => LoginPage());
       default:
         return MaterialPageRoute(
           builder: (context) => const Scaffold(

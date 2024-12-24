@@ -1,6 +1,7 @@
+// register_login_page.dart
 import 'package:flutter/material.dart';
-import '../../../shared/themes.dart';
-import '../../../shared/app_routes.dart';
+import 'package:flutter_application_1/app_export.dart';
+import 'package:flutter_application_1/shared/widgets/custom_elevated_button.dart';
 
 class RegisterLoginPage extends StatelessWidget {
   const RegisterLoginPage({super.key});
@@ -8,68 +9,42 @@ class RegisterLoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.startBGcolor,
+      backgroundColor: appTheme.startBGcolor,
       body: SafeArea(
         child: Container(
           width: double.maxFinite,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 300,
-            vertical: 80,
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.h,
+            vertical: 48.h,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const SizedBox(height: 60),
+              SizedBox(height: 64.h), // spacer flex: 21
               Container(
                 width: double.maxFinite,
-                margin: const EdgeInsets.symmetric(horizontal: 50),
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                margin: EdgeInsets.symmetric(horizontal: 60.h),
+                padding: EdgeInsets.symmetric(vertical: 6.h),
                 decoration: AppDecoration.calmbluedarker.copyWith(
                   borderRadius: BorderRadiusStyle.roundedBorder40,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(height: 1),
+                    SizedBox(height: 3.h),
                     Text(
                       "CataList",
-                      style: AppTextStyles.displayMedium,
+                      style: theme.textTheme.displayMedium,
                     ),
                   ],
                 ),
               ),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 150, vertical: 16),
-                  backgroundColor: AppColors.lightBlueColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                ),
-                child: const Text(
-                  "Login",
-                  style: AppTextStyles.buttonText,
-                ),
+              const Spacer(
+                flex: 78,
               ),
-              SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 150, vertical: 16),
-                  backgroundColor: AppColors.lightBlueColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                ),
-                child: const Text(
-                  "Register",
-                  style: AppTextStyles.buttonText,
-                ),
-              ),
+              CustomElevatedButton(text: "Login"),
+              SizedBox(height: 10.h),
+              CustomElevatedButton(text: "Register"),
             ],
           ),
         ),
