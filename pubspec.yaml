@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  intl: ^0.20.1
 
 
 dev_dependencies:
@@ -23,11 +24,14 @@ flutter:
 
   assets:
     - assets/
+    - assets/images/
   fonts:
-    - family: Roboto
-      fonts:
-        - asset: assets/fonts/Roboto-Regular.ttf
     - family: Lobster
       fonts:
         - asset: assets/fonts/Lobster-Regular.ttf
           weight: 400
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+# add more fonts in the future
+

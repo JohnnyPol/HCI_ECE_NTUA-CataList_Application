@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../shared/themes.dart';
-import '../../../shared/app_routes.dart';
+import 'package:flutter_application_1/app_export.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
@@ -12,25 +11,25 @@ class StartPage extends StatelessWidget {
       body: SafeArea(
         child: Container(
           width: double.maxFinite,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 300,
-            vertical: 80,
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.h,
+            vertical: 88.h,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const SizedBox(height: 60),
+              SizedBox(height: 64.h),
               Container(
                 width: double.maxFinite,
-                margin: const EdgeInsets.symmetric(horizontal: 50),
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                margin: EdgeInsets.symmetric(horizontal: 60.h),
+                padding: EdgeInsets.symmetric(vertical: 6.h),
                 decoration: AppDecoration.calmbluedarker.copyWith(
                   borderRadius: BorderRadiusStyle.roundedBorder40,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(height: 1),
+                    SizedBox(height: 10.h),
                     Text(
                       "CataList",
                       style: AppTextStyles.displayMedium,
@@ -38,7 +37,7 @@ class StartPage extends StatelessWidget {
                   ],
                 ),
               ),
-              const Spacer(),
+              Spacer(),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, AppRoutes.registerLogin);
