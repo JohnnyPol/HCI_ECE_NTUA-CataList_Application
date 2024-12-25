@@ -4,5 +4,7 @@ class ImageConstant {
 
   // Common Images
   static String imgArrowLeft = '$imagePath/Back_Arrow_Default.svg';
-  static String imgLock = '$imagePath/Lock_icon.svg';
+  static String imgLock = '$imagePath/Lock_Icon.svg';
+  static String imgProfile = '$imagePath/profile_picture.svg';
+  static String imgEmail = '$imagePath/email_icon.svg';
 }

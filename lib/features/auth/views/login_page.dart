@@ -6,6 +6,7 @@ import 'custom_app_bar.dart';
 import '../../../shared/widgets/start_buttons.dart';
 import '../../../shared/widgets/custom_text_form_field.dart';
 import '../../../shared/widgets/custom_image_view.dart';
+import '../controllers/user_auth.dart';
 
 // ignore_for_file: must_be_immutable
 class LoginPage extends StatelessWidget {
@@ -88,19 +89,21 @@ class LoginPage extends StatelessWidget {
     return CustomTextFormField(
       controller: usernameInputController,
       hintText: "Username",
+      textInputAction: TextInputAction.done,
       prefix: Container(
-        margin: EdgeInsets.fromLTRB(6.0, 6.0, 26.0, 6.0),
+        margin: EdgeInsets.fromLTRB(6.h, 6.h, 26.h, 6.h),
         child: CustomImageView(
-          imagePath: ImageConstant.imgLock,
-          height: 26.0,
-          width: 26.0,
+          imagePath: ImageConstant.imgProfile,
+          height: 26.h,
+          width: 26.h,
           fit: BoxFit.contain,
         ),
       ),
       prefixConstraints: BoxConstraints(
-        maxHeight: 48.0,
+        maxHeight: 48.h,
       ),
-      contentPadding: EdgeInsets.fromLTRB(6.0, 6.0, 12.0, 6.0),
+      obscureText: false,
+      contentPadding: EdgeInsets.fromLTRB(6.h, 6.h, 12.h, 6.h),
     );
   }
 
@@ -111,19 +114,19 @@ class LoginPage extends StatelessWidget {
       hintText: "Password",
       textInputAction: TextInputAction.done,
       prefix: Container(
-        margin: EdgeInsets.fromLTRB(6.0, 6.0, 26.0, 6.0),
+        margin: EdgeInsets.fromLTRB(6.h, 6.h, 26.h, 6.h),
         child: CustomImageView(
           imagePath: ImageConstant.imgLock,
-          height: 26.0,
-          width: 26.0,
+          height: 26.h,
+          width: 26.h,
           fit: BoxFit.contain,
         ),
       ),
       prefixConstraints: BoxConstraints(
-        maxHeight: 48.0,
+        maxHeight: 48.h,
       ),
       obscureText: true,
-      contentPadding: EdgeInsets.fromLTRB(6.0, 6.0, 12.0, 6.0),
+      contentPadding: EdgeInsets.fromLTRB(6.h, 6.h, 12.h, 6.h),
     );
   }
 
@@ -131,7 +134,39 @@ class LoginPage extends StatelessWidget {
   Widget _buildCompleteButton(BuildContext context) {
     return CustomElevatedButton(
       text: "Complete",
-      margin: EdgeInsets.only(bottom: 12.0),
+      margin: EdgeInsets.only(bottom: 12.h),
+      onPressed: () async {
+        String username = usernameInputController.text.trim();
+        String password = passwordInputController.text.trim();
+        if (username.isEmpty || password.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Please enter both username and password')),
+          );
+          return;
+        }
+        // Show a loading indicator
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => Center(child: CircularProgressIndicator()),
+        );
+        // Authenticate user
+        bool isAuthenticated = await authenticateUser(username, password);
+
+        // Dismiss the loading indicator
+        Navigator.pop(context);
+
+        if (isAuthenticated) {
+          // Navigate to home page
+          Navigator.pushNamed(context, AppRoutes.home);
+        } else {
+          // Show an error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Invalid username or password')),
+          );
+        }
+        ;
+      },
     );
   }
 
@@ -139,7 +174,7 @@ class LoginPage extends StatelessWidget {
   Widget _buildCompleteSection(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      padding: EdgeInsets.symmetric(horizontal: 20.h),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [_buildCompleteButton(context)],

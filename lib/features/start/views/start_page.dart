@@ -30,7 +30,7 @@ class StartPage extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(height: 3.h),
+                    SizedBox(height: 10.h),
                     Text(
                       "CataList",
                       style: theme.textTheme.displayMedium,

@@ -66,6 +66,7 @@ class SizeUtils {
     if (orientation == Orientation.portrait) {
       width =
           boxConstraints.maxWidth.isNonZero(defaultValue: FIGMA_DESIGN_WIDTH);
+      height = boxConstraints.maxHeight.isNonZero();
     } else {
       width =
           boxConstraints.maxHeight.isNonZero(defaultValue: FIGMA_DESIGN_WIDTH);

@@ -18,10 +18,9 @@ class RegisterLoginPage extends StatelessWidget {
             vertical: 48.h,
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(
-                height: 64.h,
+              Spacer(
+                flex: 21,
               ), // spacer flex: 21
               Container(
                 width: double.maxFinite,
@@ -33,7 +32,7 @@ class RegisterLoginPage extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(height: 3.h),
+                    SizedBox(height: 10.h),
                     Text(
                       "CataList",
                       style: theme.textTheme.displayMedium,
@@ -50,7 +49,7 @@ class RegisterLoginPage extends StatelessWidget {
                   Navigator.pushNamed(context, AppRoutes.login);
                 },
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 24.h),
               CustomElevatedButton(
                 text: "Register",
                 onPressed: () {
