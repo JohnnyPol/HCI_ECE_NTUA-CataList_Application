@@ -4,6 +4,10 @@ import '../features/start/views/register_login_page.dart';
 import '../features/auth/views/login_page.dart';
 import '../features/auth/views/register_page.dart';
 import '../features/dashboard/views/home_page.dart';
+import '../features/dashboard/views/add_task_page.dart';
+import '../features/dashboard/views/recap_page.dart';
+import '../features/dashboard/views/search_page.dart';
+import '../features/dashboard/views/calendar_page.dart';
 
 class AppRoutes {
   static const String start = '/';
@@ -15,6 +19,7 @@ class AppRoutes {
   static const String recap = '/recap';
   static const String calendar = '/calendar';
   static const String profile = '/profile';
+  static const String addTask = '/add_task';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -28,6 +33,15 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => RegisterPage());
       case home:
         return MaterialPageRoute(builder: (context) => HomePage());
+      case search:
+        return MaterialPageRoute(builder: (context) => SearchPage());
+      case recap:
+        return MaterialPageRoute(builder: (context) => RecapPage());
+      case addTask:
+        return MaterialPageRoute(builder: (context) => AddTaskPage());
+      case calendar:
+        return MaterialPageRoute(builder: (context) => CalandarPage());
+
       default:
         return MaterialPageRoute(
           builder: (context) => const Scaffold(

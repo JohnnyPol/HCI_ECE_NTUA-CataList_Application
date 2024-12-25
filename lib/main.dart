@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false, // Remove the debug banner
         title: 'CataList',
         theme: theme,
-        initialRoute: AppRoutes.home,
-        // initialRoute: AppRoutes.start
+        //initialRoute: AppRoutes.home,
+        initialRoute: AppRoutes.start,
         onGenerateRoute: AppRoutes.onGenerateRoute,
       );
     });

@@ -6,8 +6,8 @@ import '../../../shared/widgets/custom_icon_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
-class CalandarPage extends StatelessWidget {
-  CalandarPage({Key? key}) : super(key: key);
+class AddTaskPage extends StatelessWidget {
+  AddTaskPage({Key? key}) : super(key: key);
   Map<String, double> dataMap = {
     "Completed": 5,
     "Incomplete": 4,
@@ -241,7 +241,7 @@ class CalandarPage extends StatelessWidget {
           // Add Task Button
           IconButton(
             icon: SvgPicture.asset(
-              ImageConstant.imgAddTask,
+              ImageConstant.imgAddTaskPressed,
               height: 40.h,
               width: 40.h,
             ),
@@ -265,7 +265,7 @@ class CalandarPage extends StatelessWidget {
           // Calendar Button
           IconButton(
             icon: SvgPicture.asset(
-              ImageConstant.imgCalendarPressed, // Replace with your SVG path
+              ImageConstant.imgCalendar, // Replace with your SVG path
               height: 35.h,
               width: 35.h,
             ),

@@ -171,6 +171,8 @@ class LightCodeColors {
   Color get profileAvatar => Color(0XFF83B3D4); // teal200
 
   Color get dailyBlocks => Color(0XFFDCECF7);
+
+  Color get NavBar => Color(0XFF7C81C3);
   // BlueGray
   // Gray
   // Indigo
