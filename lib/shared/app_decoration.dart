@@ -6,6 +6,16 @@ class AppDecoration {
   static BoxDecoration get calmbluedarker => BoxDecoration(
         color: appTheme.teal300,
       );
+  static BoxDecoration get linearBGcolors => BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            appTheme.homeBGcolor1, // Top color
+            appTheme.homeBGcolor2, // Bottom color
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      );
 }
 
 class BorderRadiusStyle {

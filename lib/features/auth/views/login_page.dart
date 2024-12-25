@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import '../../../app_export.dart';
 import 'custom_app_bar.dart';
-import '../../../shared/widgets/start_buttons.dart';
+import '../../../shared/widgets/custom_elevated_button.dart';
 import '../../../shared/widgets/custom_text_form_field.dart';
 import '../../../shared/widgets/custom_image_view.dart';
 import '../controllers/user_auth.dart';

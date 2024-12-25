@@ -1,7 +1,7 @@
 // register_login_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
-import 'package:flutter_application_1/shared/widgets/start_buttons.dart';
+import 'package:flutter_application_1/shared/widgets/custom_elevated_button.dart';
 
 class RegisterLoginPage extends StatelessWidget {
   const RegisterLoginPage({super.key});

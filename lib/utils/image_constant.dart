@@ -7,4 +7,5 @@ class ImageConstant {
   static String imgLock = '$imagePath/Lock_Icon.svg';
   static String imgProfile = '$imagePath/profile_picture.svg';
   static String imgEmail = '$imagePath/email_icon.svg';
+  static String imgProfileWhite = '$imagePath/profile_picture_white.svg';
 }

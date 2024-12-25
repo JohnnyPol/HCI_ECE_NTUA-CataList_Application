@@ -162,7 +162,15 @@ class ColorSchemes {
 class LightCodeColors {
   // Black
   Color get black900 => Color(0XFF000000);
-  // Blue
+
+  // Background Color of home pages
+  Color get homeBGcolor1 => Color(0XFF73C8F3);
+  Color get homeBGcolor2 => Color(0XFF5D58C8);
+
+  // Profile Avatar BG color
+  Color get profileAvatar => Color(0XFF83B3D4); // teal200
+
+  Color get dailyBlocks => Color(0XFFDCECF7);
   // BlueGray
   // Gray
   // Indigo

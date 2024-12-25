@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.0.16
   intl: ^0.20.1
+  pie_chart: ^5.4.0
+  flutter_chart: ^1.2.3
 
 
 dev_dependencies:

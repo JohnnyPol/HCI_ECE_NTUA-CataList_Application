@@ -40,4 +40,9 @@ class CustomTextStyles {
         color: theme.colorScheme.onErrorContainer,
         fontWeight: FontWeight.w500,
       );
+  static TextStyle get dailyQuoteStyle =>
+      theme.textTheme.titleSmall!.roboto.copyWith(
+        color: theme.colorScheme.onPrimary,
+        fontWeight: FontWeight.w100,
+      );
 }

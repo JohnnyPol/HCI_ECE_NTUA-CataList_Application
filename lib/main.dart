@@ -20,8 +20,9 @@ class MyApp extends StatelessWidget {
       return MaterialApp(
         debugShowCheckedModeBanner: false, // Remove the debug banner
         title: 'CataList',
-        theme: theme, // theme (Replace it later)
-        initialRoute: AppRoutes.start,
+        theme: theme,
+        initialRoute: AppRoutes.home,
+        // initialRoute: AppRoutes.start
         onGenerateRoute: AppRoutes.onGenerateRoute,
       );
     });
