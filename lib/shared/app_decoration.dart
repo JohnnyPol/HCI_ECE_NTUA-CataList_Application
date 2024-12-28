@@ -6,6 +6,9 @@ class AppDecoration {
   static BoxDecoration get calmbluedarker => BoxDecoration(
         color: appTheme.teal300,
       );
+  static BoxDecoration get transparent => BoxDecoration(
+        color: Colors.transparent,
+      ); 
   static BoxDecoration get linearBGcolors => BoxDecoration(
         gradient: LinearGradient(
           colors: [

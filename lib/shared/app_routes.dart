@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/features/dashboard/views/profile_page.dart';
 import '../features/start/views/start_page.dart';
 import '../features/start/views/register_login_page.dart';
 import '../features/auth/views/login_page.dart';
@@ -8,6 +9,7 @@ import '../features/dashboard/views/add_task_page.dart';
 import '../features/dashboard/views/recap_page.dart';
 import '../features/dashboard/views/search_page.dart';
 import '../features/dashboard/views/calendar_page.dart';
+
 
 class AppRoutes {
   static const String start = '/';
@@ -41,6 +43,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => AddTaskPage());
       case calendar:
         return MaterialPageRoute(builder: (context) => CalandarPage());
+      case profile:
+        return MaterialPageRoute(builder: (context) => ProfilePage());
 
       default:
         return MaterialPageRoute(

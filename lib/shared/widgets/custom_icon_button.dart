@@ -3,17 +3,17 @@ import '../../app_export.dart';
 
 extension IconButtonStyleHelper on CustomIconButton {
   static BoxDecoration get outlineBlack => BoxDecoration(
-        color: appTheme.homeBGcolor1,
+        color: appTheme.profileAvatar,
         borderRadius: BorderRadius.circular(30.h),
         boxShadow: [
           BoxShadow(
             // ignore: deprecated_member_use
             color: appTheme.black900.withOpacity(0.2),
-            spreadRadius: 2.h,
-            blurRadius: 2.h,
+            spreadRadius: 1.h,
+            blurRadius: 0.2.h,
             offset: Offset(
               0,
-              2,
+              1,
             ),
           )
         ],

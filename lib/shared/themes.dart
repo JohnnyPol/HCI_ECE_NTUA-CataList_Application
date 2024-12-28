@@ -164,13 +164,13 @@ class LightCodeColors {
   Color get black900 => Color(0XFF000000);
 
   // Background Color of home pages
-  Color get homeBGcolor1 => Color(0XFF73C8F3);
+  Color get homeBGcolor1 => Color(0XFF63A6CB);
   Color get homeBGcolor2 => Color(0XFF5D58C8);
 
   // Profile Avatar BG color
   Color get profileAvatar => Color(0XFF83B3D4); // teal200
 
-  Color get dailyBlocks => Color(0XFFDCECF7);
+  Color get dailyBlocks => Color(0XFFBCD3E9);
 
   Color get NavBar => Color(0XFF7C81C3);
   // BlueGray

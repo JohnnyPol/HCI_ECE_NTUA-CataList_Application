@@ -6,7 +6,7 @@ import '../../../shared/widgets/custom_icon_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
-class HomePage extends StatelessWidget {
+class HomePage extends StatelessWidget {//must be stateful in order to get an accurate pie chart??
   HomePage({Key? key}) : super(key: key);
   Map<String, double> dataMap = {
     "Completed": 5,
