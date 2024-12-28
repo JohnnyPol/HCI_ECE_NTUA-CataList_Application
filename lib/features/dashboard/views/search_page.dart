@@ -12,17 +12,21 @@ class SearchPage extends StatelessWidget {
     return AppBar(
       toolbarHeight:62,
       actions: <Widget>[
-        CustomIconButton(
-                    height: 45.h,
-                    width: 45.h,
-                    padding: EdgeInsets.all(13.h),
-                    decoration: IconButtonStyleHelper.outlineBlack,
-                    child: CustomImageView(
-                      imagePath: ImageConstant.imgProfileWhite,
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.profile);
-                    }
+        Padding(
+          padding: EdgeInsets.only(right: 10.h),
+          child:
+          CustomIconButton(
+                      height: 45.h,
+                      width: 45.h,
+                      padding: EdgeInsets.all(13.h),
+                      decoration: IconButtonStyleHelper.outlineBlack,
+                      child: CustomImageView(
+                        imagePath: ImageConstant.imgProfileWhite,
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.profile);
+                      }
+          )
         )
       ],
       backgroundColor: Colors.transparent,
