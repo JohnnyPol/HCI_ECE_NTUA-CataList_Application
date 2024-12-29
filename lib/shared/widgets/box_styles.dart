@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
 import 'package:pie_chart/pie_chart.dart';
+import '../../../shared/widgets/custom_text_form_field.dart';
 
 // Scrollable Block
   Widget Task_or_Challenge_Block(BuildContext context,
@@ -126,3 +127,34 @@ Widget Quote_Block(BuildContext context, Map<String, double> dataMap) {
     ),
     );
   }
+
+  /// Section Widget
+Widget SearchInput(BuildContext context) {
+  return Center(
+    child: CustomTextFormField(
+    width:250.h,
+    fillColor:appTheme.profileAvatar,
+    borderDecoration: 
+            OutlineInputBorder(
+              borderSide: 
+              BorderSide(width: 2.0, color: Colors.lightBlue.shade50),
+              borderRadius:BorderRadius.circular(30.h),
+            ),
+    hintText: "Search",
+    textInputAction: TextInputAction.done,
+    prefix: Container(
+      margin: EdgeInsets.fromLTRB(10.h, 6.h, 26.h, 6.h),
+      child: CustomImageView(
+        imagePath: ImageConstant.imgSearch,
+        height: 26.h,
+        width: 26.h,
+        fit: BoxFit.contain,
+      ),
+    ),
+    prefixConstraints: BoxConstraints(
+      maxHeight: 48.h,
+    ),
+    obscureText: false,
+    contentPadding: EdgeInsets.fromLTRB(6.h, 6.h, 12.h, 6.h),
+  ),);
+}

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
-import '../../../shared/widgets/custom_text_form_field.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -49,7 +48,7 @@ class SearchPage extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildSearchInput(context),  
+                    SearchInput(context),  
                     SizedBox(height: 8.h),
                       Container(
                         padding:const EdgeInsets.only(
@@ -238,24 +237,3 @@ Widget _buildBottomNavigationBar(BuildContext context) {
       height: 70.h,
     );
   }
-  /// Section Widget
-Widget _buildSearchInput(BuildContext context) {
-  return CustomTextFormField(
-    hintText: "Search",
-    textInputAction: TextInputAction.done,
-    prefix: Container(
-      margin: EdgeInsets.fromLTRB(6.h, 6.h, 26.h, 6.h),
-      child: CustomImageView(
-        imagePath: ImageConstant.imgSearch,
-        height: 26.h,
-        width: 26.h,
-        fit: BoxFit.contain,
-      ),
-    ),
-    prefixConstraints: BoxConstraints(
-      maxHeight: 48.h,
-    ),
-    obscureText: false,
-    contentPadding: EdgeInsets.fromLTRB(6.h, 6.h, 12.h, 6.h),
-  );
-}
