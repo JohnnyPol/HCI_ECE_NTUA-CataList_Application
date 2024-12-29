@@ -10,7 +10,6 @@ class AddTaskPage extends StatelessWidget {
   
  AppBar _buildAppBar(BuildContext context){
     return AppBar(
-      automaticallyImplyLeading: false,//remove back button
       toolbarHeight:62,
       actions: <Widget>[
         Padding(
@@ -48,12 +47,21 @@ class AddTaskPage extends StatelessWidget {
             child: 
             SingleChildScrollView(
             child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              padding:EdgeInsets.only(
+                  top: 130,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  ),
+              child: 
+              Stack(
+                alignment: Alignment.center,
                 children: [
-                  //ADD CONTAINERS
+                  AnimatedPositioned(
+                    child: AddTask_Block(context,),
+                    duration: Duration(microseconds: 250))
                 ],
-              ),
+              )
             ),
           ),
           ),
@@ -84,30 +92,6 @@ class AddTaskPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          // Home Button
-          IconButton(
-            icon: SvgPicture.asset(
-              ImageConstant.imgHome, // Replace with your SVG path
-              height: 24.h,
-              width: 24.h,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/home'); // Handle routing
-            },
-          ),
-
-          // Search Button
-          IconButton(
-            icon: SvgPicture.asset(
-              ImageConstant.imgSearch, // Replace with your SVG path
-              height: 37.h,
-              width: 37.h,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/search'); // Handle routing
-            },
-          ),
-
           // Add Task Button
           IconButton(
             icon: SvgPicture.asset(
@@ -115,37 +99,11 @@ class AddTaskPage extends StatelessWidget {
               height: 40.h,
               width: 40.h,
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/add_task'); // Handle routing
-            },
-          ),
-
-          // Recap Button
-          IconButton(
-            icon: SvgPicture.asset(
-              ImageConstant.imgRecap, // Replace with your SVG path
-              height: 35.h,
-              width: 35.h,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/recap'); // Handle routing
-            },
-          ),
-
-          // Calendar Button
-          IconButton(
-            icon: SvgPicture.asset(
-              ImageConstant.imgCalendar, // Replace with your SVG path
-              height: 35.h,
-              width: 35.h,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/calendar'); // Handle routing
-            },
-          ),
+            onPressed: () {},//remove do no pages stack up
+          )
         ],
       ),
-      height: 70.h,
+      height: 60.h,
     );
   }
 }

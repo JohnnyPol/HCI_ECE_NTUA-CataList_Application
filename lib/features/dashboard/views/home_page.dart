@@ -137,9 +137,7 @@ class HomePage extends StatelessWidget {//must be stateful in order to get an ac
               height: 24.h,
               width: 24.h,
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/home'); // Handle routing
-            },
+            onPressed: () {},
           ),
 
           // Search Button

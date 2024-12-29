@@ -192,9 +192,7 @@ Widget _buildBottomNavigationBar(BuildContext context) {
               height: 37.h,
               width: 37.h,
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/search'); // Handle routing
-            },
+            onPressed: () {},
           ),
 
           // Add Task Button

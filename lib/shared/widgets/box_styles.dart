@@ -163,7 +163,6 @@ Widget SearchInput(BuildContext context) {
 
 //Recap Block
 Widget Recap_Block(BuildContext context) {
-
     return Container(
       height: 175.h,
       width: 140.h,
@@ -173,5 +172,27 @@ Widget Recap_Block(BuildContext context) {
         borderRadius: BorderRadius.circular(25.h),
       ),
       padding: EdgeInsets.all(16.h),
+    );
+  }
+
+//Add Task Block
+Widget AddTask_Block(BuildContext context) {
+    return Container(
+      child:
+      Column(
+      children:[
+        Container(
+          height: 370.h,
+          width: 360.h,
+          decoration: BoxDecoration(
+          border: Border.all(width: 1.0,color: Color.fromARGB(255, 255, 255, 255),),//white border
+          color: appTheme.dailyBlocks,
+          borderRadius: BorderRadius.only(topLeft:Radius.circular(25.h),topRight:Radius.circular(25.h)),
+          ),
+          padding: EdgeInsets.all(16.h),
+        )
+
+      ]
+      ),
     );
   }

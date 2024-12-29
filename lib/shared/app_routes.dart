@@ -40,7 +40,7 @@ class AppRoutes {
       case recap:
         return MaterialPageRoute(builder: (context) => RecapPage());
       case addTask:
-        return MaterialPageRoute(builder: (context) => AddTaskPage());
+        return my_Route(AddTaskPage());
       case calendar:
         return MaterialPageRoute(builder: (context) => CalandarPage());
       case profile:
@@ -56,4 +56,23 @@ class AppRoutes {
         );
     }
   }
+}
+
+//Custom Transition
+Route my_Route(Widget target){
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => target,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 1.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
 }

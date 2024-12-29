@@ -10,7 +10,6 @@ class RecapPage extends StatelessWidget {
   
  AppBar _buildAppBar(BuildContext context){
     return AppBar(
-      automaticallyImplyLeading: false,//remove back button
       toolbarHeight:62,
       actions: <Widget>[
         Padding(
@@ -284,9 +283,7 @@ class RecapPage extends StatelessWidget {
               height: 35.h,
               width: 35.h,
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/recap'); // Handle routing
-            },
+            onPressed: () {},
           ),
 
           // Calendar Button
