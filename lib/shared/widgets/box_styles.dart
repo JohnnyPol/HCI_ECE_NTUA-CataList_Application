@@ -4,7 +4,7 @@ import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
 import 'package:pie_chart/pie_chart.dart';
 import '../../../shared/widgets/custom_text_form_field.dart';
 
-// Scrollable Block
+// Task or Challenge Block
   Widget Task_or_Challenge_Block(BuildContext context,
       {required String title,required String name,required bool circle,required bool border}) {
 
@@ -50,6 +50,7 @@ import '../../../shared/widgets/custom_text_form_field.dart';
     );
   }
 
+  //Activity Block
   Widget Activity_Block(BuildContext context,
       {required String name,required bool circle,required bool border}) {
 
@@ -77,6 +78,7 @@ import '../../../shared/widgets/custom_text_form_field.dart';
     );
   }
 
+//Quote Block
 Widget Quote_Block(BuildContext context, Map<String, double> dataMap) {
     return 
     Center(
@@ -128,7 +130,7 @@ Widget Quote_Block(BuildContext context, Map<String, double> dataMap) {
     );
   }
 
-  /// Section Widget
+// Section Widget
 Widget SearchInput(BuildContext context) {
   return Center(
     child: CustomTextFormField(
@@ -158,3 +160,18 @@ Widget SearchInput(BuildContext context) {
     contentPadding: EdgeInsets.fromLTRB(6.h, 6.h, 12.h, 6.h),
   ),);
 }
+
+//Recap Block
+Widget Recap_Block(BuildContext context) {
+
+    return Container(
+      height: 175.h,
+      width: 140.h,
+      decoration: BoxDecoration(
+        border: Border.all(width: 1.0,color: Color.fromARGB(255, 255, 255, 255),),//white border
+        color: appTheme.dailyBlocks,
+        borderRadius: BorderRadius.circular(25.h),
+      ),
+      padding: EdgeInsets.all(16.h),
+    );
+  }
