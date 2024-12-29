@@ -14,6 +14,7 @@ class HomePage extends StatelessWidget {//must be stateful in order to get an ac
   
  AppBar _buildAppBar(BuildContext context){
     return AppBar(
+      automaticallyImplyLeading: false,//remove back button
       toolbarHeight:62,
       actions: <Widget>[
         Padding(
