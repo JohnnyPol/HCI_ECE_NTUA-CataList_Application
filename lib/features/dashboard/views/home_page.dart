@@ -258,6 +258,7 @@ Widget NavigationBar(BuildContext context, GlobalKey<ListItemStateNew> keyD, Glo
                           onPressed: () async {
                             String taskname=titleController.text.trim();
                             keyD.currentState?.AddTask(taskname);
+                            titleController.clear();
                             Navigator.of(context).pop();
                           },
                         ),
