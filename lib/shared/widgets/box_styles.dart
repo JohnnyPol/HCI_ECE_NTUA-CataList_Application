@@ -8,7 +8,6 @@ import 'package:flutter_application_1/shared/widgets/list_item.dart';
 // Task or Challenge Block
   Widget Task_or_Challenge_Block(BuildContext context,
       {required String title,required String name,required bool circle,required bool border}) {
-    ListItem listname=ListItem(name:name,circle:circle); PROSOXHHHHHHHHHHHHHHHHHHHHH
     return Container(
       height: 177.h,
       width:320.h,
@@ -44,7 +43,7 @@ import 'package:flutter_application_1/shared/widgets/list_item.dart';
           SizedBox(height: 5.h),
           // Scrollable List
           Expanded(
-            child:listname//Give list name and checkbox shape
+            child:ListItem(name:name,circle:circle)//Give list name and checkbox shape
           ),
         ],
       ),
@@ -177,7 +176,7 @@ Widget Recap_Block(BuildContext context) {
   }
 
 //Add Task Block
-Widget AddTask_Block(BuildContext context) {
+/*Widget AddTask_Block(BuildContext context) {
     return Container(
       child:
       Column(
@@ -206,7 +205,7 @@ Widget AddTask_Block(BuildContext context) {
       ]
       ),
     );
-  }
+  }*/
 
 Widget Title_input(BuildContext context){
   final title_controller=TextEditingController();
