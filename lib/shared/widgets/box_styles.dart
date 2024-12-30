@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
+import 'package:flutter_application_1/shared/widgets/new_list_item.dart';
 import 'package:pie_chart/pie_chart.dart';
 import '../../../shared/widgets/custom_text_form_field.dart';
-import 'package:flutter_application_1/shared/widgets/list_item.dart';
+
 
 // Task or Challenge Block
-  Widget Task_or_Challenge_Block(BuildContext context,
-      {required String title,required String name,required bool circle,required bool border}) {
+Widget Task_or_Challenge_Block(BuildContext context,
+      {required String title,required List<List<dynamic>> listname,required bool circle,required bool border}) { 
     return Container(
-      height: 177.h,
+      height: 179.h,
       width:320.h,
       decoration: BoxDecoration(
         border: border
@@ -37,13 +38,13 @@ import 'package:flutter_application_1/shared/widgets/list_item.dart';
             style: TextStyle(
               fontSize: 18.h,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color:  Color.fromARGB(255, 28, 62, 80),
             ),
           ),
           SizedBox(height: 5.h),
           // Scrollable List
           Expanded(
-            child:ListItem(name:name,circle:circle)//Give list name and checkbox shape
+            child:ListItemNew(listname:listname,circle:circle)//Give list name and checkbox shape
           ),
         ],
       ),
@@ -51,8 +52,8 @@ import 'package:flutter_application_1/shared/widgets/list_item.dart';
   }
 
   //Activity Block
-  Widget Activity_Block(BuildContext context,
-      {required String name,required bool circle,required bool border}) {
+Widget Activity_Block(BuildContext context,
+      {required List<List<dynamic>> listname,required bool circle,required bool border}) {
 
     return Container(
       height: 175.h,
@@ -71,7 +72,7 @@ import 'package:flutter_application_1/shared/widgets/list_item.dart';
           SizedBox(height: 5.h),
           // Scrollable List
           Expanded(
-            child:ListItem(name: name,circle:circle)//Give list name and checkbox shape
+            child:ListItemNew(listname: listname,circle:circle)//Give list name and checkbox shape
           ),
         ],
       ),
@@ -175,38 +176,7 @@ Widget Recap_Block(BuildContext context) {
     );
   }
 
-//Add Task Block
-/*Widget AddTask_Block(BuildContext context) {
-    return Container(
-      child:
-      Column(
-      children:[
-        Container(
-          height: 370.h,
-          width: 360.h,
-          decoration: BoxDecoration(
-          border: Border.all(width: 1.0,color: Color.fromARGB(255, 255, 255, 255),),//white border
-          color: appTheme.dailyBlocks,
-          borderRadius: BorderRadius.only(topLeft:Radius.circular(25.h),topRight:Radius.circular(25.h)),
-          ),
-          padding: EdgeInsets.all(16.h),
-          child:Column(
-            children: [
-              FloatingActionButton(
-                onPressed:
-                  name.AddTask(Listname:"name",taskname:"New Task"),
-                ),
-              Title_input(context),
-              Description_input(context),
-            ],
-          )
-        )
-
-      ]
-      ),
-    );
-  }*/
-
+//Add Task Stuff
 Widget Title_input(BuildContext context){
   final title_controller=TextEditingController();
   return Container(

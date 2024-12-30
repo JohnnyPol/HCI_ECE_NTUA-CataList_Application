@@ -5,7 +5,6 @@ import '../features/start/views/register_login_page.dart';
 import '../features/auth/views/login_page.dart';
 import '../features/auth/views/register_page.dart';
 import '../features/dashboard/views/home_page.dart';
-import '../features/dashboard/views/add_task_page.dart';
 import '../features/dashboard/views/recap_page.dart';
 import '../features/dashboard/views/search_page.dart';
 import '../features/dashboard/views/calendar_page.dart';
@@ -39,8 +38,6 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => SearchPage());
       case recap:
         return MaterialPageRoute(builder: (context) => RecapPage());
-      case addTask:
-        return my_Route(AddTaskPage());
       case calendar:
         return MaterialPageRoute(builder: (context) => CalandarPage());
       case profile:

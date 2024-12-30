@@ -12,11 +12,8 @@ class ListItem extends StatefulWidget {
 class _ListItemState extends State<ListItem> {
   _ListItemState(bool this.circle);
   final bool circle;
-  final List<List<dynamic>> tasklist = [["one",false],["two",false],["three",false],["four",true],["five",false]];
+  final List tasklist = [["one",false],["two",false],["three",false],["four",true],["five",false]];
 
-   List<List<dynamic>> getTasks() {
-    return tasklist;
-  }
 
   void checkBoxChanged(int index) {
     setState(() {

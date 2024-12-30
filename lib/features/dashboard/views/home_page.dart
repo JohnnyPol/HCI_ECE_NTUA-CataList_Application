@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
+import 'package:flutter_application_1/shared/widgets/custom_text_form_field.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {//must be stateful in order to get an accurate pie chart??
   HomePage({Key? key}) : super(key: key);
+
+  List<List<dynamic>> Daily=[["one",false],["two",false],["three",false],["four",true],["five",false]];
+  List<List<dynamic>> Challenges=[["one",false],["two",false],["three",false],["four",true],["five",false]];
+
   Map<String, double> dataMap = {
     "Completed": 5,
     "Incomplete": 4,
@@ -71,7 +76,7 @@ class HomePage extends StatelessWidget {//must be stateful in order to get an ac
                         Task_or_Challenge_Block(
                             context,
                             title:"Daily",
-                            name : "Daily",
+                            listname : Daily,
                             circle: false,
                             border:false,
                             ),
@@ -90,7 +95,7 @@ class HomePage extends StatelessWidget {//must be stateful in order to get an ac
                         Task_or_Challenge_Block(
                             context,
                             title:"Challenges",
-                            name : "Challenges",
+                            listname : Challenges,
                             circle: false,
                             border:false,
                             ),
@@ -110,7 +115,6 @@ class HomePage extends StatelessWidget {//must be stateful in order to get an ac
 }
 
 Widget NavigationBar(BuildContext context) {
-   var _taskController;
     return Container(
       decoration: BoxDecoration(
         color: appTheme.NavBar,
@@ -177,7 +181,10 @@ Widget NavigationBar(BuildContext context) {
                   children: [
                     Text(
                       'Add task',
-                      style: theme.textTheme.displaySmall
+                      style: TextStyle(
+                            color:  Color.fromARGB(209, 37, 68, 83),
+                            fontSize: 16.h,
+                            fontWeight: FontWeight.bold),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.of(context).pop(),
@@ -187,35 +194,62 @@ Widget NavigationBar(BuildContext context) {
                 ),
                 Divider(thickness: 1.2),
                 SizedBox(height: 20.0),
-                TextField(
-                  controller: _taskController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(color: Colors.blue),
+                Padding(
+                  padding: EdgeInsets.only(right: 150),
+                  child:
+                    CustomTextFormField(
+                      width:200.h,
+                      fillColor:Colors.white,
+                      borderDecoration: 
+                              OutlineInputBorder(
+                                borderSide: 
+                                BorderSide(width: 2.0, color: Colors.lightBlue.shade50),
+                                borderRadius:BorderRadius.circular(10.h),
+                              ),
+                      hintText: "Task Name",
+                      textInputAction: TextInputAction.done,
                     ),
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: 'Enter task',
-                    hintStyle: theme.textTheme.displaySmall,
-                  ),
                 ),
                 SizedBox(height: 20.0),
+                Padding(
+                  padding: EdgeInsets.only(right: 100),
+                  child:
+                    CustomTextFormField(
+                      width:250.h,
+                      fillColor:Colors.white,
+                      borderDecoration: 
+                              OutlineInputBorder(
+                                borderSide: 
+                                BorderSide(width: 2.0, color: Colors.lightBlue.shade50),
+                                borderRadius:BorderRadius.circular(10.h),
+                              ),
+                      hintText: "Task Description",
+                      textInputAction: TextInputAction.done,
+                    ),
+                ),
+                SizedBox(height: 160.0),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   width: MediaQuery.of(context).size.width,
                   // height: 200.0,
                   child: Row(
                     children: [
+                      Container(width:320),
                       Container(
-                        width: (MediaQuery.of(context).size.width / 2) - 20,
                         child: 
                         FloatingActionButton(
                           child: Text(
-                            'ADD',
-                            style: theme.textTheme.displaySmall,
-                          ),
-                          onPressed: () {},
+                            'Add',
+                            style:
+                             TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.h,
+                              fontWeight: FontWeight.bold)
+                            ),
+                            backgroundColor:appTheme.profileAvatar,
+                          onPressed: () {
+
+                          },
                         ),
                       ),
                     ],

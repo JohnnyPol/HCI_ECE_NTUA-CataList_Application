@@ -18,14 +18,7 @@ class TaskItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-      ),
-      child: Container(
+    return Container(
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(15),
@@ -38,7 +31,7 @@ class TaskItem extends StatelessWidget {
               :RoundedRectangleBorder(),
               value: taskCompleted,
               onChanged: onChanged,
-              checkColor: Colors.black,
+              checkColor: Color.fromARGB(255, 28, 62, 80),
               activeColor: Colors.white,
               side: const BorderSide(
                 color: Colors.white,
@@ -47,13 +40,13 @@ class TaskItem extends StatelessWidget {
             Text(
               taskName,
               style: TextStyle(
-                color: Colors.black87,
-                fontSize: 16.h,
+                color: Color.fromARGB(255, 28, 62, 80),
+                fontSize: 15.h,
+                fontWeight: FontWeight.w500
               ),
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }
