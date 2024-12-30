@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
 import 'package:flutter_application_1/shared/widgets/custom_text_form_field.dart';
+import 'package:flutter_application_1/shared/widgets/list_item.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {//must be stateful in order to get an accurate pie chart??
   HomePage({Key? key}) : super(key: key);
-
-  List<List<dynamic>> Daily=[["one",false],["two",false],["three",false],["four",true],["five",false]];
+  final GlobalKey<ListItemStateNew> DailyKey= GlobalKey<ListItemStateNew>();
+  final GlobalKey<ListItemStateNew> ChallengesKey= GlobalKey<ListItemStateNew>();
+  final List<List<dynamic>> Daily=[["one",false],["two",false],["three",false],["four",true],["five",false]];
   List<List<dynamic>> Challenges=[["one",false],["two",false],["three",false],["four",true],["five",false]];
 
   Map<String, double> dataMap = {
@@ -75,6 +77,7 @@ class HomePage extends StatelessWidget {//must be stateful in order to get an ac
                       child:
                         Task_or_Challenge_Block(
                             context,
+                            listkey:DailyKey,
                             title:"Daily",
                             listname : Daily,
                             circle: false,
@@ -94,6 +97,7 @@ class HomePage extends StatelessWidget {//must be stateful in order to get an ac
                       child:
                         Task_or_Challenge_Block(
                             context,
+                            listkey:ChallengesKey,
                             title:"Challenges",
                             listname : Challenges,
                             circle: false,
@@ -108,13 +112,15 @@ class HomePage extends StatelessWidget {//must be stateful in order to get an ac
           ),
           ),
         ),
-        bottomNavigationBar:NavigationBar(context),
+        bottomNavigationBar:NavigationBar(context,DailyKey,ChallengesKey),
       ),
     );
   }
 }
 
-Widget NavigationBar(BuildContext context) {
+Widget NavigationBar(BuildContext context, GlobalKey<ListItemStateNew> keyD, GlobalKey<ListItemStateNew> keyC) {
+  var titleController=TextEditingController();
+  var descriptionController=TextEditingController();
     return Container(
       decoration: BoxDecoration(
         color: appTheme.NavBar,
@@ -198,6 +204,7 @@ Widget NavigationBar(BuildContext context) {
                   padding: EdgeInsets.only(right: 150),
                   child:
                     CustomTextFormField(
+                      controller: titleController,
                       width:200.h,
                       fillColor:Colors.white,
                       borderDecoration: 
@@ -215,6 +222,7 @@ Widget NavigationBar(BuildContext context) {
                   padding: EdgeInsets.only(right: 100),
                   child:
                     CustomTextFormField(
+                      controller: descriptionController,
                       width:250.h,
                       fillColor:Colors.white,
                       borderDecoration: 
@@ -247,8 +255,10 @@ Widget NavigationBar(BuildContext context) {
                               fontWeight: FontWeight.bold)
                             ),
                             backgroundColor:appTheme.profileAvatar,
-                          onPressed: () {
-
+                          onPressed: () async {
+                            String taskname=titleController.text.trim();
+                            keyD.currentState?.AddTask(taskname);
+                            Navigator.of(context).pop();
                           },
                         ),
                       ),

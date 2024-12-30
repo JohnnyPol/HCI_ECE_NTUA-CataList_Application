@@ -1,43 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/shared/widgets/todo_list.dart';
 
-class ListItem extends StatefulWidget {
-  const ListItem({super.key,required this.name,required this.circle});
-  final String name;
+class ListItemNew extends StatefulWidget {
+  const ListItemNew({
+    super.key,
+    required this.listname,
+    required this.circle,
+  });
+  
   final bool circle;
+  final List<List<dynamic>> listname; 
+
   @override
-  State<ListItem> createState() => _ListItemState(circle);
+  State<ListItemNew> createState() => ListItemStateNew();
 }
 
-class _ListItemState extends State<ListItem> {
-  _ListItemState(bool this.circle);
-  final bool circle;
-  final List tasklist = [["one",false],["two",false],["three",false],["four",true],["five",false]];
+class ListItemStateNew extends State<ListItemNew> {
+  late List<List<dynamic>> listname; // the list will be initialised later
 
+  @override
+  void initState() {
+    super.initState();
+    listname = widget.listname; // Αντιστοιχεί τη λίστα από το widget στο state.
+  }
 
   void checkBoxChanged(int index) {
     setState(() {
-      tasklist[index][1] = !tasklist[index][1];
+      listname[index][1] = !listname[index][1]; 
     });
   }
 
-  void AddTask(String taskname){
+  void AddTask(String taskName) {
     setState(() {
-      tasklist.add([taskname,false]);
+      listname.add([taskName, false]); 
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: tasklist.length,
+        itemCount: listname.length,
         itemBuilder: (BuildContext context, index) {
           return TaskItem(
-            taskName: tasklist[index][0],
-            taskCompleted: tasklist[index][1],
-            circle:circle,
+            taskName: listname[index][0],
+            taskCompleted: listname[index][1],
+            circle:widget.circle,//gets the circle varable from the ListItem widget
             onChanged: (value) => checkBoxChanged(index),
           );
         },

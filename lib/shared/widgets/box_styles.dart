@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
-import 'package:flutter_application_1/shared/widgets/new_list_item.dart';
+import 'package:flutter_application_1/shared/widgets/list_item.dart';
 import 'package:pie_chart/pie_chart.dart';
 import '../../../shared/widgets/custom_text_form_field.dart';
 
 
 // Task or Challenge Block
 Widget Task_or_Challenge_Block(BuildContext context,
-      {required String title,required List<List<dynamic>> listname,required bool circle,required bool border}) { 
+      {required GlobalKey<ListItemStateNew> listkey ,required String title,required List<List<dynamic>> listname,required bool circle,required bool border}) { 
     return Container(
       height: 179.h,
       width:320.h,
@@ -44,7 +44,7 @@ Widget Task_or_Challenge_Block(BuildContext context,
           SizedBox(height: 5.h),
           // Scrollable List
           Expanded(
-            child:ListItemNew(listname:listname,circle:circle)//Give list name and checkbox shape
+            child:ListItemNew(key:listkey,listname:listname,circle:circle)//Give list name and checkbox shape
           ),
         ],
       ),
