@@ -3,11 +3,12 @@ import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
 import 'package:pie_chart/pie_chart.dart';
 import '../../../shared/widgets/custom_text_form_field.dart';
+import 'package:flutter_application_1/shared/widgets/list_item.dart';
 
 // Task or Challenge Block
   Widget Task_or_Challenge_Block(BuildContext context,
       {required String title,required String name,required bool circle,required bool border}) {
-
+    ListItem listname=ListItem(name:name,circle:circle); PROSOXHHHHHHHHHHHHHHHHHHHHH
     return Container(
       height: 177.h,
       width:320.h,
@@ -43,7 +44,7 @@ import '../../../shared/widgets/custom_text_form_field.dart';
           SizedBox(height: 5.h),
           // Scrollable List
           Expanded(
-            child:ListItem(name: name,circle:circle)//Give list name and checkbox shape
+            child:listname//Give list name and checkbox shape
           ),
         ],
       ),
@@ -190,9 +191,90 @@ Widget AddTask_Block(BuildContext context) {
           borderRadius: BorderRadius.only(topLeft:Radius.circular(25.h),topRight:Radius.circular(25.h)),
           ),
           padding: EdgeInsets.all(16.h),
+          child:Column(
+            children: [
+              FloatingActionButton(
+                onPressed:
+                  name.AddTask(Listname:"name",taskname:"New Task"),
+                ),
+              Title_input(context),
+              Description_input(context),
+            ],
+          )
         )
 
       ]
       ),
     );
   }
+
+Widget Title_input(BuildContext context){
+  final title_controller=TextEditingController();
+  return Container(
+    child:
+    Expanded(
+              child: Padding(
+                padding:EdgeInsets.only(
+                  left:5.h,
+                  right:100.h,
+                ),
+                child: TextField(
+                  controller: title_controller,
+                  decoration: InputDecoration(
+                    hintText: 'Task Title',
+                    filled: true,
+                    fillColor:appTheme.dailyBlocks,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                        width: 4.0,
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+  );
+}
+
+Widget Description_input(BuildContext context){
+  final description_controller=TextEditingController();
+  return Container(
+    child:
+    Expanded(
+              child: Padding(
+                padding:EdgeInsets.only(
+                  left:5.h,
+                ),
+                child: TextField(
+                  controller: description_controller,
+                  decoration: InputDecoration(
+                    hintText: 'Task Description',
+                    filled: true,
+                    fillColor:appTheme.dailyBlocks,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                        width: 4.0,
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+  );
+}

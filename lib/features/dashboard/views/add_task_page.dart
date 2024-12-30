@@ -7,28 +7,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 // ignore: must_be_immutable
 class AddTaskPage extends StatelessWidget {
   AddTaskPage({Key? key}) : super(key: key);
-  
+  TextEditingController TaskInputController = TextEditingController();
+  TextEditingController TaskDescriptionController = TextEditingController();
+
  AppBar _buildAppBar(BuildContext context){
     return AppBar(
-      toolbarHeight:62,
-      actions: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(right: 10.h),
-          child:
-          CustomIconButton(
-                      height: 45.h,
-                      width: 45.h,
-                      padding: EdgeInsets.all(13.h),
-                      decoration: IconButtonStyleHelper.outlineBlack,
-                      child: CustomImageView(
-                        imagePath: ImageConstant.imgProfileWhite,
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.profile);
-                      }
-          )
-        )
-      ],
+      automaticallyImplyLeading: true,
       backgroundColor: Colors.transparent,
       elevation:0,
     );
@@ -53,15 +37,7 @@ class AddTaskPage extends StatelessWidget {
                   right: 0,
                   bottom: 0,
                   ),
-              child: 
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  AnimatedPositioned(
-                    child: AddTask_Block(context,),
-                    duration: Duration(microseconds: 250))
-                ],
-              )
+              child: AddTask_Block(context,)
             ),
           ),
           ),
