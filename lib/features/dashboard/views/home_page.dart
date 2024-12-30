@@ -3,7 +3,6 @@ import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {//must be stateful in order to get an accurate pie chart??
@@ -73,7 +72,7 @@ class HomePage extends StatelessWidget {//must be stateful in order to get an ac
                             context,
                             title:"Daily",
                             name : "Daily",
-                            circle: true,
+                            circle: false,
                             border:false,
                             ),
                     ),
@@ -92,7 +91,7 @@ class HomePage extends StatelessWidget {//must be stateful in order to get an ac
                             context,
                             title:"Challenges",
                             name : "Challenges",
-                            circle: true,
+                            circle: false,
                             border:false,
                             ),
                     ),
@@ -155,7 +154,8 @@ Widget NavigationBar(BuildContext context) {
           ),
 
           // Add Task Button
-        FloatingActionButton(
+        FloatingActionButton.small(
+        shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(90)),
         child: Icon(
           Icons.add,
           color: Colors.white,
@@ -177,10 +177,7 @@ Widget NavigationBar(BuildContext context) {
                   children: [
                     Text(
                       'Add task',
-                      style: GoogleFonts.montserrat(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                      ),
+                      style: theme.textTheme.displaySmall
                     ),
                     GestureDetector(
                       onTap: () => Navigator.of(context).pop(),
@@ -200,7 +197,7 @@ Widget NavigationBar(BuildContext context) {
                     fillColor: Colors.white,
                     filled: true,
                     hintText: 'Enter task',
-                    hintStyle: GoogleFonts.montserrat(),
+                    hintStyle: theme.textTheme.displaySmall,
                   ),
                 ),
                 SizedBox(height: 20.0),
@@ -216,7 +213,7 @@ Widget NavigationBar(BuildContext context) {
                         FloatingActionButton(
                           child: Text(
                             'ADD',
-                            style: GoogleFonts.montserrat(),
+                            style: theme.textTheme.displaySmall,
                           ),
                           onPressed: () {},
                         ),
@@ -258,89 +255,3 @@ Widget NavigationBar(BuildContext context) {
       height: 70.h,
     );
   }
-
-
-
-  /*Widget _buildBottomNavigationBar(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: appTheme.NavBar,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(25.h),
-          topRight: Radius.circular(25.h),
-        ),
-        boxShadow: [
-          BoxShadow(
-            // ignore: deprecated_member_use
-            color: appTheme.black900.withOpacity(0.2),
-            blurRadius: 2.h,
-            spreadRadius: 2.h,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          // Home Button
-          IconButton(
-            icon: SvgPicture.asset(
-              ImageConstant.imgHomePressed, // Replace with your SVG path
-              height: 24.h,
-              width: 24.h,
-            ),
-            onPressed: () {},
-          ),
-
-          // Search Button
-          IconButton(
-            icon: SvgPicture.asset(
-              ImageConstant.imgSearch, // Replace with your SVG path
-              height: 37.h,
-              width: 37.h,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/search'); // Handle routing
-            },
-          ),
-
-          // Add Task Button
-          IconButton(
-            icon: SvgPicture.asset(
-              ImageConstant.imgAddTask,
-              height: 40.h,
-              width: 40.h,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/add_task'); // Handle routing
-            },
-          ),
-
-          // Recap Button
-          IconButton(
-            icon: SvgPicture.asset(
-              ImageConstant.imgRecap, // Replace with your SVG path
-              height: 35.h,
-              width: 35.h,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/recap'); // Handle routing
-            },
-          ),
-
-          // Calendar Button
-          IconButton(
-            icon: SvgPicture.asset(
-              ImageConstant.imgCalendar, // Replace with your SVG path
-              height: 35.h,
-              width: 35.h,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/calendar'); // Handle routing
-            },
-          ),
-        ],
-      ),
-      height: 70.h,
-    );
-  }*/

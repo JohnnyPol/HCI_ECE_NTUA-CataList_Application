@@ -12,29 +12,34 @@ class ListItem extends StatefulWidget {
 class _ListItemState extends State<ListItem> {
   _ListItemState(bool this.circle);
   final bool circle;
-  final List name = [['One',false],['Two',true],['Three',false],['Four',false]];
+  final List<List<dynamic>> tasklist = [["one",false],["two",false],["three",false],["four",true],["five",false]];
+
+   List<List<dynamic>> getTasks() {
+    return tasklist;
+  }
 
   void checkBoxChanged(int index) {
     setState(() {
-      name[index][1] = !name[index][1];
+      tasklist[index][1] = !tasklist[index][1];
     });
   }
 
   void AddTask(String taskname){
     setState(() {
-      this.name.add([taskname,false]);
+      tasklist.add([taskname,false]);
     });
   }
+
 
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: name.length,
+        itemCount: tasklist.length,
         itemBuilder: (BuildContext context, index) {
           return TaskItem(
-            taskName: name[index][0],
-            taskCompleted: name[index][1],
+            taskName: tasklist[index][0],
+            taskCompleted: tasklist[index][1],
             circle:circle,
             onChanged: (value) => checkBoxChanged(index),
           );
@@ -42,4 +47,3 @@ class _ListItemState extends State<ListItem> {
       );
   }
 }
-//ΥΠΑΡΧΕΙ ΠΡΟΒΛΗΜΑ!!!!! Μαλλον πρεπει να φτιαξω constructor έτσι ώστε να επιστρέφει η κλάση μια λίστα απο task items

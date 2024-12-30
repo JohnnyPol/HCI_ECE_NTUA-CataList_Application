@@ -218,8 +218,9 @@ class RecapPage extends StatelessWidget {
             )
     );
   }
-
+}
   Widget _buildBottomNavigationBar(BuildContext context) {
+    var _taskController;
     return Container(
       decoration: BoxDecoration(
         color: appTheme.NavBar,
@@ -265,17 +266,79 @@ class RecapPage extends StatelessWidget {
           ),
 
           // Add Task Button
-          IconButton(
-            icon: SvgPicture.asset(
-              ImageConstant.imgAddTask,
-              height: 40.h,
-              width: 40.h,
+          FloatingActionButton.small(
+            shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(90)),
+            child: 
+            Icon(
+              Icons.add,
+              color: Colors.white,
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/add_task'); // Handle routing
-            },
-          ),
-
+            backgroundColor: appTheme.startBGcolor,
+            onPressed: () => showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) => Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft:Radius.circular(20) ,topRight:Radius.circular(20) ),
+                  color:appTheme.dailyBlocks,
+                ),
+                padding: const EdgeInsets.all(10.0),
+                height: 500,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Add task',
+                          style: theme.textTheme.displaySmall
+                        ),
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: Icon(Icons.close),
+                        ),
+                      ],
+                    ),
+                    Divider(thickness: 1.2),
+                    SizedBox(height: 20.0),
+                    TextField(
+                      controller: _taskController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintText: 'Enter task',
+                        hintStyle: theme.textTheme.displaySmall,
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      width: MediaQuery.of(context).size.width,
+                      // height: 200.0,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: (MediaQuery.of(context).size.width / 2) - 20,
+                            child: 
+                            FloatingActionButton(
+                              child: Text(
+                                'ADD',
+                                style:theme.textTheme.displaySmall,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                                ],
+                ),
+              ),
+            ),
+           ),
           // Recap Button
           IconButton(
             icon: SvgPicture.asset(
@@ -302,4 +365,3 @@ class RecapPage extends StatelessWidget {
       height: 70.h,
     );
   }
-}
