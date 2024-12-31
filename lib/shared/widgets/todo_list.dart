@@ -63,6 +63,13 @@ class TaskItem extends StatelessWidget {
                   fontWeight: FontWeight.w500
                 ),
               ),
+              TextButton(
+                onPressed:(){ Navigator.pushNamed(context, '/view_task');},
+                child: Icon(
+                  Icons.remove_red_eye,
+                  color: Colors.white,
+                  )
+                  )
             ],
           ),
           )

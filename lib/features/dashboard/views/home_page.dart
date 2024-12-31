@@ -257,9 +257,15 @@ Widget NavigationBar(BuildContext context, GlobalKey<ListItemStateNew> keyD, Glo
                             backgroundColor:appTheme.profileAvatar,
                           onPressed: () async {
                             String taskname=titleController.text.trim();
-                            keyD.currentState?.AddTask(taskname);
+                            String taskDescription=descriptionController.text.trim();
+                            if (taskname.length>25){//add condition for description
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Task title waaaay too long')));
+                            }else{
+                            keyD.currentState?.AddTask(taskname,taskDescription);
                             titleController.clear();
-                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();}
                           },
                         ),
                       ),

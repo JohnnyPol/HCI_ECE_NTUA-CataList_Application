@@ -8,6 +8,7 @@ import '../features/dashboard/views/home_page.dart';
 import '../features/dashboard/views/recap_page.dart';
 import '../features/dashboard/views/search_page.dart';
 import '../features/dashboard/views/calendar_page.dart';
+import '../features/dashboard/views/view_task_page.dart';
 
 
 class AppRoutes {
@@ -20,7 +21,7 @@ class AppRoutes {
   static const String recap = '/recap';
   static const String calendar = '/calendar';
   static const String profile = '/profile';
-  static const String addTask = '/add_task';
+  static const String viewTask = '/view_task';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -42,6 +43,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => CalandarPage());
       case profile:
         return MaterialPageRoute(builder: (context) => ProfilePage());
+      case viewTask:
+        return my_Route(ViewTaskPage());
 
       default:
         return MaterialPageRoute(

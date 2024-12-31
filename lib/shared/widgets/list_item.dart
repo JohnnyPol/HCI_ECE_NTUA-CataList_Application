@@ -30,9 +30,9 @@ class ListItemStateNew extends State<ListItemNew> {
     });
   }
 
-  void AddTask(String taskName) {
+  void AddTask(String taskName,String taskDescription) {
     setState(() {
-      listname.add([taskName, false]); 
+      listname.add([taskName, false,taskDescription]); 
     });
   }
   void deleteTask(int index) {
@@ -40,6 +40,12 @@ class ListItemStateNew extends State<ListItemNew> {
       listname.removeAt(index);
     });
   }
+
+ /* void ViewTask(int index){
+    setState((){
+      //Navigate to a page that is dedicated to the task and is a widget that takes different text fields as input
+    })
+  }*/
 
   @override
   Widget build(BuildContext context) {

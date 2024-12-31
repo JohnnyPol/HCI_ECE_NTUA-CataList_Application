@@ -176,74 +176,15 @@ Widget Recap_Block(BuildContext context) {
     );
   }
 
-//Add Task Stuff
-Widget Title_input(BuildContext context){
-  final title_controller=TextEditingController();
-  return Container(
-    child:
-    Expanded(
-              child: Padding(
-                padding:EdgeInsets.only(
-                  left:5.h,
-                  right:100.h,
-                ),
-                child: TextField(
-                  controller: title_controller,
-                  decoration: InputDecoration(
-                    hintText: 'Task Title',
-                    filled: true,
-                    fillColor:appTheme.dailyBlocks,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Colors.white,
-                        width: 4.0,
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-  );
-}
-
-Widget Description_input(BuildContext context){
-  final description_controller=TextEditingController();
-  return Container(
-    child:
-    Expanded(
-              child: Padding(
-                padding:EdgeInsets.only(
-                  left:5.h,
-                ),
-                child: TextField(
-                  controller: description_controller,
-                  decoration: InputDecoration(
-                    hintText: 'Task Description',
-                    filled: true,
-                    fillColor:appTheme.dailyBlocks,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                        width: 4.0,
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-  );
-}
+Widget Task_Block(BuildContext context) {
+    return Container(//ENTER RECAP WIDGET AS CHILD  
+      height: 450.h,
+      width: 300.h,
+      decoration: BoxDecoration(
+        border: Border.all(width: 1.0,color: Color.fromARGB(255, 255, 255, 255),),//white border
+        color: appTheme.dailyBlocks,
+        borderRadius: BorderRadius.circular(25.h),
+      ),
+      padding: EdgeInsets.all(16.h),
+    );
+  }
