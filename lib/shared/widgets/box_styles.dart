@@ -164,7 +164,7 @@ Widget SearchInput(BuildContext context) {
 
 //Recap Block
 Widget Recap_Block(BuildContext context) {
-    return Container(
+    return Container(//ENTER RECAP WIDGET AS CHILD  
       height: 175.h,
       width: 140.h,
       decoration: BoxDecoration(

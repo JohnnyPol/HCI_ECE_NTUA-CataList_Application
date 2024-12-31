@@ -9,10 +9,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {//must be stateful in order to get an accurate pie chart??
   HomePage({Key? key}) : super(key: key);
-  final GlobalKey<ListItemStateNew> DailyKey= GlobalKey<ListItemStateNew>();
-  final GlobalKey<ListItemStateNew> ChallengesKey= GlobalKey<ListItemStateNew>();
-  final List<List<dynamic>> Daily=[["one",false],["two",false],["three",false],["four",true],["five",false]];
+  List<List<dynamic>> Daily=[["one",false],["two",false],["three",false],["four",true],["five",false]];
   List<List<dynamic>> Challenges=[["one",false],["two",false],["three",false],["four",true],["five",false]];
+  GlobalKey<ListItemStateNew> DailyKey= GlobalKey<ListItemStateNew>();
+  GlobalKey<ListItemStateNew> ChallengesKey= GlobalKey<ListItemStateNew>();
 
   Map<String, double> dataMap = {
     "Completed": 5,

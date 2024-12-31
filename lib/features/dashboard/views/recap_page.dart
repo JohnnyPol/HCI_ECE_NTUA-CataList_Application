@@ -356,7 +356,9 @@ class RecapPage extends StatelessWidget {
                                   fontWeight: FontWeight.bold)
                                 ),
                                 backgroundColor:appTheme.profileAvatar,
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
                             ),
                           ),
                         ],

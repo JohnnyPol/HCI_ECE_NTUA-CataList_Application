@@ -192,7 +192,9 @@ AppBar _buildAppBar(BuildContext context){
                                   fontWeight: FontWeight.bold)
                                 ),
                                 backgroundColor:appTheme.profileAvatar,
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
                             ),
                           ),
                         ],
