@@ -35,6 +35,11 @@ class ListItemStateNew extends State<ListItemNew> {
       listname.add([taskName, false]); 
     });
   }
+  void deleteTask(int index) {
+    setState(() {
+      listname.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +51,7 @@ class ListItemStateNew extends State<ListItemNew> {
             taskCompleted: listname[index][1],
             circle:widget.circle,//gets the circle varable from the ListItem widget
             onChanged: (value) => checkBoxChanged(index),
+            deleteFunction: (contex) => deleteTask(index),
           );
         },
       );
