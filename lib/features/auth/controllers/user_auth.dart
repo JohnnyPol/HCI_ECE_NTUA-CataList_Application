@@ -55,24 +55,16 @@ class User {
   }
 
   // Register a new user
-  static Future<bool> register(User newUser) async {
-    final db = await _dbHelper.database;
+  static Future<bool> register(User user) async {
+    try {
+      final db = await DatabaseHelper().database;
 
-    // Check if the username already exists
-    final existingUsers = await db.query(
-      'users',
-      where: 'username = ?',
-      whereArgs: [newUser.username],
-    );
-
-    if (existingUsers.isNotEmpty) {
-      // Username already exists
-      return false;
+      await db.insert('users', user.toMap());
+      return true; // Registration was successful
+    } catch (e) {
+      print("Error during registration: $e");
+      return false; // Registration failed
     }
-
-    // Add the new user to the database
-    await db.insert('users', newUser.toMap());
-    return true; // Registration successful
   }
 }
 
@@ -90,8 +82,13 @@ Future<bool> authenticateAndSetUser(String username, String password) async {
 }
 
 // Global function to register a new user
-Future<bool> registerNewUser(String username, String firstName, String lastName,
-    String password, String email) async {
+Future<bool> registerNewUser(
+  String username,
+  String firstName,
+  String lastName,
+  String password,
+  String email,
+) async {
   final newUser = User(
     username: username,
     firstName: firstName,
@@ -99,5 +96,13 @@ Future<bool> registerNewUser(String username, String firstName, String lastName,
     password: password,
     email: email,
   );
-  return await User.register(newUser);
+
+  // Call the register method
+  bool isRegistered = await User.register(newUser);
+
+  if (isRegistered) {
+    currentUser = newUser; // Set the global user variable
+    return true; // Indicate success
+  }
+  return false; // Registration failed
 }

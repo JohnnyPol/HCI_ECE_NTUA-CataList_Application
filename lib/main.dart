@@ -19,7 +19,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ProfileProvider()), // Add ProfileProvider
+        ChangeNotifierProvider(
+            create: (_) => ProfileProvider()), // Add ProfileProvider
       ],
       child: Sizer(builder: (context, orientation, deviceType) {
         return MaterialApp(
@@ -33,4 +34,10 @@ class MyApp extends StatelessWidget {
       }),
     );
   }
+}
+
+void clearDatabase() async {
+  DatabaseHelper dbHelper = DatabaseHelper();
+  await dbHelper.deleteAllTables();
+  print("All tables have been deleted.");
 }

@@ -24,7 +24,7 @@ class DatabaseHelper {
           'CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT UNIQUE, firstName TEXT, lastName TEXT, email TEXT, password TEXT)',
         );
         db.execute(
-          'CREATE TABLE tasks (id INTEGER PRIMARY KEY, user_id INTEGER, title TEXT, completed INTEGER, category TEXT, date TEXT, time TEXT, FOREIGN KEY (user_id) REFERENCES users (id))',
+          'CREATE TABLE tasks (id INTEGER PRIMARY KEY, user_id INTEGER, title TEXT, description TEXT, completed INTEGER, category TEXT, date TEXT, time TEXT, FOREIGN KEY (user_id) REFERENCES users (id))',
         );
       },
       version: 1,
@@ -75,16 +75,32 @@ class DatabaseHelper {
   }
 
   // Add a new task
-  Future<int> addTask(int? userId, String title, int completed, String category,
-      String date, String time) async {
+  Future<int> addTask(int? userId, String title, String description,
+      int completed, String category, String date, String time) async {
     final db = await database;
     return db.insert('tasks', {
       'user_id': userId,
       'title': title,
+      'description': description,
       'completed': completed,
       'category': category,
       'date': date,
       'time': time,
     });
+  }
+
+  // Add this method to delete all tables
+  Future<void> deleteAllTables() async {
+    final db = await database;
+
+    // Fetch all table names
+    final List<Map<String, dynamic>> tables = await db.rawQuery(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';");
+
+    // Drop each table
+    for (var table in tables) {
+      String tableName = table['name'];
+      await db.execute("DROP TABLE IF EXISTS $tableName");
+    }
   }
 }

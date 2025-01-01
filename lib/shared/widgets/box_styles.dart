@@ -74,7 +74,7 @@ Widget Task_or_Challenge_Block(BuildContext context,
 
   // Fetch tasks for the specific category
   Future<List<Map<String, dynamic>>> fetchTasks() async {
-    return await dbHelper.getTasksByCategory(currentUser?.id, category);
+    return await dbHelper.getTasks(currentUser?.id);
   }
 
   return Container(
