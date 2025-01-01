@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
     ["five", false]
   ];
   List<List<dynamic>> Challenges = [
-    ["one", false],
+    ["one", true],
     ["two", false],
     ["three", false],
     ["four", true],
@@ -71,7 +71,6 @@ class HomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Daily Quote Block
-
                     Quote_Block(context, dataMap),
                     SizedBox(height: 15.h),
                     // Daily Tasks Block
@@ -84,9 +83,8 @@ class HomePage extends StatelessWidget {
                       ),
                       child: Task_or_Challenge_Block(
                         context,
-                        listkey: DailyKey,
                         title: "Daily",
-                        listname: Daily,
+                        category: "daily",
                         circle: false,
                         border: false,
                       ),
@@ -103,9 +101,8 @@ class HomePage extends StatelessWidget {
                       ),
                       child: Task_or_Challenge_Block(
                         context,
-                        listkey: ChallengesKey,
-                        title: "Challenges",
-                        listname: Challenges,
+                        title: "Challenge",
+                        category: "challenge",
                         circle: false,
                         border: false,
                       ),
@@ -126,8 +123,6 @@ class HomePage extends StatelessWidget {
 
 Widget NavigationBar(BuildContext context, GlobalKey<ListItemStateNew> keyD,
     GlobalKey<ListItemStateNew> keyC) {
-  var titleController = TextEditingController();
-  var descriptionController = TextEditingController();
   return Container(
     decoration: BoxDecoration(
       color: appTheme.NavBar,

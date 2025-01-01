@@ -6,13 +6,77 @@ import 'package:pie_chart/pie_chart.dart';
 import '../../../shared/widgets/custom_text_form_field.dart';
 import '../../../shared/quote_provider.dart';
 
+// // Task or Challenge Block
+// Widget Task_or_Challenge_Block(BuildContext context,
+//     {required GlobalKey<ListItemStateNew> listkey,
+//     required String title,
+//     required List<List<dynamic>> listname,
+//     required bool circle,
+//     required bool border}) {
+//   return Container(
+//     height: 179.h,
+//     width: 320.h,
+//     decoration: BoxDecoration(
+//       border: border
+//           ? Border.all(
+//               width: 2.0,
+//               color: Colors.transparent,
+//             ) //white border
+//           : Border.all(
+//               width: 2.0,
+//               color: Color.fromARGB(0, 0, 0, 0),
+//             ), //translucent border
+//       color: appTheme.dailyBlocks,
+//       borderRadius: BorderRadius.circular(25.h),
+//       boxShadow: [
+//         BoxShadow(
+//           // ignore: deprecated_member_use
+//           color: appTheme.black900.withOpacity(0.2),
+//           blurRadius: 2.h,
+//           spreadRadius: 2.h,
+//           offset: Offset(0, 2),
+//         ),
+//       ],
+//     ),
+//     padding: EdgeInsets.all(16.h),
+//     child: Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         // Title
+//         Text(
+//           title,
+//           style: TextStyle(
+//             fontSize: 18.h,
+//             fontWeight: FontWeight.bold,
+//             color: Color.fromARGB(255, 28, 62, 80),
+//           ),
+//         ),
+//         SizedBox(height: 5.h),
+//         // Scrollable List
+//         Expanded(
+//             child: ListItemNew(
+//                 key: listkey,
+//                 listname: listname,
+//                 circle: circle) //Give list name and checkbox shape
+//             ),
+//       ],
+//     ),
+//   );
+// }
+
 // Task or Challenge Block
 Widget Task_or_Challenge_Block(BuildContext context,
-    {required GlobalKey<ListItemStateNew> listkey,
-    required String title,
-    required List<List<dynamic>> listname,
+    {required String title,
+    required String category,
     required bool circle,
     required bool border}) {
+  final DatabaseHelper dbHelper = DatabaseHelper();
+
+  // Fetch tasks for the specific category
+  Future<List<Map<String, dynamic>>> fetchTasks() async {
+    return await dbHelper.getTasksByCategory(currentUser?.id, category);
+  }
+
   return Container(
     height: 179.h,
     width: 320.h,
@@ -21,11 +85,11 @@ Widget Task_or_Challenge_Block(BuildContext context,
           ? Border.all(
               width: 2.0,
               color: Colors.transparent,
-            ) //white border
+            )
           : Border.all(
               width: 2.0,
               color: Color.fromARGB(0, 0, 0, 0),
-            ), //translucent border
+            ),
       color: appTheme.dailyBlocks,
       borderRadius: BorderRadius.circular(25.h),
       boxShadow: [
@@ -52,13 +116,38 @@ Widget Task_or_Challenge_Block(BuildContext context,
           ),
         ),
         SizedBox(height: 5.h),
-        // Scrollable List
+        // Dynamic task list
         Expanded(
-            child: ListItemNew(
-                key: listkey,
-                listname: listname,
-                circle: circle) //Give list name and checkbox shape
-            ),
+          child: FutureBuilder<List<Map<String, dynamic>>>(
+            future: fetchTasks(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+                return Center(child: Text('No tasks found'));
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    final task = snapshot.data![index];
+                    return ListTile(
+                      title: Text(task['title']),
+                      subtitle: Text(task['description']),
+                      trailing: Checkbox(
+                        value: task['completed'] == 1,
+                        onChanged: (bool? value) {
+                          // Update task completion in the database
+                        },
+                      ),
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        ),
       ],
     ),
   );

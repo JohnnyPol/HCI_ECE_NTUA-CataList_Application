@@ -89,7 +89,14 @@ class AddTaskButton {
                       ),
                       hint: Text("Select Category"),
                       value: selectedCategory,
-                      items: ["Work", "Personal", "Urgent", "Other"]
+                      items: [
+                        "Daily",
+                        "Challenge",
+                        "Work",
+                        "Personal",
+                        "Urgent",
+                        "Other"
+                      ]
                           .map((category) => DropdownMenuItem<String>(
                                 value: category,
                                 child: Text(category),
@@ -182,7 +189,7 @@ class AddTaskButton {
                         // ignore: unused_local_variable
                         String taskDescription =
                             descriptionController.text.trim();
-
+                        // todo (fix): snackbar appears in the background
                         if (taskName.isEmpty ||
                             selectedCategory == null ||
                             selectedDate == null ||
