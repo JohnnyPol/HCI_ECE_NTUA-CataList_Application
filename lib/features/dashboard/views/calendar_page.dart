@@ -3,28 +3,43 @@ import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'dart:io';
+import '../../../providers/profile_provider.dart';
 
 // ignore: must_be_immutable
 class CalandarPage extends StatelessWidget {
   CalandarPage({Key? key}) : super(key: key);
 
   AppBar _buildAppBar(BuildContext context) {
+    final profileImagePath =
+        Provider.of<ProfileProvider>(context).profileImagePath;
+
     return AppBar(
       toolbarHeight: 62,
       actions: <Widget>[
         Padding(
-            padding: EdgeInsets.only(right: 10.h),
-            child: CustomIconButton(
-                height: 45.h,
-                width: 45.h,
-                padding: EdgeInsets.all(13.h),
-                decoration: IconButtonStyleHelper.outlineBlack,
-                child: CustomImageView(
-                  imagePath: ImageConstant.imgProfileWhite,
-                ),
-                onTap: () {
-                  Navigator.pushNamed(context, AppRoutes.profile);
-                }))
+          padding: EdgeInsets.only(right: 10.h),
+          child: CustomIconButton(
+            height: 45.h,
+            width: 45.h,
+            padding: EdgeInsets.all(5.h),
+            decoration: IconButtonStyleHelper.outlineBlack,
+            child: CircleAvatar(
+              radius: 20.h,
+              backgroundColor: Colors.grey[300],
+              backgroundImage: profileImagePath != null
+                  ? FileImage(File(profileImagePath))
+                  : null,
+              child: profileImagePath == null
+                  ? Icon(Icons.person, size: 20.h, color: Colors.black)
+                  : null,
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.profile);
+            },
+          ),
+        ),
       ],
       backgroundColor: Colors.transparent,
       elevation: 0,

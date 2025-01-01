@@ -3,29 +3,14 @@ import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'dart:io';
+import '../../../providers/profile_provider.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
   //must be stateful in order to get an accurate pie chart??
   HomePage({Key? key}) : super(key: key);
-  /* 
-  // List<List<dynamic>> Daily = [
-  //   ["one", false],
-  //   ["two", false],
-  //   ["three", false],
-  //   ["four", true],
-  //   ["five", false]
-  // ];
-  // List<List<dynamic>> Challenges = [
-  //   ["one", true],
-  //   ["two", false],
-  //   ["three", false],
-  //   ["four", true],
-  //   ["five", false]
-  // ];
-  // GlobalKey<ListItemStateNew> DailyKey = GlobalKey<ListItemStateNew>();
-  // GlobalKey<ListItemStateNew> ChallengesKey = GlobalKey<ListItemStateNew>();
-  */
 
   Map<String, double> dataMap = {
     "Completed": 5,
@@ -33,23 +18,31 @@ class HomePage extends StatelessWidget {
   };
 
   AppBar _buildAppBar(BuildContext context) {
+    final profileImagePath =
+        Provider.of<ProfileProvider>(context).profileImagePath;
+
     return AppBar(
       automaticallyImplyLeading: false, //remove back button
       toolbarHeight: 62,
       actions: <Widget>[
         Padding(
-            padding: EdgeInsets.only(right: 10.h),
-            child: CustomIconButton(
-                height: 45.h,
-                width: 45.h,
-                padding: EdgeInsets.all(13.h),
-                decoration: IconButtonStyleHelper.outlineBlack,
-                child: CustomImageView(
-                  imagePath: ImageConstant.imgProfileWhite,
-                ),
-                onTap: () {
-                  Navigator.pushNamed(context, AppRoutes.profile);
-                }))
+          padding: EdgeInsets.only(right: 10.h),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.profile);
+            },
+            child: CircleAvatar(
+              radius: 22.5.h,
+              backgroundColor: Colors.grey[300],
+              backgroundImage: profileImagePath != null
+                  ? FileImage(File(profileImagePath))
+                  : null,
+              child: profileImagePath == null
+                  ? Icon(Icons.person, size: 22.h, color: Colors.black)
+                  : null,
+            ),
+          ),
+        ),
       ],
       backgroundColor: Colors.transparent,
       elevation: 0,

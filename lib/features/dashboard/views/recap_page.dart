@@ -3,28 +3,43 @@ import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'dart:io';
+import '../../../providers/profile_provider.dart';
 
 // ignore: must_be_immutable
 class RecapPage extends StatelessWidget {
   RecapPage({Key? key}) : super(key: key);
 
   AppBar _buildAppBar(BuildContext context) {
+    final profileImagePath =
+        Provider.of<ProfileProvider>(context).profileImagePath;
+
     return AppBar(
       toolbarHeight: 62,
       actions: <Widget>[
         Padding(
-            padding: EdgeInsets.only(right: 10.h),
-            child: CustomIconButton(
-                height: 45.h,
-                width: 45.h,
-                padding: EdgeInsets.all(13.h),
-                decoration: IconButtonStyleHelper.outlineBlack,
-                child: CustomImageView(
-                  imagePath: ImageConstant.imgProfileWhite,
-                ),
-                onTap: () {
-                  Navigator.pushNamed(context, AppRoutes.profile);
-                }))
+          padding: EdgeInsets.only(right: 10.h),
+          child: CustomIconButton(
+            height: 45.h,
+            width: 45.h,
+            padding: EdgeInsets.all(5.h),
+            decoration: IconButtonStyleHelper.outlineBlack,
+            child: CircleAvatar(
+              radius: 20.h,
+              backgroundColor: Colors.grey[300],
+              backgroundImage: profileImagePath != null
+                  ? FileImage(File(profileImagePath))
+                  : null,
+              child: profileImagePath == null
+                  ? Icon(Icons.person, size: 20.h, color: Colors.black)
+                  : null,
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.profile);
+            },
+          ),
+        ),
       ],
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -34,185 +49,186 @@ class RecapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: AppDecoration.linearBGcolors,
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: _buildAppBar(context),
-          body: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.h),
-                  Container(
-                    padding: const EdgeInsets.only(
-                      top: 0,
-                      left: 10,
-                      right: 0,
-                      bottom: 0,
-                    ),
-                    child: Text(
-                      "Weekly",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.h,
-                          fontWeight: FontWeight.bold),
+      decoration: AppDecoration.linearBGcolors,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: _buildAppBar(context),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 10.h),
+                Container(
+                  padding: const EdgeInsets.only(
+                    top: 0,
+                    left: 10,
+                    right: 0,
+                    bottom: 0,
+                  ),
+                  child: Text(
+                    "Weekly",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.h,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 0,
+                            left: 15,
+                            right: 0,
+                            bottom: 20,
+                          ),
+                          child: Recap_Block(
+                            context,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 0,
+                            left: 24,
+                            right: 0,
+                            bottom: 20,
+                          ),
+                          child: Recap_Block(
+                            context,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 0,
+                            left: 24,
+                            right: 0,
+                            bottom: 20,
+                          ),
+                          child: Recap_Block(
+                            context,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 0,
+                            left: 24,
+                            right: 0,
+                            bottom: 20,
+                          ),
+                          child: Recap_Block(
+                            context,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 10.h),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            padding: const EdgeInsets.only(
-                              top: 0,
-                              left: 15,
-                              right: 0,
-                              bottom: 20,
-                            ),
-                            child: Recap_Block(
-                              context,
-                            ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                    top: 0,
+                    left: 10,
+                    right: 0,
+                    bottom: 0,
+                  ),
+                  child: Text(
+                    "Monthly",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.h,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                // Daily Challenges Block
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 0,
+                            left: 15,
+                            right: 0,
+                            bottom: 20,
                           ),
-                          Container(
-                            padding: const EdgeInsets.only(
-                              top: 0,
-                              left: 24,
-                              right: 0,
-                              bottom: 20,
-                            ),
-                            child: Recap_Block(
-                              context,
-                            ),
+                          child: Recap_Block(
+                            context,
                           ),
-                          Container(
-                            padding: const EdgeInsets.only(
-                              top: 0,
-                              left: 24,
-                              right: 0,
-                              bottom: 20,
-                            ),
-                            child: Recap_Block(
-                              context,
-                            ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 0,
+                            left: 24,
+                            right: 0,
+                            bottom: 20,
                           ),
-                          Container(
-                            padding: const EdgeInsets.only(
-                              top: 0,
-                              left: 24,
-                              right: 0,
-                              bottom: 20,
-                            ),
-                            child: Recap_Block(
-                              context,
-                            ),
+                          child: Recap_Block(
+                            context,
                           ),
-                        ],
-                      ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 0,
+                            left: 24,
+                            right: 0,
+                            bottom: 20,
+                          ),
+                          child: Recap_Block(
+                            context,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 0,
+                            left: 24,
+                            right: 0,
+                            bottom: 20,
+                          ),
+                          child: Recap_Block(
+                            context,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 0,
+                            left: 24,
+                            right: 0,
+                            bottom: 20,
+                          ),
+                          child: Recap_Block(
+                            context,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 0,
+                            left: 24,
+                            right: 0,
+                            bottom: 20,
+                          ),
+                          child: Recap_Block(
+                            context,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(
-                      top: 0,
-                      left: 10,
-                      right: 0,
-                      bottom: 0,
-                    ),
-                    child: Text(
-                      "Monthly",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.h,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  // Daily Challenges Block
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            padding: const EdgeInsets.only(
-                              top: 0,
-                              left: 15,
-                              right: 0,
-                              bottom: 20,
-                            ),
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(
-                              top: 0,
-                              left: 24,
-                              right: 0,
-                              bottom: 20,
-                            ),
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(
-                              top: 0,
-                              left: 24,
-                              right: 0,
-                              bottom: 20,
-                            ),
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(
-                              top: 0,
-                              left: 24,
-                              right: 0,
-                              bottom: 20,
-                            ),
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(
-                              top: 0,
-                              left: 24,
-                              right: 0,
-                              bottom: 20,
-                            ),
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(
-                              top: 0,
-                              left: 24,
-                              right: 0,
-                              bottom: 20,
-                            ),
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 42.h),
-                ],
-              ),
+                ),
+                SizedBox(height: 42.h),
+              ],
             ),
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(context),
-        ));
+        ),
+        bottomNavigationBar: _buildBottomNavigationBar(context),
+      ),
+    );
   }
 }
 
