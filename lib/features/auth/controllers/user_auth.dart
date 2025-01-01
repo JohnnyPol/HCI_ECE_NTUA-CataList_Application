@@ -5,7 +5,7 @@ class User {
   final String firstName;
   final String lastName;
   final String password;
-  final String email; // Optional: Add more attributes as needed
+  final String email;
 
   User({
     required this.username,
@@ -14,57 +14,46 @@ class User {
     required this.password,
     required this.email,
   });
+
+  // Convert a User into a Map to insert into the database
+  Map<String, dynamic> toMap() {
+    return {
+      'username': username,
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'password': password,
+    };
+  }
+
+  // Create a User from a Map (database record)
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+      username: map['username'],
+      firstName: map['firstName'],
+      lastName: map['lastName'],
+      email: map['email'],
+      password: map['password'],
+    );
+  }
 }
 
 class Users {
-  // Simulated in-memory user database
-  final List<User> _users = [
-    User(
-      username: 'admin',
-      firstName: 'Jonathan',
-      lastName: 'Kent',
-      password: 'admin123',
-      email: 'admin@example.com',
-    ),
-    User(
-      username: 'test',
-      firstName: 'mytestuser',
-      lastName: 'oneRingtoRuleThemAll',
-      password: 'test',
-      email: 'john@example.com',
-    ),
-  ];
-
-  // Singleton pattern for managing a single instance of Users
-  static final Users _instance = Users._internal();
-
-  factory Users() {
-    return _instance;
-  }
-
-  Users._internal();
-
-  // Method to retrieve all users (optional for debugging)
-  List<User> getAllUsers() => _users;
-
   // Authenticate a user by username and password
   Future<bool> authenticate(String username, String password) async {
     // Simulate API delay
     await Future.delayed(Duration(seconds: 1));
-    return _users
-        .any((user) => user.username == username && user.password == password);
+    // see if there is any entry in the database and then the user object must be given the corresponding values.
+    return true;
   }
 
   // Optionally: Add a method to register a new user
   Future<bool> registerUser(User newUser) async {
     // Ensure no duplicate usernames exist
-    if (_users.any((user) => user.username == newUser.username)) {
-      return false; // Registration failed
-    }
+
     // Simulate API delay
     await Future.delayed(Duration(seconds: 1));
-
-    _users.add(newUser);
+    // insert the user into the database and give the user object the correct values
     return true; // Registration successful
   }
 }

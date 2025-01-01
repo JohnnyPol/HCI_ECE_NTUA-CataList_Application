@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import '../app_export.dart';
 
 extension on TextStyle {
-  TextStyle get racingSansOne {
-    return copyWith(
-      fontFamily: 'Racing Sans One',
-    );
-  }
+  // TextStyle get racingSansOne {
+  //   return copyWith(
+  //     fontFamily: 'Racing Sans One',
+  //   );
+  // }
 
-  TextStyle get lexend {
-    return copyWith(
-      fontFamily: 'Lexend',
-    );
-  }
+  // TextStyle get lexend {
+  //   return copyWith(
+  //     fontFamily: 'Lexend',
+  //   );
+  // }
 
   TextStyle get roboto {
     return copyWith(
@@ -20,11 +20,11 @@ extension on TextStyle {
     );
   }
 
-  TextStyle get lobster {
-    return copyWith(
-      fontFamily: 'Lobster',
-    );
-  }
+  // TextStyle get lobster {
+  //   return copyWith(
+  //     fontFamily: 'Lobster',
+  //   );
+  // }
 }
 
 /// A colletion of pre-defined text styles for customizing text appearance,
