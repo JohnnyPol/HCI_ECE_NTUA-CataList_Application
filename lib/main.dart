@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/app_export.dart';
+import 'package:provider/provider.dart';
 
 var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -15,17 +17,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    //clearDatabase();
-    return Sizer(builder: (context, orientation, deviceType) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false, // Remove the debug banner
-        title: 'CataList',
-        theme: theme,
-        //initialRoute: AppRoutes.home,
-        initialRoute: AppRoutes.start,
-        onGenerateRoute: AppRoutes.onGenerateRoute,
-      );
-    });
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) => ProfileProvider()), // Add ProfileProvider
+      ],
+      child: Sizer(builder: (context, orientation, deviceType) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false, // Remove the debug banner
+          title: 'CataList',
+          theme: theme,
+          //initialRoute: AppRoutes.home,
+          initialRoute: AppRoutes.start,
+          onGenerateRoute: AppRoutes.onGenerateRoute,
+        );
+      }),
+    );
   }
 }
 

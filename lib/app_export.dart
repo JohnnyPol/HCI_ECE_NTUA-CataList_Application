@@ -12,3 +12,4 @@ export 'package:flutter_application_1/shared/widgets/lists.dart';
 export 'package:flutter_application_1/utils/databaseHelper.dart';
 export 'package:flutter_application_1/shared/widgets/add_task_button.dart';
 export 'package:flutter_application_1/features/auth/controllers/user_auth.dart';
+export 'package:flutter_application_1/providers/profile_provider.dart';
