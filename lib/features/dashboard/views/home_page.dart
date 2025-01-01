@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
-import 'package:flutter_application_1/shared/widgets/list_item.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -9,22 +8,24 @@ import 'package:flutter_svg/flutter_svg.dart';
 class HomePage extends StatelessWidget {
   //must be stateful in order to get an accurate pie chart??
   HomePage({Key? key}) : super(key: key);
-  List<List<dynamic>> Daily = [
-    ["one", false],
-    ["two", false],
-    ["three", false],
-    ["four", true],
-    ["five", false]
-  ];
-  List<List<dynamic>> Challenges = [
-    ["one", true],
-    ["two", false],
-    ["three", false],
-    ["four", true],
-    ["five", false]
-  ];
-  GlobalKey<ListItemStateNew> DailyKey = GlobalKey<ListItemStateNew>();
-  GlobalKey<ListItemStateNew> ChallengesKey = GlobalKey<ListItemStateNew>();
+  /* 
+  // List<List<dynamic>> Daily = [
+  //   ["one", false],
+  //   ["two", false],
+  //   ["three", false],
+  //   ["four", true],
+  //   ["five", false]
+  // ];
+  // List<List<dynamic>> Challenges = [
+  //   ["one", true],
+  //   ["two", false],
+  //   ["three", false],
+  //   ["four", true],
+  //   ["five", false]
+  // ];
+  // GlobalKey<ListItemStateNew> DailyKey = GlobalKey<ListItemStateNew>();
+  // GlobalKey<ListItemStateNew> ChallengesKey = GlobalKey<ListItemStateNew>();
+  */
 
   Map<String, double> dataMap = {
     "Completed": 5,
@@ -115,14 +116,13 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: NavigationBar(context, DailyKey, ChallengesKey),
+        bottomNavigationBar: NavigationBar(context),
       ),
     );
   }
 }
 
-Widget NavigationBar(BuildContext context, GlobalKey<ListItemStateNew> keyD,
-    GlobalKey<ListItemStateNew> keyC) {
+Widget NavigationBar(BuildContext context) {
   return Container(
     decoration: BoxDecoration(
       color: appTheme.NavBar,
