@@ -3,10 +3,10 @@ import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
+import 'package:flutter_application_1/shared/widgets/custom_icon_button.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
-  //must be stateful in order to get an accurate pie chart??
   HomePage({Key? key}) : super(key: key);
 
   Map<String, double> dataMap = {
@@ -19,25 +19,29 @@ class HomePage extends StatelessWidget {
         Provider.of<ProfileProvider>(context).profileImagePath;
 
     return AppBar(
-      automaticallyImplyLeading: false, //remove back button
+      automaticallyImplyLeading: false, // Remove back button
       toolbarHeight: 62,
       actions: <Widget>[
         Padding(
           padding: EdgeInsets.only(right: 10.h),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.profile);
-            },
+          child: CustomIconButton(
+            height: 45.h,
+            width: 45.h,
+            padding: EdgeInsets.all(5.h),
+            decoration: IconButtonStyleHelper.none, // No outline or decoration
             child: CircleAvatar(
-              radius: 22.5.h,
+              radius: 20.h,
               backgroundColor: Colors.grey[300],
               backgroundImage: profileImagePath != null
                   ? FileImage(File(profileImagePath))
                   : null,
               child: profileImagePath == null
-                  ? Icon(Icons.person, size: 22.h, color: Colors.black)
+                  ? Icon(Icons.person, size: 20.h, color: Colors.black)
                   : null,
             ),
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.profile);
+            },
           ),
         ),
       ],
@@ -57,50 +61,47 @@ class HomePage extends StatelessWidget {
           child: SizedBox(
             width: double.maxFinite,
             child: SingleChildScrollView(
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Daily Quote Block
-                    Quote_Block(context, dataMap),
-                    SizedBox(height: 15.h),
-                    // Daily Tasks Block
-                    Container(
-                      padding: const EdgeInsets.only(
-                        top: 0,
-                        left: 24,
-                        right: 0,
-                        bottom: 0,
-                      ),
-                      child: Task_or_Challenge_Block(
-                        context,
-                        title: "Daily",
-                        category: "daily",
-                        circle: false,
-                        border: false,
-                      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Daily Quote Block
+                  Quote_Block(context, dataMap),
+                  SizedBox(height: 15.h),
+                  // Daily Tasks Block
+                  Container(
+                    padding: const EdgeInsets.only(
+                      top: 0,
+                      left: 24,
+                      right: 0,
+                      bottom: 0,
                     ),
-                    // _buildDailyTasksBlock(context),
-                    SizedBox(height: 15.h),
-                    // Daily Challenges Block
-                    Container(
-                      padding: const EdgeInsets.only(
-                        top: 0,
-                        left: 24,
-                        right: 0,
-                        bottom: 0,
-                      ),
-                      child: Task_or_Challenge_Block(
-                        context,
-                        title: "Challenge",
-                        category: "challenge",
-                        circle: false,
-                        border: false,
-                      ),
+                    child: Task_or_Challenge_Block(
+                      context,
+                      title: "Daily",
+                      category: "daily",
+                      circle: false,
+                      border: false,
                     ),
-                    SizedBox(height: 42.h),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 15.h),
+                  // Daily Challenges Block
+                  Container(
+                    padding: const EdgeInsets.only(
+                      top: 0,
+                      left: 24,
+                      right: 0,
+                      bottom: 0,
+                    ),
+                    child: Task_or_Challenge_Block(
+                      context,
+                      title: "Challenge",
+                      category: "challenge",
+                      circle: false,
+                      border: false,
+                    ),
+                  ),
+                  SizedBox(height: 42.h),
+                ],
               ),
             ),
           ),
@@ -121,7 +122,6 @@ Widget NavigationBar(BuildContext context) {
       ),
       boxShadow: [
         BoxShadow(
-          // ignore: deprecated_member_use
           color: appTheme.black900.withOpacity(0.2),
           blurRadius: 2.h,
           spreadRadius: 2.h,
@@ -156,6 +156,7 @@ Widget NavigationBar(BuildContext context) {
 
         // Add Task Button
         AddTaskButton.showAddTaskModal(context, userId: currentUser?.id),
+
         // Recap Button
         IconButton(
           icon: SvgPicture.asset(

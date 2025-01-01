@@ -37,7 +37,7 @@ class SearchPage extends StatelessWidget {
             height: 45.h,
             width: 45.h,
             padding: EdgeInsets.all(5.h),
-            decoration: IconButtonStyleHelper.outlineBlack,
+            decoration: IconButtonStyleHelper.none,
             child: CircleAvatar(
               radius: 20.h,
               backgroundColor: Colors.grey[300],

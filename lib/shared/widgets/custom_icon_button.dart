@@ -2,38 +2,28 @@ import 'package:flutter/material.dart';
 import '../../app_export.dart';
 
 extension IconButtonStyleHelper on CustomIconButton {
+  // Updated to remove the outline and shadow
   static BoxDecoration get outlineBlack => BoxDecoration(
         color: appTheme.profileAvatar,
         borderRadius: BorderRadius.circular(30.h),
-        boxShadow: [
-          BoxShadow(
-            // ignore: deprecated_member_use
-            color: appTheme.black900.withOpacity(0.2),
-            spreadRadius: 1.h,
-            blurRadius: 0.2.h,
-            offset: Offset(
-              0,
-              1,
-            ),
-          )
-        ],
+        // No shadow or border applied here
       );
-  static BoxDecoration get none => BoxDecoration();
+
+  static BoxDecoration get none => BoxDecoration(); // No decoration at all
 }
 
 class CustomIconButton extends StatelessWidget {
-  CustomIconButton(
-      {Key? key,
-      this.alignment,
-      this.height,
-      this.width,
-      this.decoration,
-      this.padding,
-      this.onTap,
-      this.child})
-      : super(
-          key: key,
-        );
+  CustomIconButton({
+    Key? key,
+    this.alignment,
+    this.height,
+    this.width,
+    this.decoration,
+    this.padding,
+    this.onTap,
+    this.child,
+  }) : super(key: key);
+
   final Alignment? alignment;
   final double? height;
   final double? width;
@@ -46,7 +36,9 @@ class CustomIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return alignment != null
         ? Align(
-            alignment: alignment ?? Alignment.center, child: iconButtonWidget)
+            alignment: alignment ?? Alignment.center,
+            child: iconButtonWidget,
+          )
         : iconButtonWidget;
   }
 
@@ -58,10 +50,11 @@ class CustomIconButton extends StatelessWidget {
               BoxDecoration(
                 color: appTheme.homeBGcolor1,
                 borderRadius: BorderRadius.circular(28.h),
-                border: Border.all(
-                  color: appTheme.black900,
-                  width: 1.h,
-                ),
+                // Removed the border to ensure no outline
+                // border: Border.all(
+                //   color: appTheme.black900,
+                //   width: 1.h,
+                // ),
               ),
           child: IconButton(
             padding: padding ?? EdgeInsets.zero,
