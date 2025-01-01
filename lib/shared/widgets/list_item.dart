@@ -1,3 +1,5 @@
+// list_item.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/shared/widgets/todo_list.dart';
 
@@ -7,9 +9,9 @@ class ListItemNew extends StatefulWidget {
     required this.listname,
     required this.circle,
   });
-  
+
   final bool circle;
-  final List<List<dynamic>> listname; 
+  final List<List<dynamic>> listname;
 
   @override
   State<ListItemNew> createState() => ListItemStateNew();
@@ -26,22 +28,23 @@ class ListItemStateNew extends State<ListItemNew> {
 
   void checkBoxChanged(int index) {
     setState(() {
-      listname[index][1] = !listname[index][1]; 
+      listname[index][1] = !listname[index][1];
     });
   }
 
-  void AddTask(String taskName,String taskDescription) {
+  void AddTask(String taskName, String taskDescription) {
     setState(() {
-      listname.add([taskName, false,taskDescription]); 
+      listname.add([taskName, false, taskDescription]);
     });
   }
+
   void deleteTask(int index) {
     setState(() {
       listname.removeAt(index);
     });
   }
 
- /* void ViewTask(int index){
+  /* void ViewTask(int index){
     setState((){
       //Navigate to a page that is dedicated to the task and is a widget that takes different text fields as input
     })
@@ -50,16 +53,17 @@ class ListItemStateNew extends State<ListItemNew> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: listname.length,
-        itemBuilder: (BuildContext context, index) {
-          return TaskItem(
-            taskName: listname[index][0],
-            taskCompleted: listname[index][1],
-            circle:widget.circle,//gets the circle varable from the ListItem widget
-            onChanged: (value) => checkBoxChanged(index),
-            deleteFunction: (contex) => deleteTask(index),
-          );
-        },
-      );
+      itemCount: listname.length,
+      itemBuilder: (BuildContext context, index) {
+        return TaskItem(
+          taskName: listname[index][0],
+          taskCompleted: listname[index][1],
+          circle:
+              widget.circle, //gets the circle varable from the ListItem widget
+          onChanged: (value) => checkBoxChanged(index),
+          deleteFunction: (contex) => deleteTask(index),
+        );
+      },
+    );
   }
 }

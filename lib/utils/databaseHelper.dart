@@ -21,29 +21,62 @@ class DatabaseHelper {
       join(path, 'app_database.db'),
       onCreate: (db, version) {
         db.execute(
-            'CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT, firstName TEXT, lastName TEXT, email TEXT, password TEXT)');
+          'CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT UNIQUE, firstName TEXT, lastName TEXT, email TEXT, password TEXT)',
+        );
         db.execute(
-            'CREATE TABLE tasks (id INTEGER PRIMARY KEY, user_id INTEGER, title TEXT, completed INTEGER, category TEXT, date TEXT, time TEXT, FOREIGN KEY (user_id) REFERENCES users (id))');
+          'CREATE TABLE tasks (id INTEGER PRIMARY KEY, user_id INTEGER, title TEXT, completed INTEGER, category TEXT, date TEXT, time TEXT, FOREIGN KEY (user_id) REFERENCES users (id))',
+        );
       },
       version: 1,
     );
   }
 
-  // Example CRUD operations
-  Future<int> addUser(String username, String password) async {
+  // Add a new user to the database
+  Future<int> addUser(String username, String firstName, String lastName,
+      String email, String password) async {
     final db = await database;
-    return db.insert('users', {'username': username, 'password': password});
+    try {
+      return await db.insert('users', {
+        'username': username,
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'password': password,
+      });
+    } catch (e) {
+      // Handle unique constraint error or other issues
+      return -1; // Indicate failure
+    }
   }
 
+  // Authenticate a user
   Future<List<Map<String, dynamic>>> authUser(
       String username, String password) async {
     final db = await database;
-    return db.query('users',
-        where: 'username = ? && password= ?', whereArgs: [username, password]);
+    return db.query(
+      'users',
+      where: 'username = ? AND password = ?',
+      whereArgs: [username, password],
+    );
   }
 
+  // Get tasks for a user
   Future<List<Map<String, dynamic>>> getTasks(int userId) async {
     final db = await database;
     return db.query('tasks', where: 'user_id = ?', whereArgs: [userId]);
+  }
+
+  // Add a new task
+  Future<int> addTask(int? userId, String title, int completed, String category,
+      String date, String time) async {
+    final db = await database;
+    return db.insert('tasks', {
+      'user_id': userId,
+      'title': title,
+      'completed': completed,
+      'category': category,
+      'date': date,
+      'time': time,
+    });
   }
 }

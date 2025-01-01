@@ -6,7 +6,6 @@ import 'custom_app_bar.dart';
 import '../../../shared/widgets/custom_elevated_button.dart';
 import '../../../shared/widgets/custom_text_form_field.dart';
 import '../../../shared/widgets/custom_image_view.dart';
-import '../controllers/user_auth.dart';
 
 // ignore_for_file: must_be_immutable
 class LoginPage extends StatelessWidget {
@@ -151,7 +150,7 @@ class LoginPage extends StatelessWidget {
           builder: (context) => Center(child: CircularProgressIndicator()),
         );
         // Authenticate user
-        bool isAuthenticated = await authenticateUser(username, password);
+        bool isAuthenticated = await authenticateAndSetUser(username, password);
 
         // Dismiss the loading indicator
         Navigator.pop(context);

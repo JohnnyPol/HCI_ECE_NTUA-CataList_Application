@@ -1,6 +1,9 @@
 // user_auth.dart
 
+import 'package:flutter_application_1/utils/databaseHelper.dart';
+
 class User {
+  final int? id; // Add an ID to represent the user in the database
   final String username;
   final String firstName;
   final String lastName;
@@ -8,6 +11,7 @@ class User {
   final String email;
 
   User({
+    this.id,
     required this.username,
     required this.firstName,
     required this.lastName,
@@ -18,6 +22,7 @@ class User {
   // Convert a User into a Map to insert into the database
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'username': username,
       'firstName': firstName,
       'lastName': lastName,
@@ -29,6 +34,7 @@ class User {
   // Create a User from a Map (database record)
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
+      id: map['id'],
       username: map['username'],
       firstName: map['firstName'],
       lastName: map['lastName'],
@@ -36,50 +42,62 @@ class User {
       password: map['password'],
     );
   }
-}
 
-class Users {
-  // Authenticate a user by username and password
-  Future<bool> authenticate(String username, String password) async {
-    // Simulate API delay
-    await Future.delayed(Duration(seconds: 1));
-    // see if there is any entry in the database and then the user object must be given the corresponding values.
-    return true;
+  static final DatabaseHelper _dbHelper = DatabaseHelper();
+
+  // Authenticate a user
+  static Future<User?> authenticate(String username, String password) async {
+    final users = await _dbHelper.authUser(username, password);
+    if (users.isNotEmpty) {
+      return User.fromMap(users.first); // Return the authenticated user
+    }
+    return null; // Authentication failed
   }
 
-  // Optionally: Add a method to register a new user
-  Future<bool> registerUser(User newUser) async {
-    // Ensure no duplicate usernames exist
+  // Register a new user
+  static Future<bool> register(User newUser) async {
+    final db = await _dbHelper.database;
 
-    // Simulate API delay
-    await Future.delayed(Duration(seconds: 1));
-    // insert the user into the database and give the user object the correct values
+    // Check if the username already exists
+    final existingUsers = await db.query(
+      'users',
+      where: 'username = ?',
+      whereArgs: [newUser.username],
+    );
+
+    if (existingUsers.isNotEmpty) {
+      // Username already exists
+      return false;
+    }
+
+    // Add the new user to the database
+    await db.insert('users', newUser.toMap());
     return true; // Registration successful
   }
 }
 
-// Global helper function to authenticate a user
-Future<bool> authenticateUser(String username, String password) async {
-  final users = Users(); // Access the Users singleton
-  return await users.authenticate(username, password);
+// Global variable for the current user
+User? currentUser;
+
+// Global function to authenticate a user and set `currentUser`
+Future<bool> authenticateAndSetUser(String username, String password) async {
+  final user = await User.authenticate(username, password);
+  if (user != null) {
+    currentUser = user; // Save the user object globally
+    return true;
+  }
+  return false;
 }
 
-// Global helper function to create a new user
-Future<bool> registerNewUser(
-  String username,
-  String firstName,
-  String lastName,
-  String password,
-  String email,
-) async {
-  final users = Users(); // Access the Users singleton
-  return await users.registerUser(
-    User(
-      username: username,
-      firstName: firstName,
-      lastName: lastName,
-      password: password,
-      email: email,
-    ),
+// Global function to register a new user
+Future<bool> registerNewUser(String username, String firstName, String lastName,
+    String password, String email) async {
+  final newUser = User(
+    username: username,
+    firstName: firstName,
+    lastName: lastName,
+    password: password,
+    email: email,
   );
+  return await User.register(newUser);
 }

@@ -20,7 +20,7 @@ Widget Task_or_Challenge_Block(BuildContext context,
       border: border
           ? Border.all(
               width: 2.0,
-              color: Color.fromARGB(255, 255, 255, 255),
+              color: Colors.transparent,
             ) //white border
           : Border.all(
               width: 2.0,
