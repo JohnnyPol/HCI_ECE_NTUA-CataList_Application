@@ -40,7 +40,7 @@ class AppRoutes {
       case recap:
         return MaterialPageRoute(builder: (context) => RecapPage());
       case calendar:
-        return MaterialPageRoute(builder: (context) => CalandarPage());
+        return MaterialPageRoute(builder: (context) => CalendarPage());
       case profile:
         return MaterialPageRoute(builder: (context) => ProfilePage());
       case viewTask:
