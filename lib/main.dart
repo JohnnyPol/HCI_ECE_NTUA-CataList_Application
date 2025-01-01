@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    //clearDatabase();
     return Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp(
         debugShowCheckedModeBanner: false, // Remove the debug banner
@@ -26,4 +27,10 @@ class MyApp extends StatelessWidget {
       );
     });
   }
+}
+
+void clearDatabase() async {
+  DatabaseHelper dbHelper = DatabaseHelper();
+  await dbHelper.deleteAllTables();
+  print("All tables have been deleted.");
 }

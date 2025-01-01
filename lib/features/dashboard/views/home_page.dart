@@ -108,7 +108,6 @@ class HomePage extends StatelessWidget {
                         border: false,
                       ),
                     ),
-                    // _buildDailyChallengesBlock(context),
                     SizedBox(height: 42.h),
                   ],
                 ),
