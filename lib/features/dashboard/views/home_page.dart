@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
-import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
-import '../../../shared/widgets/custom_icon_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
-import '../../../providers/profile_provider.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
