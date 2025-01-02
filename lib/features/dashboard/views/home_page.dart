@@ -1,23 +1,77 @@
+// home_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_application_1/shared/widgets/list_item.dart';
 import 'dart:io';
 import 'package:flutter_application_1/shared/widgets/custom_icon_button.dart';
 
-// ignore: must_be_immutable
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
-  Map<String, double> dataMap = {
-    "Completed": 5,
-    "Incomplete": 4,
-  };
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+// ignore: must_be_immutable
+class _HomePageState extends State<HomePage> {
+  final GlobalKey<ListItemStateNew> DailyKey = GlobalKey<ListItemStateNew>();
+  final GlobalKey<ListItemStateNew> ChallengesKey =
+      GlobalKey<ListItemStateNew>();
+  final DatabaseHelper dbHelper = DatabaseHelper();
+
+  Future<List<List<dynamic>>> fetchDailyTasks() async {
+    final fetchedTasks =
+        await dbHelper.getTasksByCategory(currentUser?.id, "Daily");
+    return fetchedTasks.map((task) {
+      return [
+        task['title'],
+        task['completed'] == 1,
+        task['description'],
+        task['id'],
+      ];
+    }).toList();
+  }
+
+  Future<List<List<dynamic>>> fetchChallenges() async {
+    final fetchedTasks =
+        await dbHelper.getTasksByCategory(currentUser?.id, "Challenge");
+    return fetchedTasks.map((challenges) {
+      return [
+        challenges['title'],
+        challenges['completed'] == 1,
+        challenges['description'],
+        challenges['id'],
+      ];
+    }).toList();
+  }
+
+  Future<Map<String, double>> generateDataMap() async {
+    // Fetch Daily Tasks
+    final dailyTasks = await fetchDailyTasks();
+    // Fetch Challenges
+    final challenges = await fetchChallenges();
+
+    // Combine all tasks
+    final allTasks = [...dailyTasks, ...challenges];
+
+    // Calculate Completed and Incomplete tasks
+    final completedCount =
+        allTasks.where((task) => task[1] as bool).length.toDouble();
+    final incompleteCount =
+        allTasks.where((task) => !(task[1] as bool)).length.toDouble();
+
+    return {
+      "Completed": completedCount,
+      "Incomplete": incompleteCount,
+    };
+  }
 
   AppBar _buildAppBar(BuildContext context) {
     final profileImagePath =
         Provider.of<ProfileProvider>(context).profileImagePath;
-
     return AppBar(
       automaticallyImplyLeading: false, // Remove back button
       toolbarHeight: 62,
@@ -58,52 +112,90 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         appBar: _buildAppBar(context),
         body: SafeArea(
-          child: SizedBox(
-            width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Daily Quote Block
-                  Quote_Block(context, dataMap),
-                  SizedBox(height: 15.h),
-                  // Daily Tasks Block
-                  Container(
-                    padding: const EdgeInsets.only(
-                      top: 0,
-                      left: 24,
-                      right: 0,
-                      bottom: 0,
-                    ),
-                    child: Task_or_Challenge_Block(
-                      context,
-                      title: "Daily",
-                      category: "daily",
-                      circle: false,
-                      border: false,
-                    ),
-                  ),
-                  SizedBox(height: 15.h),
-                  // Daily Challenges Block
-                  Container(
-                    padding: const EdgeInsets.only(
-                      top: 0,
-                      left: 24,
-                      right: 0,
-                      bottom: 0,
-                    ),
-                    child: Task_or_Challenge_Block(
-                      context,
-                      title: "Challenge",
-                      category: "challenge",
-                      circle: false,
-                      border: false,
-                    ),
-                  ),
-                  SizedBox(height: 42.h),
-                ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Use FutureBuilder to dynamically fetch the dataMap
+              FutureBuilder<Map<String, double>>(
+                future: generateDataMap(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData) {
+                    return Center(child: Text('No data available'));
+                  } else {
+                    final dataMap = snapshot.data!;
+                    return Quote_Block(context, dataMap);
+                  }
+                },
               ),
-            ),
+              SizedBox(height: 15.h),
+              // Fetch and display Daily Tasks
+              FutureBuilder<List<List<dynamic>>>(
+                future: fetchDailyTasks(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No daily tasks available'));
+                  } else {
+                    final tasks = snapshot.data!;
+                    return Container(
+                      padding: const EdgeInsets.only(
+                        top: 0,
+                        left: 24,
+                        right: 0,
+                        bottom: 0,
+                      ),
+                      child: Task_or_Challenge_Block(
+                        context,
+                        listkey: DailyKey,
+                        title: "Daily",
+                        listname: tasks,
+                        circle: false,
+                        border: false,
+                      ),
+                    );
+                  }
+                },
+              ),
+              SizedBox(height: 15.h),
+              // Fetch and display Challenges
+              FutureBuilder<List<List<dynamic>>>(
+                future: fetchChallenges(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No challenges available'));
+                  } else {
+                    final challenges = snapshot.data!;
+                    return Container(
+                      padding: const EdgeInsets.only(
+                        top: 0,
+                        left: 24,
+                        right: 0,
+                        bottom: 0,
+                      ),
+                      child: Task_or_Challenge_Block(
+                        context,
+                        listkey: ChallengesKey,
+                        title: "Challenges",
+                        listname: challenges,
+                        circle: false,
+                        border: false,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
           ),
         ),
         bottomNavigationBar: NavigationBar(context),
@@ -122,6 +214,7 @@ Widget NavigationBar(BuildContext context) {
       ),
       boxShadow: [
         BoxShadow(
+          // ignore: deprecated_member_use
           color: appTheme.black900.withOpacity(0.2),
           blurRadius: 2.h,
           spreadRadius: 2.h,

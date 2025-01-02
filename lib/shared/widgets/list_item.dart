@@ -8,10 +8,13 @@ class ListItemNew extends StatefulWidget {
     super.key,
     required this.listname,
     required this.circle,
+    required this.onCheckboxChanged,
   });
 
   final bool circle;
   final List<List<dynamic>> listname;
+  // Add callback for checkbox updates
+  final Function(int, bool) onCheckboxChanged;
 
   @override
   State<ListItemNew> createState() => ListItemStateNew();
@@ -28,8 +31,11 @@ class ListItemStateNew extends State<ListItemNew> {
 
   void checkBoxChanged(int index) {
     setState(() {
-      listname[index][1] = !listname[index][1];
+      listname[index][1] = !listname[index][1]; // Update local state
     });
+
+    // Trigger the callback to update the database
+    widget.onCheckboxChanged(index, listname[index][1]);
   }
 
   void AddTask(String taskName, String taskDescription) {
@@ -56,7 +62,9 @@ class ListItemStateNew extends State<ListItemNew> {
       itemCount: listname.length,
       itemBuilder: (BuildContext context, index) {
         return TaskItem(
+          taskId: listname[index][3],
           taskName: listname[index][0],
+          description: listname[index][2],
           taskCompleted: listname[index][1],
           circle:
               widget.circle, //gets the circle varable from the ListItem widget

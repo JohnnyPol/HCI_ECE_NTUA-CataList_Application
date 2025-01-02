@@ -53,46 +53,47 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   Widget _buildCalendarView() {
-  return Padding(
-    padding: EdgeInsets.all(16.0), // Padding around the calendar
-    child: SingleChildScrollView( // Allows vertical scrolling if needed
-      child: TableCalendar(
-        firstDay: DateTime.utc(2020, 1, 1),
-        lastDay: DateTime.utc(2030, 12, 31),
-        focusedDay: _focusedDay,
-        selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-        onDaySelected: (selectedDay, focusedDay) {
-          setState(() {
-            _selectedDay = selectedDay;
-            _focusedDay = focusedDay;
-          });
-        },
-        calendarStyle: CalendarStyle(
-          todayDecoration: BoxDecoration(
-            color: Colors.black,
-            shape: BoxShape.circle,
+    return Padding(
+      padding: EdgeInsets.all(16.0), // Padding around the calendar
+      child: SingleChildScrollView(
+        // Allows vertical scrolling if needed
+        child: TableCalendar(
+          firstDay: DateTime.utc(2020, 1, 1),
+          lastDay: DateTime.utc(2030, 12, 31),
+          focusedDay: _focusedDay,
+          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+          onDaySelected: (selectedDay, focusedDay) {
+            setState(() {
+              _selectedDay = selectedDay;
+              _focusedDay = focusedDay;
+            });
+          },
+          calendarStyle: CalendarStyle(
+            todayDecoration: BoxDecoration(
+              color: Colors.black,
+              shape: BoxShape.circle,
+            ),
+            selectedDecoration: BoxDecoration(
+              color: Colors.blue,
+              shape: BoxShape.circle,
+            ),
+            outsideDaysVisible: false,
           ),
-          selectedDecoration: BoxDecoration(
-            color: Colors.blue,
-            shape: BoxShape.circle,
+          headerStyle: HeaderStyle(
+            formatButtonVisible: false,
+            titleCentered: true,
+            titleTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.white,
+            ),
+            leftChevronIcon: Icon(Icons.chevron_left, color: Colors.white),
+            rightChevronIcon: Icon(Icons.chevron_right, color: Colors.white),
           ),
-          outsideDaysVisible: false,
-        ),
-        headerStyle: HeaderStyle(
-          formatButtonVisible: false,
-          titleCentered: true,
-          titleTextStyle: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            color: Colors.white,
-          ),
-          leftChevronIcon: Icon(Icons.chevron_left, color: Colors.white),
-          rightChevronIcon: Icon(Icons.chevron_right, color: Colors.white),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildBottomNavigationBar(BuildContext context) {
     return Container(
@@ -104,6 +105,7 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: appTheme.black900.withOpacity(0.2),
             blurRadius: 2.h,
             spreadRadius: 2.h,

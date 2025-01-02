@@ -1,3 +1,5 @@
+// databaseHelper.dart
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -31,6 +33,8 @@ class DatabaseHelper {
     );
   }
 
+  /* User CRUD Operations*/
+
   // Add a new user to the database
   Future<int> addUser(String username, String firstName, String lastName,
       String email, String password) async {
@@ -60,11 +64,7 @@ class DatabaseHelper {
     );
   }
 
-  // Get tasks for a user
-  Future<List<Map<String, dynamic>>> getTasks(int? userId) async {
-    final db = await database;
-    return db.query('tasks', where: 'user_id = ?', whereArgs: [userId]);
-  }
+  /* Task table CRUD Operations*/
 
   // Get tasks for a user by category
   Future<List<Map<String, dynamic>>> getTasksByCategory(
@@ -102,5 +102,15 @@ class DatabaseHelper {
       String tableName = table['name'];
       await db.execute("DROP TABLE IF EXISTS $tableName");
     }
+  }
+
+  Future<int> updateTaskCompletion(int taskId, int completed) async {
+    final db = await database;
+    return await db.update(
+      'tasks',
+      {'completed': completed},
+      where: 'id = ?',
+      whereArgs: [taskId],
+    );
   }
 }

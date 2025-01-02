@@ -1,3 +1,5 @@
+// box_styles.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_application_1/shared/widgets/custom_image_view.dart';
@@ -6,75 +8,18 @@ import 'package:pie_chart/pie_chart.dart';
 import '../../../shared/widgets/custom_text_form_field.dart';
 import '../../../shared/quote_provider.dart';
 
-// // Task or Challenge Block
-// Widget Task_or_Challenge_Block(BuildContext context,
-//     {required GlobalKey<ListItemStateNew> listkey,
-//     required String title,
-//     required List<List<dynamic>> listname,
-//     required bool circle,
-//     required bool border}) {
-//   return Container(
-//     height: 179.h,
-//     width: 320.h,
-//     decoration: BoxDecoration(
-//       border: border
-//           ? Border.all(
-//               width: 2.0,
-//               color: Colors.transparent,
-//             ) //white border
-//           : Border.all(
-//               width: 2.0,
-//               color: Color.fromARGB(0, 0, 0, 0),
-//             ), //translucent border
-//       color: appTheme.dailyBlocks,
-//       borderRadius: BorderRadius.circular(25.h),
-//       boxShadow: [
-//         BoxShadow(
-//           // ignore: deprecated_member_use
-//           color: appTheme.black900.withOpacity(0.2),
-//           blurRadius: 2.h,
-//           spreadRadius: 2.h,
-//           offset: Offset(0, 2),
-//         ),
-//       ],
-//     ),
-//     padding: EdgeInsets.all(16.h),
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         // Title
-//         Text(
-//           title,
-//           style: TextStyle(
-//             fontSize: 18.h,
-//             fontWeight: FontWeight.bold,
-//             color: Color.fromARGB(255, 28, 62, 80),
-//           ),
-//         ),
-//         SizedBox(height: 5.h),
-//         // Scrollable List
-//         Expanded(
-//             child: ListItemNew(
-//                 key: listkey,
-//                 listname: listname,
-//                 circle: circle) //Give list name and checkbox shape
-//             ),
-//       ],
-//     ),
-//   );
-// }
-
 // Task or Challenge Block
 Widget Task_or_Challenge_Block(BuildContext context,
-    {required String title,
-    required String category,
+    {required GlobalKey<ListItemStateNew> listkey,
+    required String title,
+    required List<List<dynamic>> listname,
     required bool circle,
     required bool border}) {
-  final DatabaseHelper dbHelper = DatabaseHelper();
-
-  // Fetch tasks for the specific category
-  Future<List<Map<String, dynamic>>> fetchTasks() async {
-    return await dbHelper.getTasks(currentUser?.id);
+  final dbHelper = DatabaseHelper();
+  void updateTaskInDatabase(int index, bool isCompleted) {
+    // Assuming each task in listname has an ID at index 3
+    final taskId = listname[index][3];
+    dbHelper.updateTaskCompletion(taskId, isCompleted ? 1 : 0);
   }
 
   return Container(
@@ -83,13 +28,13 @@ Widget Task_or_Challenge_Block(BuildContext context,
     decoration: BoxDecoration(
       border: border
           ? Border.all(
-              width: 2.0,
+              width: 2.h,
               color: Colors.transparent,
-            )
+            ) //white border
           : Border.all(
-              width: 2.0,
+              width: 2.h,
               color: Color.fromARGB(0, 0, 0, 0),
-            ),
+            ), //translucent border
       color: appTheme.dailyBlocks,
       borderRadius: BorderRadius.circular(25.h),
       boxShadow: [
@@ -116,38 +61,15 @@ Widget Task_or_Challenge_Block(BuildContext context,
           ),
         ),
         SizedBox(height: 5.h),
-        // Dynamic task list
+        // Scrollable List
         Expanded(
-          child: FutureBuilder<List<Map<String, dynamic>>>(
-            future: fetchTasks(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-                return Center(child: Text('No tasks found'));
-              } else {
-                return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    final task = snapshot.data![index];
-                    return ListTile(
-                      title: Text(task['title']),
-                      subtitle: Text(task['description']),
-                      trailing: Checkbox(
-                        value: task['completed'] == 1,
-                        onChanged: (bool? value) {
-                          // Update task completion in the database
-                        },
-                      ),
-                    );
-                  },
-                );
-              }
-            },
-          ),
-        ),
+            child: ListItemNew(
+          key: listkey,
+          listname: listname,
+          circle: circle,
+          onCheckboxChanged: updateTaskInDatabase,
+        ) //Give list name and checkbox shape
+            ),
       ],
     ),
   );
@@ -158,6 +80,13 @@ Widget Activity_Block(BuildContext context,
     {required List<List<dynamic>> listname,
     required bool circle,
     required bool border}) {
+  final dbHelper = DatabaseHelper();
+  void updateTaskInDatabase(int index, bool isCompleted) {
+    // Assuming each task in listname has an ID at index 3
+    final taskId = listname[index][3];
+    dbHelper.updateTaskCompletion(taskId, isCompleted ? 1 : 0);
+  }
+
   return Container(
     height: 175.h,
     width: 260.h,
@@ -182,8 +111,10 @@ Widget Activity_Block(BuildContext context,
         // Scrollable List
         Expanded(
             child: ListItemNew(
-                listname: listname,
-                circle: circle) //Give list name and checkbox shape
+          listname: listname,
+          circle: circle,
+          onCheckboxChanged: updateTaskInDatabase,
+        ) //Give list name and checkbox shape
             ),
       ],
     ),
@@ -198,7 +129,7 @@ Widget Quote_Block(BuildContext context, Map<String, double> dataMap) {
       String quoteText;
 
       if (snapshot.connectionState == ConnectionState.waiting) {
-        quoteText = "Fetching daily quote...";
+        quoteText = "Fetching quote...";
       } else if (snapshot.hasError) {
         quoteText = "Failed to load quote.";
       } else {
