@@ -42,7 +42,7 @@ class ViewTaskPage extends StatelessWidget {
     final String taskCategory = args['taskCategory'];
     final String taskDate = args['taskDate'];
     final String taskTime = args['taskTime'];
-
+    final String taskComplete = args['taskCompleted'];
     return Container(
       decoration: AppDecoration.linearBGcolors,
       child: Scaffold(
@@ -109,6 +109,23 @@ class ViewTaskPage extends StatelessWidget {
                         SizedBox(height: 5.h),
                         Text(
                           taskDescription,
+                          style: TextStyle(
+                            color: Colors.black38,
+                            fontSize: 14.h,
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        Text(
+                          "Completed:",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14.h,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 5.h),
+                        Text(
+                          taskComplete,
                           style: TextStyle(
                             color: Colors.black38,
                             fontSize: 14.h,

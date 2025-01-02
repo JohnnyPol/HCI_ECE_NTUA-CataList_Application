@@ -66,6 +66,8 @@ class _HomePageState extends State<HomePage> {
     }).toList();
   }
 
+  Map<String, double> dataMap = {"Completed": 0, "Incomplete": 0};
+
   Future<Map<String, double>> generateDataMap() async {
     // Fetch Daily Tasks
     final dailyTasks = await fetchDailyTasks();
@@ -85,6 +87,24 @@ class _HomePageState extends State<HomePage> {
       "Completed": completedCount,
       "Incomplete": incompleteCount,
     };
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _updateDataMap(); // Initialize the dataMap on widget load
+  }
+
+  Future<void> _updateDataMap() async {
+    final newDataMap = await generateDataMap();
+    setState(() {
+      dataMap = newDataMap; // Update the dataMap and trigger UI rebuild
+    });
+  }
+
+  // Add this to Task_or_Challenge_Block to trigger _updateDataMap
+  void onCheckboxToggled() {
+    _updateDataMap(); // Recalculate the pie chart data when a checkbox is toggled
   }
 
   AppBar _buildAppBar(BuildContext context) {
@@ -176,6 +196,7 @@ class _HomePageState extends State<HomePage> {
                         listname: tasks,
                         circle: false,
                         border: false,
+                        onCheckboxChanged: onCheckboxToggled,
                       ),
                     );
                   }
@@ -208,6 +229,7 @@ class _HomePageState extends State<HomePage> {
                         listname: challenges,
                         circle: false,
                         border: false,
+                        onCheckboxChanged: onCheckboxToggled,
                       ),
                     );
                   }

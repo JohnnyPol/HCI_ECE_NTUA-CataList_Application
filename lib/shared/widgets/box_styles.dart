@@ -9,17 +9,20 @@ import '../../../shared/widgets/custom_text_form_field.dart';
 import '../../../shared/quote_provider.dart';
 
 // Task or Challenge Block
-Widget Task_or_Challenge_Block(BuildContext context,
-    {required GlobalKey<ListItemStateNew> listkey,
-    required String title,
-    required List<List<dynamic>> listname,
-    required bool circle,
-    required bool border}) {
+Widget Task_or_Challenge_Block(
+  BuildContext context, {
+  required GlobalKey<ListItemStateNew> listkey,
+  required String title,
+  required List<List<dynamic>> listname,
+  required bool circle,
+  required bool border,
+  required Function onCheckboxChanged,
+}) {
   final dbHelper = DatabaseHelper();
   void updateTaskInDatabase(int index, bool isCompleted) {
-    // Assuming each task in listname has an ID at index 3
     final taskId = listname[index][3];
     dbHelper.updateTaskCompletion(taskId, isCompleted ? 1 : 0);
+    onCheckboxChanged(); // Trigger the callback to update dataMap
   }
 
   return Container(
@@ -67,7 +70,7 @@ Widget Task_or_Challenge_Block(BuildContext context,
           key: listkey,
           listname: listname,
           circle: circle,
-          onCheckboxChanged: updateTaskInDatabase,
+          onCheckboxChanged: updateTaskInDatabase, // Pass the callback
         ) //Give list name and checkbox shape
             ),
       ],

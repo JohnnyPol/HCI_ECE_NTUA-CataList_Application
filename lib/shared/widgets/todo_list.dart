@@ -82,6 +82,7 @@ class TaskItem extends StatelessWidget {
                           'taskName': taskName,
                           'taskDescription': taskDescription,
                           'taskCategory': taskCategory,
+                          'taskCompleted': taskCompleted,
                           'taskDate': taskDate,
                           'taskTime': taskTime,
                         },
