@@ -9,17 +9,23 @@ class TaskItem extends StatelessWidget {
     super.key,
     required this.taskId,
     required this.taskName,
-    required this.description,
+    required this.taskDescription,
     required this.taskCompleted,
+    required this.taskCategory,
+    required this.taskDate,
+    required this.taskTime,
     required this.circle,
     this.onChanged,
     required this.deleteFunction,
   });
 
-  final String taskId;
+  final int taskId;
   final String taskName;
-  final String description;
+  final String taskDescription;
   final bool taskCompleted;
+  final String taskCategory;
+  final String taskDate;
+  final String taskTime;
   final bool circle;
   final Function(bool?)? onChanged;
   final Function(BuildContext)? deleteFunction;
@@ -67,12 +73,19 @@ class TaskItem extends StatelessWidget {
                 ),
                 TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/view_task', arguments: {
-                        'taskId':
-                            taskId, // Pass the unique task ID or other details
-                        'taskName': taskName,
-                        'taskDescription': description,
-                      });
+                      Navigator.pushNamed(
+                        context,
+                        '/view_task',
+                        // Pass all the info of the task as parameters
+                        arguments: {
+                          'taskId': taskId,
+                          'taskName': taskName,
+                          'taskDescription': taskDescription,
+                          'taskCategory': taskCategory,
+                          'taskDate': taskDate,
+                          'taskTime': taskTime,
+                        },
+                      );
                     },
                     child: Icon(
                       Icons.remove_red_eye,

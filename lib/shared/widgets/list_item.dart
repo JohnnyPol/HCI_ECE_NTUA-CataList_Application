@@ -62,10 +62,13 @@ class ListItemStateNew extends State<ListItemNew> {
       itemCount: listname.length,
       itemBuilder: (BuildContext context, index) {
         return TaskItem(
-          taskId: listname[index][3],
           taskName: listname[index][0],
-          description: listname[index][2],
           taskCompleted: listname[index][1],
+          taskDescription: listname[index][2],
+          taskId: listname[index][3],
+          taskCategory: listname[index][4],
+          taskDate: listname[index][5],
+          taskTime: listname[index][6],
           circle:
               widget.circle, //gets the circle varable from the ListItem widget
           onChanged: (value) => checkBoxChanged(index),

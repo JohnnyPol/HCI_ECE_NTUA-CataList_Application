@@ -25,13 +25,19 @@ class _HomePageState extends State<HomePage> {
   Future<List<List<dynamic>>> fetchDailyTasks() async {
     final fetchedTasks =
         await dbHelper.getTasksByCategory(currentUser?.id, "Daily");
+    print('Fetched Tasks: $fetchedTasks'); // Debug fetched data
     return fetchedTasks.map((task) {
-      return [
-        task['title'],
+      final mappedTask = [
+        task['title'] ?? 'Unknown Title',
         task['completed'] == 1,
-        task['description'],
-        task['id'],
+        task['description'] ?? 'No Description',
+        task['id'] ?? -1,
+        task['category'] ?? 'Uncategorized',
+        task['date'] ?? 'No Date',
+        task['time'] ?? 'No Time',
       ];
+      print('Mapped Task: $mappedTask'); // Debug mapped task
+      return mappedTask;
     }).toList();
   }
 
@@ -40,10 +46,13 @@ class _HomePageState extends State<HomePage> {
         await dbHelper.getTasksByCategory(currentUser?.id, "Challenge");
     return fetchedTasks.map((challenges) {
       return [
-        challenges['title'],
+        challenges['title'] ?? 'Unknown Title',
         challenges['completed'] == 1,
-        challenges['description'],
+        challenges['description'] ?? 'Now Description',
         challenges['id'],
+        challenges['category'] ?? 'Uncategorized',
+        challenges['date'] ?? 'No Date',
+        challenges['time'] ?? 'No Time',
       ];
     }).toList();
   }

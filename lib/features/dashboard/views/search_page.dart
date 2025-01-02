@@ -10,18 +10,10 @@ class SearchPage extends StatelessWidget {
   SearchPage({Key? key}) : super(key: key);
 
   List<List<dynamic>> Today = [
-    ["one", false],
-    ["two", false],
-    ["three", false],
-    ["four", true],
-    ["five", false]
+    ["one", false, "desc", 2, "Daily", "1234124", "1432134"],
   ];
   List<List<dynamic>> Tomorrow = [
-    ["one", false],
-    ["two", false],
-    ["three", false],
-    ["four", true],
-    ["five", false]
+    ["one", false, "desc", 2, "Daily", "1234124", "1432134"],
   ];
 
   AppBar _buildAppBar(BuildContext context) {
