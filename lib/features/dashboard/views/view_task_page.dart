@@ -1,3 +1,5 @@
+// view_task_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,6 +18,31 @@ class ViewTaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Retrieve the passed arguments
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    if (args == null) {
+      return Container(
+        decoration: AppDecoration.linearBGcolors,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: _buildAppBar(context),
+          body: Center(
+            child: Text(
+              "No task details available.",
+              style: TextStyle(color: Colors.white, fontSize: 16.h),
+            ),
+          ),
+        ),
+      );
+    }
+
+    final String taskName = args['taskName'];
+    final String taskDescription = args['taskDescription'];
+    final String taskCategory = args['taskCategory'];
+    final String taskDate = args['taskDate'];
+    final String taskTime = args['taskTime'];
+
     return Container(
       decoration: AppDecoration.linearBGcolors,
       child: Scaffold(
@@ -31,12 +58,115 @@ class ViewTaskPage extends StatelessWidget {
                     "Here is your task!",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16.h,
+                        fontSize: 20.h,
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 5.h),
+                  SizedBox(height: 25.h),
                   Container(
-                    child: Task_Block(context),
+                    padding: EdgeInsets.all(30.h),
+                    margin: EdgeInsets.symmetric(horizontal: 10.h),
+                    decoration: BoxDecoration(
+                      color: appTheme.dailyBlocks,
+                      borderRadius: BorderRadius.circular(25.h),
+                      boxShadow: [
+                        BoxShadow(
+                          // ignore: deprecated_member_use
+                          color: appTheme.black900.withOpacity(0.2),
+                          blurRadius: 2.h,
+                          spreadRadius: 2.h,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Task Name:",
+                          style: TextStyle(
+                            color: appTheme.black900,
+                            fontSize: 14.h,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 5.h),
+                        Text(
+                          taskName,
+                          style: TextStyle(
+                            color: Colors.black38,
+                            fontSize: 14.h,
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        Text(
+                          "Description:",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14.h,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 5.h),
+                        Text(
+                          taskDescription,
+                          style: TextStyle(
+                            color: Colors.black38,
+                            fontSize: 14.h,
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        Text(
+                          "Category:",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14.h,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 5.h),
+                        Text(
+                          taskCategory,
+                          style: TextStyle(
+                            color: Colors.black38,
+                            fontSize: 14.h,
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        Text(
+                          "Date:",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14.h,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 5.h),
+                        Text(
+                          taskDate,
+                          style: TextStyle(
+                            color: Colors.black38,
+                            fontSize: 14.h,
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        Text(
+                          "Time:",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14.h,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 5.h),
+                        Text(
+                          taskTime,
+                          style: TextStyle(
+                            color: Colors.black38,
+                            fontSize: 14.h,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

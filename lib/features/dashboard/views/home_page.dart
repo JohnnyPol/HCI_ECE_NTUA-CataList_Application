@@ -25,16 +25,20 @@ class _HomePageState extends State<HomePage> {
   Future<List<List<dynamic>>> fetchDailyTasks() async {
     final fetchedTasks =
         await dbHelper.getTasksByCategory(currentUser?.id, "Daily");
-    print('Fetched Tasks: $fetchedTasks'); // Debug fetched data
     return fetchedTasks.map((task) {
+      final dateTime = task['date'] ?? 'No Date';
+      final date = dateTime.split('T')[0]; // Extract the date
+      final time = dateTime.split('T').length > 1
+          ? dateTime.split('T')[1]
+          : 'No Time'; // Extract the time
       final mappedTask = [
         task['title'] ?? 'Unknown Title',
         task['completed'] == 1,
         task['description'] ?? 'No Description',
         task['id'] ?? -1,
         task['category'] ?? 'Uncategorized',
-        task['date'] ?? 'No Date',
-        task['time'] ?? 'No Time',
+        date,
+        time,
       ];
       print('Mapped Task: $mappedTask'); // Debug mapped task
       return mappedTask;
@@ -45,14 +49,19 @@ class _HomePageState extends State<HomePage> {
     final fetchedTasks =
         await dbHelper.getTasksByCategory(currentUser?.id, "Challenge");
     return fetchedTasks.map((challenges) {
+      final dateTime = challenges['date'] ?? 'No Date';
+      final date = dateTime.split('T')[0]; // Extract the date
+      // Extract the time
+      final time =
+          dateTime.split('T').length > 1 ? dateTime.split('T')[1] : 'No Time';
       return [
         challenges['title'] ?? 'Unknown Title',
         challenges['completed'] == 1,
         challenges['description'] ?? 'Now Description',
         challenges['id'],
         challenges['category'] ?? 'Uncategorized',
-        challenges['date'] ?? 'No Date',
-        challenges['time'] ?? 'No Time',
+        date,
+        time,
       ];
     }).toList();
   }

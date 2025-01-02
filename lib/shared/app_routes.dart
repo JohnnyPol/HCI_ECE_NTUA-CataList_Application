@@ -1,3 +1,5 @@
+// app_routes.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/dashboard/views/profile_page.dart';
 import '../features/start/views/start_page.dart';
@@ -9,7 +11,6 @@ import '../features/dashboard/views/recap_page.dart';
 import '../features/dashboard/views/search_page.dart';
 import '../features/dashboard/views/calendar_page.dart';
 import '../features/dashboard/views/view_task_page.dart';
-
 
 class AppRoutes {
   static const String start = '/';
@@ -44,7 +45,7 @@ class AppRoutes {
       case profile:
         return MaterialPageRoute(builder: (context) => ProfilePage());
       case viewTask:
-        return my_Route(ViewTaskPage());
+        return my_Route(ViewTaskPage(), settings: settings);
 
       default:
         return MaterialPageRoute(
@@ -59,8 +60,9 @@ class AppRoutes {
 }
 
 //Custom Transition
-Route my_Route(Widget target){
+Route my_Route(Widget target, {RouteSettings? settings}) {
   return PageRouteBuilder(
+    settings: settings,
     pageBuilder: (context, animation, secondaryAnimation) => target,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0.0, 1.0);
