@@ -71,7 +71,9 @@ class ListItemStateNew extends State<ListItemNew> {
           taskTime: listname[index][6],
           circle:
               widget.circle, //gets the circle varable from the ListItem widget
-          onChanged: (value) => checkBoxChanged(index),
+          onChanged: (value) => checkBoxChanged(
+            index,
+          ),
           deleteFunction: (contex) => deleteTask(index),
         );
       },

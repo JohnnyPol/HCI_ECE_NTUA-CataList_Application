@@ -8,6 +8,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ViewTaskPage extends StatelessWidget {
   ViewTaskPage({Key? key}) : super(key: key);
 
+  final DatabaseHelper dbHelper = DatabaseHelper();
+  Future<void> _deleteTask(BuildContext context, int taskId) async {
+    await dbHelper.deleteTask(taskId);
+    Navigator.pop(context, true); // Navigate back after deleting the task
+  }
+
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       toolbarHeight: 62,
@@ -36,13 +42,13 @@ class ViewTaskPage extends StatelessWidget {
         ),
       );
     }
-
+    final int taskId = args['taskId'];
     final String taskName = args['taskName'];
     final String taskDescription = args['taskDescription'];
     final String taskCategory = args['taskCategory'];
     final String taskDate = args['taskDate'];
     final String taskTime = args['taskTime'];
-    final String taskComplete = args['taskCompleted'];
+    final bool taskComplete = args['taskCompleted'];
     return Container(
       decoration: AppDecoration.linearBGcolors,
       child: Scaffold(
@@ -125,7 +131,7 @@ class ViewTaskPage extends StatelessWidget {
                         ),
                         SizedBox(height: 5.h),
                         Text(
-                          taskComplete,
+                          taskComplete ? "Completed" : "Incomplete",
                           style: TextStyle(
                             color: Colors.black38,
                             fontSize: 14.h,
@@ -183,6 +189,26 @@ class ViewTaskPage extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+                  ElevatedButton(
+                    onPressed: () => _deleteTask(context, taskId),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.h),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 25.h, horizontal: 30.h),
+                    ),
+                    child: Text(
+                      "Delete Task",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.h,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                   ),
                 ],

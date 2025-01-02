@@ -66,6 +66,12 @@ class DatabaseHelper {
 
   /* Task table CRUD Operations*/
 
+  // Get all tasks for a user
+  Future<List<Map<String, dynamic>>> getTasks(int? userId) async {
+    final db = await database;
+    return db.query('tasks', where: 'user_id = ?', whereArgs: [userId]);
+  }
+
   // Get tasks for a user by category
   Future<List<Map<String, dynamic>>> getTasksByCategory(
       int? userId, String category) async {
@@ -89,6 +95,27 @@ class DatabaseHelper {
     });
   }
 
+  Future<int> updateTaskCompletion(int taskId, int completed) async {
+    final db = await database;
+    return await db.update(
+      'tasks',
+      {'completed': completed},
+      where: 'id = ?',
+      whereArgs: [taskId],
+    );
+  }
+
+  // Method to delete a task
+  Future<int> deleteTask(int taskId) async {
+    final db = await database;
+    return await db.delete(
+      'tasks',
+      where: 'id = ?',
+      whereArgs: [taskId],
+    );
+  }
+
+  /* Database Handling*/
   // Add this method to delete all tables
   Future<void> deleteAllTables() async {
     final db = await database;
@@ -102,15 +129,5 @@ class DatabaseHelper {
       String tableName = table['name'];
       await db.execute("DROP TABLE IF EXISTS $tableName");
     }
-  }
-
-  Future<int> updateTaskCompletion(int taskId, int completed) async {
-    final db = await database;
-    return await db.update(
-      'tasks',
-      {'completed': completed},
-      where: 'id = ?',
-      whereArgs: [taskId],
-    );
   }
 }

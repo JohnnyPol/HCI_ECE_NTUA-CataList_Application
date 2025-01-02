@@ -82,12 +82,14 @@ Widget Task_or_Challenge_Block(
 Widget Activity_Block(BuildContext context,
     {required List<List<dynamic>> listname,
     required bool circle,
-    required bool border}) {
+    required bool border,
+    required VoidCallback onTaskUpdate}) {
+  print("Activity_Block listname: $listname");
   final dbHelper = DatabaseHelper();
   void updateTaskInDatabase(int index, bool isCompleted) {
-    // Assuming each task in listname has an ID at index 3
     final taskId = listname[index][3];
     dbHelper.updateTaskCompletion(taskId, isCompleted ? 1 : 0);
+    onTaskUpdate(); // Notify parent to refresh tasks
   }
 
   return Container(
@@ -96,11 +98,11 @@ Widget Activity_Block(BuildContext context,
     decoration: BoxDecoration(
       border: border
           ? Border.all(
-              width: 2.0,
+              width: 2.h,
               color: Color.fromARGB(255, 255, 255, 255),
             ) //white border
           : Border.all(
-              width: 2.0,
+              width: 2.h,
               color: Color.fromARGB(0, 0, 0, 0),
             ), //translucent border
       color: appTheme.dailyBlocks,
@@ -205,11 +207,12 @@ Widget SearchInput(BuildContext context) {
       width: 250.h,
       fillColor: appTheme.profileAvatar,
       borderDecoration: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: Colors.lightBlue.shade50),
+        borderSide: BorderSide(width: 2.h, color: Colors.lightBlue.shade50),
         borderRadius: BorderRadius.circular(30.h),
       ),
       hintText: "Search",
       textInputAction: TextInputAction.done,
+      //onChanged: onSearch, // trigger onSearch callback
       prefix: Container(
         margin: EdgeInsets.fromLTRB(10.h, 6.h, 26.h, 6.h),
         child: CustomImageView(

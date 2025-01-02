@@ -1,3 +1,5 @@
+// search_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
@@ -5,16 +7,82 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
-// ignore: must_be_immutable
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
   SearchPage({Key? key}) : super(key: key);
 
-  List<List<dynamic>> Today = [
-    ["one", false, "desc", 2, "Daily", "1234124", "1432134"],
-  ];
-  List<List<dynamic>> Tomorrow = [
-    ["one", false, "desc", 2, "Daily", "1234124", "1432134"],
-  ];
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
+
+// ignore: must_be_immutable
+class _SearchPageState extends State<SearchPage> {
+  final DatabaseHelper dbHelper = DatabaseHelper();
+  List<List<dynamic>> todayTasks = [];
+  List<List<dynamic>> tomorrowTasks = [];
+  String searchQuery = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTasks(); // Fetch tasks on page load
+  }
+
+  Future<void> _fetchTasks() async {
+    final allTasks = await dbHelper.getTasks(currentUser?.id);
+    print("All Tasks from DB: $allTasks");
+
+    setState(() {
+      final now = DateTime.now();
+      final today = DateUtils.dateOnly(now);
+      final tomorrow = today.add(Duration(days: 1));
+
+      todayTasks = allTasks
+          .where((task) {
+            final taskDate = DateUtils.dateOnly(DateTime.parse(task['date']));
+            return taskDate.isAtSameMomentAs(today);
+          }) // Compare with formatted date
+          .map((task) => [
+                task['title'],
+                task['completed'] == 1,
+                task['description'],
+                task['id'],
+                task['category'],
+                task['date'],
+                task['time'],
+              ])
+          .toList();
+
+      tomorrowTasks = allTasks
+          .where((task) {
+            final taskDate = DateUtils.dateOnly(DateTime.parse(task['date']));
+            return taskDate
+                .isAtSameMomentAs(tomorrow); // Compare task date with tomorrow
+          })
+          .map((task) => [
+                task['title'],
+                task['completed'] == 1,
+                task['description'],
+                task['id'],
+                task['category'],
+                task['date'],
+                task['time'],
+              ])
+          .toList();
+    });
+
+    print("Filtered Today Tasks: $todayTasks");
+    print("Filtered Tomorrow Tasks: $tomorrowTasks");
+  }
+
+  List<List<dynamic>> _filterTasks(List<List<dynamic>> tasks) {
+    if (searchQuery.isEmpty) {
+      return tasks;
+    }
+    return tasks.where((task) {
+      final title = task[0].toLowerCase();
+      return title.contains(searchQuery);
+    }).toList();
+  }
 
   AppBar _buildAppBar(BuildContext context) {
     final profileImagePath =
@@ -59,104 +127,85 @@ class SearchPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         appBar: _buildAppBar(context),
         body: SafeArea(
-          child: SizedBox(
-            width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SearchInput(context),
-                  SizedBox(height: 8.h),
-                  Container(
-                    padding: const EdgeInsets.only(
-                      top: 0,
-                      left: 10,
-                      right: 0,
-                      bottom: 0,
-                    ),
-                    child: Text(
-                      " Today",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.h,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  // Todays Activities Block
-                  Container(
-                    padding: const EdgeInsets.only(
-                      top: 0,
-                      left: 55,
-                      right: 0,
-                      bottom: 0,
-                    ),
-                    child: Activity_Block(
-                      context,
-                      listname: Today,
-                      circle: true,
-                      border: true,
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  Center(
-                    child: Container(
-                      height: 0.8.h,
-                      width: 320.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            // ignore: deprecated_member_use
-                            color: appTheme.black900.withOpacity(0.2),
-                            blurRadius: 2.h,
-                            spreadRadius: 0.5.h,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  Container(
-                    padding: const EdgeInsets.only(
-                      top: 0,
-                      left: 10,
-                      right: 0,
-                      bottom: 0,
-                    ),
-                    child: Text(
-                      " Tomorrow",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.h,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  // Tomorrows Activities Block
-                  Container(
-                    padding: const EdgeInsets.only(
-                      top: 0,
-                      left: 55,
-                      right: 0,
-                      bottom: 0,
-                    ),
-                    child: Activity_Block(
-                      context,
-                      listname: Tomorrow,
-                      circle: true,
-                      border: true,
-                    ),
-                  ),
-                  SizedBox(height: 42.h),
-                ],
-              ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SearchInput(context),
+                SizedBox(height: 20.h),
+                _buildTaskSection("Today", (todayTasks)),
+                SizedBox(height: 20.h),
+                _buildDivider(),
+                SizedBox(height: 20.h),
+                _buildTaskSection("Tomorrow", _filterTasks(tomorrowTasks)),
+                SizedBox(height: 42.h),
+              ],
             ),
           ),
         ),
         bottomNavigationBar: _buildBottomNavigationBar(context),
+      ),
+    );
+  }
+
+  Widget _buildTaskSection(String title, List<List<dynamic>> tasks) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 50),
+          child: Text(
+            " $title",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.h,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        SizedBox(height: 10.h),
+        tasks.isNotEmpty
+            ? Container(
+                padding: const EdgeInsets.only(left: 55),
+                child: Activity_Block(
+                  context,
+                  listname: tasks,
+                  circle: true,
+                  border: true,
+                  onTaskUpdate: _fetchTasks,
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.only(left: 55),
+                child: Text(
+                  "No tasks available.",
+                  style: TextStyle(
+                    color: Colors.white54,
+                    fontSize: 12.h,
+                  ),
+                ),
+              ),
+      ],
+    );
+  }
+
+  Widget _buildDivider() {
+    return Center(
+      child: Container(
+        height: 0.8.h,
+        width: 320.h,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              // ignore: deprecated_member_use
+              color: appTheme.black900.withOpacity(0.2),
+              blurRadius: 2.h,
+              spreadRadius: 0.5.h,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
       ),
     );
   }

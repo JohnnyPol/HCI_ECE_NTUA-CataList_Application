@@ -196,13 +196,11 @@ class AddTaskButton {
                             return;
                           }
 
-                          DateTime fullDateTime = DateTime(
-                            selectedDate!.year,
-                            selectedDate!.month,
-                            selectedDate!.day,
-                            selectedTime!.hour,
-                            selectedTime!.minute,
-                          );
+                          // Split the date and time
+                          String formattedDate = "${selectedDate!.toLocal()}"
+                              .split(' ')[0]; // Date in YYYY-MM-DD format
+                          String formattedTime =
+                              "${selectedTime!.hour.toString().padLeft(2, '0')}:${selectedTime!.minute.toString().padLeft(2, '0')}:00"; // Time in HH:MM:SS format
 
                           await DatabaseHelper().addTask(
                             userId,
@@ -210,15 +208,26 @@ class AddTaskButton {
                             taskDescription,
                             0, // Task not completed initially
                             selectedCategory!,
-                            fullDateTime.toIso8601String(),
-                            fullDateTime.toIso8601String(),
+                            formattedDate, // Store the date
+                            formattedTime, // Store the time
                           );
 
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('Task Added Successfully')));
 
-                          Navigator.of(context).pop();
+                          // Determine the current route and refresh accordingly
+                          final currentRoute =
+                              ModalRoute.of(context)?.settings.name;
+
+                          if (currentRoute == '/home') {
+                            Navigator.of(context).popAndPushNamed('/home');
+                          } else if (currentRoute == '/search') {
+                            Navigator.of(context).popAndPushNamed('/search');
+                          } else {
+                            Navigator.of(context).pop(); // Default: just pop
+                          }
                         },
+                        // TODO: The button doesn't show (FIX IT)
                         child: Text('Add Task'),
                       ),
                     ],

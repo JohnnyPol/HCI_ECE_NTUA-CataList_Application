@@ -26,19 +26,14 @@ class _HomePageState extends State<HomePage> {
     final fetchedTasks =
         await dbHelper.getTasksByCategory(currentUser?.id, "Daily");
     return fetchedTasks.map((task) {
-      final dateTime = task['date'] ?? 'No Date';
-      final date = dateTime.split('T')[0]; // Extract the date
-      final time = dateTime.split('T').length > 1
-          ? dateTime.split('T')[1]
-          : 'No Time'; // Extract the time
       final mappedTask = [
         task['title'] ?? 'Unknown Title',
         task['completed'] == 1,
         task['description'] ?? 'No Description',
         task['id'] ?? -1,
         task['category'] ?? 'Uncategorized',
-        date,
-        time,
+        task['date'] ?? 'No Date',
+        task['time'] ?? 'No time',
       ];
       print('Mapped Task: $mappedTask'); // Debug mapped task
       return mappedTask;
@@ -179,6 +174,7 @@ class _HomePageState extends State<HomePage> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    // TODO: Return the same widget as if with no tasks
                     return Center(child: Text('No daily tasks available'));
                   } else {
                     final tasks = snapshot.data!;
@@ -212,6 +208,7 @@ class _HomePageState extends State<HomePage> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    // TODO: Return the same widget as if with no tasks
                     return Center(child: Text('No challenges available'));
                   } else {
                     final challenges = snapshot.data!;

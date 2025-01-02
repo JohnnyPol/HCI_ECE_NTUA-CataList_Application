@@ -8,7 +8,6 @@ export 'package:flutter_application_1/utils/image_constant.dart';
 export 'package:flutter_application_1/shared/widgets/box_styles.dart';
 export 'package:flutter_application_1/shared/widgets/navigational_bar.dart';
 export 'package:flutter_application_1/shared/widgets/todo_list.dart';
-export 'package:flutter_application_1/shared/widgets/lists.dart';
 export 'package:flutter_application_1/utils/databaseHelper.dart';
 export 'package:flutter_application_1/shared/widgets/add_task_button.dart';
 export 'package:flutter_application_1/features/auth/controllers/user_auth.dart';
