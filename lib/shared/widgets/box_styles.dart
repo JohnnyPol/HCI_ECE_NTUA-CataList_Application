@@ -201,7 +201,7 @@ Widget Quote_Block(BuildContext context, Map<String, double> dataMap) {
 }
 
 // Section Widget
-Widget SearchInput(BuildContext context) {
+Widget SearchInput(BuildContext context, {required Function(String) onSearch}) {
   return Center(
     child: CustomTextFormField(
       width: 250.h,
@@ -212,7 +212,7 @@ Widget SearchInput(BuildContext context) {
       ),
       hintText: "Search",
       textInputAction: TextInputAction.done,
-      //onChanged: onSearch, // trigger onSearch callback
+      onChanged: onSearch, // trigger onSearch callback
       prefix: Container(
         margin: EdgeInsets.fromLTRB(10.h, 6.h, 26.h, 6.h),
         child: CustomImageView(

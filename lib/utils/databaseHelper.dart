@@ -105,6 +105,17 @@ class DatabaseHelper {
     );
   }
 
+  // Search tasks
+  Future<List<Map<String, dynamic>>> searchTasks(
+      String query, int? userId) async {
+    final db = await database;
+    return db.query(
+      'tasks',
+      where: 'title LIKE ? AND user_id = ?',
+      whereArgs: ['%$query%', userId],
+    );
+  }
+
   // Method to delete a task
   Future<int> deleteTask(int taskId) async {
     final db = await database;

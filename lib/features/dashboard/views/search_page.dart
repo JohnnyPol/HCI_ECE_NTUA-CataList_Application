@@ -19,6 +19,7 @@ class _SearchPageState extends State<SearchPage> {
   final DatabaseHelper dbHelper = DatabaseHelper();
   List<List<dynamic>> todayTasks = [];
   List<List<dynamic>> tomorrowTasks = [];
+  List<List<dynamic>> searchResults = [];
   String searchQuery = "";
 
   @override
@@ -74,14 +75,37 @@ class _SearchPageState extends State<SearchPage> {
     print("Filtered Tomorrow Tasks: $tomorrowTasks");
   }
 
-  List<List<dynamic>> _filterTasks(List<List<dynamic>> tasks) {
-    if (searchQuery.isEmpty) {
-      return tasks;
+  Future<void> _searchTasks(String query) async {
+    if (query.isEmpty) {
+      setState(() {
+        searchResults = [];
+      });
+      return;
     }
-    return tasks.where((task) {
-      final title = task[0].toLowerCase();
-      return title.contains(searchQuery);
-    }).toList();
+
+    final results = await dbHelper.searchTasks(query, currentUser?.id);
+    setState(() {
+      searchResults = results
+          .map((task) => [
+                task['title'],
+                task['completed'] == 1,
+                task['description'],
+                task['id'],
+                task['category'],
+                task['date'],
+                task['time'],
+              ])
+          .toList();
+    });
+
+    print("Search Results: $searchResults");
+  }
+
+  void _onSearch(String query) {
+    setState(() {
+      searchQuery = query.toLowerCase();
+    });
+    _searchTasks(query);
   }
 
   AppBar _buildAppBar(BuildContext context) {
@@ -131,19 +155,34 @@ class _SearchPageState extends State<SearchPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SearchInput(context),
+                SearchInput(context, onSearch: _onSearch),
                 SizedBox(height: 20.h),
-                _buildTaskSection("Today", (todayTasks)),
+                searchQuery.isNotEmpty
+                    ? _buildSearchResults()
+                    : _buildTaskSection("Today", todayTasks),
                 SizedBox(height: 20.h),
                 _buildDivider(),
                 SizedBox(height: 20.h),
-                _buildTaskSection("Tomorrow", _filterTasks(tomorrowTasks)),
+                _buildTaskSection("Tomorrow", tomorrowTasks),
                 SizedBox(height: 42.h),
               ],
             ),
           ),
         ),
         bottomNavigationBar: _buildBottomNavigationBar(context),
+      ),
+    );
+  }
+
+  Widget _buildSearchResults() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Activity_Block(
+        context,
+        listname: searchResults,
+        circle: false,
+        border: true,
+        onTaskUpdate: _fetchTasks,
       ),
     );
   }
