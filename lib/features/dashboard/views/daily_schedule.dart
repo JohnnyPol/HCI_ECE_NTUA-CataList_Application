@@ -3,19 +3,12 @@ import 'package:flutter_application_1/app_export.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'dart:io';
 
-class CalendarPage extends StatefulWidget {
-  CalendarPage({Key? key}) : super(key: key);
+class DailySchedulePage extends StatelessWidget {
+  final DateTime selectedDate;
 
-  @override
-  _CalendarPageState createState() => _CalendarPageState();
-}
-
-class _CalendarPageState extends State<CalendarPage> {
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+  DailySchedulePage({Key? key, required this.selectedDate}) : super(key: key);
 
   AppBar _buildAppBar(BuildContext context) {
     final profileImagePath =
@@ -25,7 +18,7 @@ class _CalendarPageState extends State<CalendarPage> {
       automaticallyImplyLeading: false,
       toolbarHeight: 62,
       title: Text(
-        "Calendar",
+        "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}", // Display selected day
         style: TextStyle(
           color: Colors.black,
           fontSize: 24.h,
@@ -59,66 +52,6 @@ class _CalendarPageState extends State<CalendarPage> {
       ],
       backgroundColor: Colors.transparent,
       elevation: 0,
-    );
-  }
-
-  Widget _buildCalendarView() {
-    return SingleChildScrollView(
-      child: Column(
-        children: List.generate(
-          12,
-          (index) {
-            final month = _focusedDay.month + index;
-            final year = _focusedDay.year + ((month - 1) ~/ 12);
-            final adjustedMonth = ((month - 1) % 12) + 1;
-
-            final firstDay = DateTime(year, adjustedMonth, 1);
-            final lastDay = DateTime(year, adjustedMonth + 1, 0);
-
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 10.h),
-              child: TableCalendar(
-                firstDay: firstDay,
-                lastDay: lastDay,
-                focusedDay: firstDay,
-                calendarFormat: CalendarFormat.month,
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  });
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DailySchedulePage(selectedDate: selectedDay),
-                    ),
-                  );
-                },
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
-                headerStyle: HeaderStyle(
-                  formatButtonVisible: false,
-                  titleCentered: true,
-                  headerPadding: EdgeInsets.symmetric(vertical: 8.h),
-                  leftChevronVisible: false,
-                  rightChevronVisible: false,
-                ),
-                calendarStyle: CalendarStyle(
-                  todayDecoration: BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                  ),
-                  selectedDecoration: BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
     );
   }
 
@@ -190,12 +123,54 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: AppDecoration.linearBGcolors,
+      decoration: AppDecoration.linearBGcolors, // Same background as CalendarPage
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: _buildAppBar(context),
         body: SafeArea(
-          child: _buildCalendarView(),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(16.0.h),
+                child: Text(
+                  "Organize your day!",
+                  style: TextStyle(
+                    fontSize: 20.h,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: 24,
+                  itemBuilder: (context, index) {
+                    final time = '${index.toString().padLeft(2, '0')}:00';
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 4.0.h, horizontal: 16.0.h),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: index % 2 == 0
+                              ? Colors.blue[200]
+                              : Colors.blue[300],
+                          borderRadius: BorderRadius.circular(8.h),
+                        ),
+                        child: ListTile(
+                          title: Text(time),
+                          trailing: TextButton(
+                            onPressed: () {
+                              // Add task logic here
+                            },
+                            child: Text("Add Task"),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
         bottomNavigationBar: _buildBottomNavigationBar(context),
       ),

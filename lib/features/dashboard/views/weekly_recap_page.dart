@@ -60,7 +60,6 @@ class _PageViewWithIndicatorState extends State<PageViewWithIndicator> {
     return Column(
       children: [
         AppBar(
-          automaticallyImplyLeading: false,
           toolbarHeight: 62,
           backgroundColor: Colors.transparent,
           elevation: 0,

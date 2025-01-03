@@ -14,6 +14,7 @@ class RecapPage extends StatelessWidget {
         Provider.of<ProfileProvider>(context).profileImagePath;
 
     return AppBar(
+      automaticallyImplyLeading: false,
       toolbarHeight: 62,
       actions: <Widget>[
         Padding(
