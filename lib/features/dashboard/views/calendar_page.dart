@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:io';
 
-// TODO: In figma we have two months displayed (should we change it to that?)
-
 class CalendarPage extends StatefulWidget {
   CalendarPage({Key? key}) : super(key: key);
 
@@ -25,6 +23,15 @@ class _CalendarPageState extends State<CalendarPage> {
 
     return AppBar(
       toolbarHeight: 62,
+      title: Text(
+        "Calendar",
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 24.h,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      centerTitle: true,
       actions: <Widget>[
         Padding(
           padding: EdgeInsets.only(right: 10.h),
@@ -55,43 +62,54 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   Widget _buildCalendarView() {
-    return Padding(
-      padding: EdgeInsets.all(16.0), // Padding around the calendar
-      child: SingleChildScrollView(
-        // Allows vertical scrolling if needed
-        child: TableCalendar(
-          firstDay: DateTime.utc(2020, 1, 1),
-          lastDay: DateTime.utc(2030, 12, 31),
-          focusedDay: _focusedDay,
-          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-          onDaySelected: (selectedDay, focusedDay) {
-            setState(() {
-              _selectedDay = selectedDay;
-              _focusedDay = focusedDay;
-            });
+    return SingleChildScrollView(
+      child: Column(
+        children: List.generate(
+          12,
+          (index) {
+            final month = _focusedDay.month + index;
+            final year = _focusedDay.year + ((month - 1) ~/ 12);
+            final adjustedMonth = ((month - 1) % 12) + 1;
+
+            final firstDay = DateTime(year, adjustedMonth, 1);
+            final lastDay = DateTime(year, adjustedMonth + 1, 0);
+
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 10.h),
+              child: TableCalendar(
+                firstDay: firstDay,
+                lastDay: lastDay,
+                focusedDay: firstDay,
+                calendarFormat: CalendarFormat.month,
+                onDaySelected: (selectedDay, focusedDay) {
+                  setState(() {
+                    _selectedDay = selectedDay;
+                    _focusedDay = focusedDay;
+                  });
+                },
+                selectedDayPredicate: (day) {
+                  return isSameDay(_selectedDay, day);
+                },
+                headerStyle: HeaderStyle(
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                  headerPadding: EdgeInsets.symmetric(vertical: 8.h),
+                  leftChevronVisible: false,
+                  rightChevronVisible: false,
+                ),
+                calendarStyle: CalendarStyle(
+                  todayDecoration: BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                  ),
+                  selectedDecoration: BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            );
           },
-          calendarStyle: CalendarStyle(
-            todayDecoration: BoxDecoration(
-              color: Colors.black,
-              shape: BoxShape.circle,
-            ),
-            selectedDecoration: BoxDecoration(
-              color: Colors.blue,
-              shape: BoxShape.circle,
-            ),
-            outsideDaysVisible: false,
-          ),
-          headerStyle: HeaderStyle(
-            formatButtonVisible: false,
-            titleCentered: true,
-            titleTextStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              color: Colors.white,
-            ),
-            leftChevronIcon: Icon(Icons.chevron_left, color: Colors.white),
-            rightChevronIcon: Icon(Icons.chevron_right, color: Colors.white),
-          ),
         ),
       ),
     );
@@ -107,7 +125,6 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
         boxShadow: [
           BoxShadow(
-            // ignore: deprecated_member_use
             color: appTheme.black900.withOpacity(0.2),
             blurRadius: 2.h,
             spreadRadius: 2.h,
