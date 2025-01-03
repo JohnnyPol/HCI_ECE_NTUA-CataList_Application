@@ -113,6 +113,7 @@ class _SearchPageState extends State<SearchPage> {
         Provider.of<ProfileProvider>(context).profileImagePath;
 
     return AppBar(
+      automaticallyImplyLeading: false,
       toolbarHeight: 62,
       actions: <Widget>[
         Padding(
@@ -309,7 +310,7 @@ Widget _buildBottomNavigationBar(BuildContext context) {
             width: 35.h,
           ),
           onPressed: () {
-            Navigator.pushNamed(context, '/recap'); // Handle routing
+            Navigator.pushNamed(context, '/weekly_recap'); // Handle routing
           },
         ),
 

@@ -22,6 +22,7 @@ class _CalendarPageState extends State<CalendarPage> {
         Provider.of<ProfileProvider>(context).profileImagePath;
 
     return AppBar(
+      automaticallyImplyLeading: false,
       toolbarHeight: 62,
       title: Text(
         "Calendar",
@@ -163,7 +164,7 @@ class _CalendarPageState extends State<CalendarPage> {
               width: 35.h,
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/recap');
+              Navigator.pushNamed(context, '/weekly_recap');
             },
           ),
           IconButton(
