@@ -164,7 +164,7 @@ class _CalendarPageState extends State<CalendarPage> {
               width: 35.h,
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/weekly_recap');
+              Navigator.pushNamed(context, '/recap');
             },
           ),
           IconButton(

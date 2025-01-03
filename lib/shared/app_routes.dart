@@ -7,7 +7,7 @@ import '../features/start/views/register_login_page.dart';
 import '../features/auth/views/login_page.dart';
 import '../features/auth/views/register_page.dart';
 import '../features/dashboard/views/home_page.dart';
-import '../features/dashboard/views/weekly_recap_page.dart';
+import '../features/dashboard/views/recap_page.dart';
 import '../features/dashboard/views/search_page.dart';
 import '../features/dashboard/views/calendar_page.dart';
 import '../features/dashboard/views/view_task_page.dart';
@@ -19,7 +19,7 @@ class AppRoutes {
   static const String register = '/register';
   static const String home = '/home';
   static const String search = '/search';
-  static const String weeklyRecap = '/weekly_recap';
+  static const String recap = '/recap';
   static const String calendar = '/calendar';
   static const String profile = '/profile';
   static const String viewTask = '/view_task';
@@ -38,8 +38,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => HomePage());
       case search:
         return MaterialPageRoute(builder: (context) => SearchPage());
-      case weeklyRecap:
-        return MaterialPageRoute(builder: (context) => WeeklyRecapPage());
+      case recap:
+        return MaterialPageRoute(builder: (context) => RecapPage());
       case calendar:
         return MaterialPageRoute(builder: (context) => CalendarPage());
       case profile:

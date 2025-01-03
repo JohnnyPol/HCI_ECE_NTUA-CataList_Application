@@ -310,7 +310,7 @@ Widget _buildBottomNavigationBar(BuildContext context) {
             width: 35.h,
           ),
           onPressed: () {
-            Navigator.pushNamed(context, '/weekly_recap'); // Handle routing
+            Navigator.pushNamed(context, '/recap'); // Handle routing
           },
         ),
 
