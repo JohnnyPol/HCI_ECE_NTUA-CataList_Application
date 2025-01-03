@@ -15,7 +15,6 @@ class DailySchedulePage extends StatelessWidget {
         Provider.of<ProfileProvider>(context).profileImagePath;
 
     return AppBar(
-      automaticallyImplyLeading: false,
       toolbarHeight: 62,
       title: Text(
         "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}", // Display selected day
