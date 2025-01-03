@@ -128,6 +128,8 @@ Widget Activity_Block(BuildContext context,
 
 //Quote Block
 Widget Quote_Block(BuildContext context, Map<String, double> dataMap) {
+  // TODO: Make the text white and style the pie chart.
+
   return FutureBuilder<String>(
     future: QuoteProvider.fetchDailyQuote(),
     builder: (context, snapshot) {

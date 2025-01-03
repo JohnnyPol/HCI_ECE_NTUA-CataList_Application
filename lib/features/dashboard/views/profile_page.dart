@@ -1,9 +1,10 @@
+// profile_page
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_application_1/app_export.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
-
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -41,7 +42,8 @@ class ProfilePage extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),
             onPressed: () {
-              Navigator.pop(context); // This navigates back to the previous screen
+              Navigator.pop(
+                  context); // This navigates back to the previous screen
             },
           ),
           title: Text("Profile"),
@@ -91,6 +93,72 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+              // Add Delete Account Button
+              ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          "Confirm Deletion",
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
+                        content: Text(
+                          "Are you sure you want to delete your account? All your data will be permanently lost.",
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              final userId = currentUser
+                                  ?.id; // Retrieve the current user's ID
+                              if (userId != null) {
+                                await DatabaseHelper().deleteUser(userId);
+                                currentUser = null; // Clear the currentUser
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    '/',
+                                    (route) =>
+                                        false); // Go back to the start page
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: Text(
+                              "Delete",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  minimumSize: Size(double.infinity, 60),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: Text(
+                  "Delete Account",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
             ],

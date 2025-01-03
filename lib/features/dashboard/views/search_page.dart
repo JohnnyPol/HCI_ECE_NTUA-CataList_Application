@@ -159,11 +159,16 @@ class _SearchPageState extends State<SearchPage> {
                 SizedBox(height: 20.h),
                 searchQuery.isNotEmpty
                     ? _buildSearchResults()
-                    : _buildTaskSection("Today", todayTasks),
-                SizedBox(height: 20.h),
-                _buildDivider(),
-                SizedBox(height: 20.h),
-                _buildTaskSection("Tomorrow", tomorrowTasks),
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTaskSection("Today", todayTasks),
+                          SizedBox(height: 20.h),
+                          _buildDivider(),
+                          SizedBox(height: 20.h),
+                          _buildTaskSection("Tomorrow", tomorrowTasks),
+                        ],
+                      ),
                 SizedBox(height: 42.h),
               ],
             ),
@@ -176,7 +181,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _buildSearchResults() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.only(left: 50),
       child: Activity_Block(
         context,
         listname: searchResults,

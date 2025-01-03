@@ -21,15 +21,49 @@ class DatabaseHelper {
     final path = await getDatabasesPath();
     return openDatabase(
       join(path, 'app_database.db'),
-      onCreate: (db, version) {
-        db.execute(
+      onCreate: (db, version) async {
+        await db.execute(
           'CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT UNIQUE, firstName TEXT, lastName TEXT, email TEXT, password TEXT)',
         );
-        db.execute(
+        await db.execute(
           'CREATE TABLE tasks (id INTEGER PRIMARY KEY, user_id INTEGER, title TEXT, description TEXT, completed INTEGER, category TEXT, date TEXT, time TEXT, FOREIGN KEY (user_id) REFERENCES users (id))',
+        );
+        // Create indexes
+        await db.execute(
+          'CREATE INDEX IF NOT EXISTS idx_title ON tasks (title)',
+        );
+        await db.execute(
+          'CREATE INDEX IF NOT EXISTS idx_description ON tasks (description)',
+        );
+        await db.execute(
+          'CREATE INDEX IF NOT EXISTS idx_category ON tasks (category)',
+        );
+        await db.execute(
+          'CREATE INDEX IF NOT EXISTS idx_date ON tasks (date)',
+        );
+        await db.execute(
+          'CREATE INDEX IF NOT EXISTS idx_user_id ON tasks (user_id)',
         );
       },
       version: 1,
+      onUpgrade: (db, oldVersion, newVersion) async {
+        // Add indexes in case of upgrades
+        await db.execute(
+          'CREATE INDEX IF NOT EXISTS idx_title ON tasks (title)',
+        );
+        await db.execute(
+          'CREATE INDEX IF NOT EXISTS idx_description ON tasks (description)',
+        );
+        await db.execute(
+          'CREATE INDEX IF NOT EXISTS idx_category ON tasks (category)',
+        );
+        await db.execute(
+          'CREATE INDEX IF NOT EXISTS idx_date ON tasks (date)',
+        );
+        await db.execute(
+          'CREATE INDEX IF NOT EXISTS idx_user_id ON tasks (user_id)',
+        );
+      },
     );
   }
 
@@ -64,6 +98,14 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> deleteUser(int userId) async {
+    final db = await database;
+    await db.delete('tasks',
+        where: 'user_id = ?', whereArgs: [userId]); // Deletes associated tasks
+    await db
+        .delete('users', where: 'id = ?', whereArgs: [userId]); // Deletes user
+  }
+
   /* Task table CRUD Operations*/
 
   // Get all tasks for a user
@@ -95,6 +137,7 @@ class DatabaseHelper {
     });
   }
 
+  // Update a task Completion
   Future<int> updateTaskCompletion(int taskId, int completed) async {
     final db = await database;
     return await db.update(
@@ -105,15 +148,27 @@ class DatabaseHelper {
     );
   }
 
+  /// Update a specific field of a task by ID (TEXT field)
+  Future<int> updateTaskField(int taskId, String field, String newValue) async {
+    final db = await database;
+
+    return await db.update(
+      'tasks',
+      {field: newValue}, // Update the specified field with the new value
+      where: 'id = ?', // Match the task by its ID
+      whereArgs: [taskId],
+    );
+  }
+
   // Search tasks
   Future<List<Map<String, dynamic>>> searchTasks(
       String query, int? userId) async {
     final db = await database;
-    return db.query(
-      'tasks',
-      where: 'title LIKE ? AND user_id = ?',
-      whereArgs: ['%$query%', userId],
-    );
+    return db.query('tasks',
+        where:
+            '(LOWER(title) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?))AND user_id = ?',
+        whereArgs: ['%$query%', '%$query%', userId],
+        orderBy: 'date ASC');
   }
 
   // Method to delete a task
