@@ -214,7 +214,7 @@ class AddTaskButton {
 
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('Task Added Successfully')));
-
+                          // TODO: The page doesn't reload after hitting the add task button.
                           // Determine the current route and refresh accordingly
                           final currentRoute =
                               ModalRoute.of(context)?.settings.name;

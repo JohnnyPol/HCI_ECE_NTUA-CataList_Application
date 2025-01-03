@@ -54,16 +54,31 @@ class User {
     return null; // Authentication failed
   }
 
-  // Register a new user
-  static Future<bool> register(User user) async {
+  // Register a new user and retrieve the user record
+  static Future<User?> register(User user) async {
     try {
-      final db = await DatabaseHelper().database;
+      final dbHelper = DatabaseHelper();
 
-      await db.insert('users', user.toMap());
-      return true; // Registration was successful
+      // Add the user to the database
+      int userId = await dbHelper.addUser(
+        user.username,
+        user.firstName,
+        user.lastName,
+        user.email,
+        user.password,
+      );
+
+      // Fetch the newly created user
+      if (userId != -1) {
+        final createdUser = await dbHelper.getUserById(userId);
+        if (createdUser != null) {
+          return User.fromMap(createdUser); // Return the new user object
+        }
+      }
+      return null; // Registration failed
     } catch (e) {
       print("Error during registration: $e");
-      return false; // Registration failed
+      return null; // Registration failed
     }
   }
 }
@@ -98,10 +113,10 @@ Future<bool> registerNewUser(
   );
 
   // Call the register method
-  bool isRegistered = await User.register(newUser);
+  User? registeredUser = await User.register(newUser);
 
-  if (isRegistered) {
-    currentUser = newUser; // Set the global user variable
+  if (registeredUser != null) {
+    currentUser = registeredUser; // Set the global user variable
     return true; // Indicate success
   }
   return false; // Registration failed

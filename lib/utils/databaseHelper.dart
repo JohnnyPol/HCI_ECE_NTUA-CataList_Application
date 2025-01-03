@@ -69,6 +69,18 @@ class DatabaseHelper {
 
   /* User CRUD Operations*/
 
+  // Get user by ID
+  Future<Map<String, dynamic>?> getUserById(int id) async {
+    final db = await database;
+    final result = await db.query(
+      'users',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+    return result.isNotEmpty ? result.first : null;
+  }
+
   // Add a new user to the database
   Future<int> addUser(String username, String firstName, String lastName,
       String email, String password) async {
