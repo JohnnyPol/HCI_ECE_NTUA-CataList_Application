@@ -6,6 +6,8 @@ import 'package:flutter_application_1/app_export.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
+// TODO: the profile picture changes for every user. Find a way to prevent that
+
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
 

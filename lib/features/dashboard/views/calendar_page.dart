@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:io';
 
+// TODO: In figma we have two months displayed (should we change it to that?)
+
 class CalendarPage extends StatefulWidget {
   CalendarPage({Key? key}) : super(key: key);
 
