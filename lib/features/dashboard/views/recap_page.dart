@@ -1,5 +1,7 @@
 // recap_page.dart
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
@@ -11,7 +13,8 @@ import 'dart:io';
 class RecapPage extends StatelessWidget {
   RecapPage({Key? key}) : super(key: key);
 
-  Widget _buildRecapBlock(BuildContext context, File imageFile) {
+  Widget _buildRecapBlock(BuildContext context,
+      {File? imageFile, String? message}) {
     return Container(
       padding: const EdgeInsets.only(
         top: 0,
@@ -39,10 +42,18 @@ class RecapPage extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12.h),
-            child: Image.file(
-              imageFile,
-              fit: BoxFit.cover,
-            ),
+            child: imageFile != null
+                ? Image.file(
+                    imageFile,
+                    fit: BoxFit.cover,
+                  )
+                : Center(
+                    child: Text(
+                      message ?? "No photos available.",
+                      style: TextStyle(color: Colors.grey),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
           ),
         ),
       ),
@@ -116,15 +127,14 @@ class RecapPage extends StatelessWidget {
                 SizedBox(height: 10.h),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: FutureBuilder<List<File>>(
-                    future: PhotoStorage().getStoredPhotos(),
+                  child: FutureBuilder<List<List<File>>>(
+                    future: PhotoStorage().getWeeklyPhotos(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
                           child: CircularProgressIndicator(),
                         );
                       }
-
                       if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return Center(
                           child: Text(
@@ -134,12 +144,30 @@ class RecapPage extends StatelessWidget {
                         );
                       }
 
-                      final List<File> photos = snapshot.data!.take(4).toList();
+                      final List<List<File>> weeklyPhotos = snapshot.data!;
+                      final random = Random();
 
                       return Row(
-                        children: photos
-                            .map((photo) => _buildRecapBlock(context, photo))
-                            .toList(),
+                        children: List.generate(
+                          4,
+                          (weekIndex) {
+                            final List<File> weekPhotos =
+                                weeklyPhotos.length > weekIndex
+                                    ? weeklyPhotos[weekIndex]
+                                    : [];
+                            if (weekPhotos.isNotEmpty) {
+                              final randomPhoto =
+                                  weekPhotos[random.nextInt(weekPhotos.length)];
+                              return _buildRecapBlock(context,
+                                  imageFile: randomPhoto);
+                            } else {
+                              return _buildRecapBlock(
+                                context,
+                                message: "No photos this week",
+                              );
+                            }
+                          },
+                        ),
                       );
                     },
                   ),
@@ -162,16 +190,50 @@ class RecapPage extends StatelessWidget {
                 SizedBox(height: 10.h),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.monthly);
-                        },
-                        child: Recap_Block(context),
-                      ),
-                      // Additional Recap_Blocks...
-                    ],
+                  child: FutureBuilder<List<List<File>>>(
+                    future: PhotoStorage().getMonthlyPhotos(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(
+                          child: Text(
+                            "No photos available.",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      }
+
+                      final List<List<File>> monthlyPhotos = snapshot.data!;
+                      final random = Random();
+
+                      return Row(
+                        children: List.generate(
+                          6,
+                          (monthIndex) {
+                            final List<File> monthPhotos =
+                                monthlyPhotos.length > monthIndex
+                                    ? monthlyPhotos[monthIndex]
+                                    : [];
+                            if (monthPhotos.isNotEmpty) {
+                              final randomPhoto = monthPhotos[
+                                  random.nextInt(monthPhotos.length)];
+                              return _buildRecapBlock(context,
+                                  imageFile: randomPhoto);
+                            } else {
+                              return _buildRecapBlock(
+                                context,
+                                message: "No photos this month",
+                              );
+                            }
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(height: 42.h),

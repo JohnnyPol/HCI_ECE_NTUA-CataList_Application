@@ -105,41 +105,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   AppBar _buildAppBar(BuildContext context) {
-  final profileImagePath =
-      Provider.of<ProfileProvider>(context).profileImagePath;
+    final profileImagePath =
+        Provider.of<ProfileProvider>(context).profileImagePath;
 
-  return AppBar(
-    automaticallyImplyLeading: false, // Remove back button
-    toolbarHeight: 62,
-    leading: Padding(
-      padding: EdgeInsets.only(left: 10.h),
-      child: CustomIconButton(
-        height: 45.h,
-        width: 45.h,
-        padding: EdgeInsets.all(5.h),
-        decoration: IconButtonStyleHelper.none, // No outline or decoration
-        child: CircleAvatar(
-          radius: 20.h,
-          backgroundColor: Colors.grey[300],
-          child: Icon(Icons.camera_alt, size: 20.h, color: Colors.black),
-        ),
-        onTap: () async {
-          final photoStorage = PhotoStorage();
-          final String? photoPath =
-              await photoStorage.captureAndSavePhoto(userId: currentUser?.id);
-
-          if (photoPath != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Photo saved successfully!")),
-            );
-          }
-        },
-      ),
-    ),
-    actions: <Widget>[
-      // Profile Picture Button
-      Padding(
-        padding: EdgeInsets.only(right: 10.h),
+    return AppBar(
+      automaticallyImplyLeading: false, // Remove back button
+      toolbarHeight: 62,
+      leading: Padding(
+        padding: EdgeInsets.only(left: 10.h),
         child: CustomIconButton(
           height: 45.h,
           width: 45.h,
@@ -148,23 +121,50 @@ class _HomePageState extends State<HomePage> {
           child: CircleAvatar(
             radius: 20.h,
             backgroundColor: Colors.grey[300],
-            backgroundImage: profileImagePath != null
-                ? FileImage(File(profileImagePath))
-                : null,
-            child: profileImagePath == null
-                ? Icon(Icons.person, size: 20.h, color: Colors.black)
-                : null,
+            child: Icon(Icons.camera_alt, size: 20.h, color: Colors.black),
           ),
-          onTap: () {
-            Navigator.pushNamed(context, AppRoutes.profile);
+          onTap: () async {
+            final photoStorage = PhotoStorage();
+            final String? photoPath =
+                await photoStorage.captureAndSavePhoto(userId: currentUser?.id);
+
+            if (photoPath != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Photo saved successfully!")),
+              );
+            }
           },
         ),
       ),
-    ],
-    backgroundColor: Colors.transparent,
-    elevation: 0,
-  );
-}
+      actions: <Widget>[
+        // Profile Picture Button
+        Padding(
+          padding: EdgeInsets.only(right: 10.h),
+          child: CustomIconButton(
+            height: 45.h,
+            width: 45.h,
+            padding: EdgeInsets.all(5.h),
+            decoration: IconButtonStyleHelper.none, // No outline or decoration
+            child: CircleAvatar(
+              radius: 20.h,
+              backgroundColor: Colors.grey[300],
+              backgroundImage: profileImagePath != null
+                  ? FileImage(File(profileImagePath))
+                  : null,
+              child: profileImagePath == null
+                  ? Icon(Icons.person, size: 20.h, color: Colors.black)
+                  : null,
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.profile);
+            },
+          ),
+        ),
+      ],
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
