@@ -113,7 +113,8 @@ class _HomePageState extends State<HomePage> {
       leading: ElevatedButton(
         onPressed: () async {
           final photoStorage = PhotoStorage();
-          final String? photoPath = await photoStorage.captureAndSavePhoto();
+          final String? photoPath =
+              await photoStorage.captureAndSavePhoto(userId: currentUser?.id);
 
           if (photoPath != null) {
             ScaffoldMessenger.of(context).showSnackBar(
