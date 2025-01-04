@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
+// TODO: When searching something have a "Results" headline
 class SearchPage extends StatefulWidget {
   SearchPage({Key? key}) : super(key: key);
 

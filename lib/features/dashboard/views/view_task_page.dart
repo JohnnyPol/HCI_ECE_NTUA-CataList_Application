@@ -276,7 +276,7 @@ class ViewTaskPage extends StatelessWidget {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.edit, color: Colors.blue),
+              icon: Icon(Icons.edit, color: appTheme.EditTaskIconColor),
               onPressed: () {
                 _showEditModal(context, label, currentValue, onSave);
               },
@@ -342,6 +342,7 @@ class ViewTaskPage extends StatelessWidget {
                 ),
               ),
             ),
+            // Date Editor
             IconButton(
               icon:
                   Icon(Icons.edit_calendar, color: appTheme.EditTaskIconColor),
@@ -394,7 +395,7 @@ class ViewTaskPage extends StatelessWidget {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.edit, color: Colors.blue),
+              icon: Icon(Icons.punch_clock, color: appTheme.EditTaskIconColor),
               onPressed: () async {
                 final pickedTime = await showTimePicker(
                   context: context,

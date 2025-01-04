@@ -153,6 +153,8 @@ class _DailySchedulePageState extends State<DailySchedulePage> {
     }).toList();
   }
 
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -206,6 +208,9 @@ class _DailySchedulePageState extends State<DailySchedulePage> {
                                         userId: currentUser?.id,
                                         selectedDate: widget.selectedDate,
                                         selectedHour: index,
+                                        titleController: titleController,
+                                        descriptionController:
+                                            descriptionController,
                                       );
                                     },
                                   );

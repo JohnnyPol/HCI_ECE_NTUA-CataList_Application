@@ -10,10 +10,12 @@ class AddTaskButton {
     required int? userId,
     DateTime? selectedDate,
     int? selectedHour,
+    TextEditingController? titleController,
+    TextEditingController? descriptionController,
   }) {
-    // Controllers and state variables
-    final TextEditingController titleController = TextEditingController();
-    final TextEditingController descriptionController = TextEditingController();
+    // Use existing controllers or create new ones if not provided
+    titleController ??= TextEditingController();
+    descriptionController ??= TextEditingController();
     String? selectedCategory;
     DateTime? selectedTaskDate = selectedDate;
     TimeOfDay? selectedTaskTime =
@@ -31,7 +33,7 @@ class AddTaskButton {
               ),
               color: appTheme.dailyBlocks,
             ),
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10),
             height: 500,
             child: Column(
               children: [
@@ -171,10 +173,11 @@ class AddTaskButton {
                 ElevatedButton(
                   style: ButtonStyle(),
                   onPressed: () async {
-                    String taskName = titleController.text.trim();
-                    String taskDescription = descriptionController.text.trim();
+                    String? taskName = titleController?.text.trim();
+                    String? taskDescription =
+                        descriptionController?.text.trim();
 
-                    if (taskName.isEmpty ||
+                    if (taskName!.isEmpty ||
                         selectedCategory == null ||
                         selectedTaskDate == null ||
                         selectedTaskTime == null) {
@@ -199,7 +202,7 @@ class AddTaskButton {
                     await DatabaseHelper().addTask(
                       userId,
                       taskName,
-                      taskDescription,
+                      taskDescription!,
                       0, // Task not completed initially
                       selectedCategory!,
                       formattedDate, // Store the date
@@ -220,7 +223,7 @@ class AddTaskButton {
                       Navigator.of(context).pop(); // Default: just pop
                     }
                   },
-                  // TODO: The button doesn't show (FIX IT)
+                  // TODO: Improve the style of the button
                   child: Text(
                     'Add Task',
                     style: TextStyle(
@@ -239,6 +242,8 @@ class AddTaskButton {
 
   static FloatingActionButton showAddTaskModal(BuildContext context,
       {required int? userId}) {
+    final titleController = TextEditingController();
+    final descriptionController = TextEditingController();
     return FloatingActionButton.small(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(90)),
       child: Icon(Icons.add, color: Colors.white),
@@ -247,7 +252,12 @@ class AddTaskButton {
         context: context,
         isScrollControlled: true, // Allows the modal to adjust for keyboard
         builder: (BuildContext context) {
-          return addTaskModal(context, userId: userId);
+          return addTaskModal(
+            context,
+            userId: userId,
+            titleController: titleController,
+            descriptionController: descriptionController,
+          );
         },
       ),
     );
