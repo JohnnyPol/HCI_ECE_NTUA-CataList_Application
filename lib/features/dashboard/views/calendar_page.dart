@@ -133,6 +133,7 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: appTheme.black900.withOpacity(0.2),
             blurRadius: 2.h,
             spreadRadius: 2.h,
