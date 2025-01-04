@@ -11,6 +11,7 @@ import '../features/dashboard/views/recap_page.dart';
 import '../features/dashboard/views/search_page.dart';
 import '../features/dashboard/views/calendar_page.dart';
 import '../features/dashboard/views/view_task_page.dart';
+import '../features/dashboard/views/daily_schedule.dart';
 
 class AppRoutes {
   static const String start = '/';
@@ -23,6 +24,7 @@ class AppRoutes {
   static const String calendar = '/calendar';
   static const String profile = '/profile';
   static const String viewTask = '/view_task';
+  static const String dailySchedule = '/daily_schedule';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -46,7 +48,12 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => ProfilePage());
       case viewTask:
         return my_Route(ViewTaskPage(), settings: settings);
-
+      case dailySchedule: // Handle the DailySchedulePage route
+        final args = settings.arguments as Map<String, dynamic>?;
+        final selectedDate = args?['selectedDate'] as DateTime?;
+        return MaterialPageRoute(
+          builder: (context) => DailySchedulePage(selectedDate: selectedDate!),
+        );
       default:
         return MaterialPageRoute(
           builder: (context) => const Scaffold(

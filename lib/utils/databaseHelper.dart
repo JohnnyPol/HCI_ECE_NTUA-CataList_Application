@@ -134,6 +134,17 @@ class DatabaseHelper {
         where: 'user_id = ? AND category = ?', whereArgs: [userId, category]);
   }
 
+  // Get tasks by date
+  Future<List<Map<String, dynamic>>> getTasksForDate(
+      int? userId, String date) async {
+    final db = await database;
+    return db.query(
+      'tasks',
+      where: 'user_id = ? AND date = ?',
+      whereArgs: [userId, date],
+    );
+  }
+
   // Add a new task
   Future<int> addTask(int? userId, String title, String description,
       int completed, String category, String date, String time) async {

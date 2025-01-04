@@ -1,3 +1,5 @@
+// daily_schedule.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
@@ -5,11 +7,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
-class DailySchedulePage extends StatelessWidget {
+class DailySchedulePage extends StatefulWidget {
   final DateTime selectedDate;
 
   DailySchedulePage({Key? key, required this.selectedDate}) : super(key: key);
 
+  @override
+  _DailySchedulePageState createState() => _DailySchedulePageState();
+}
+
+class _DailySchedulePageState extends State<DailySchedulePage> {
   AppBar _buildAppBar(BuildContext context) {
     final profileImagePath =
         Provider.of<ProfileProvider>(context).profileImagePath;
@@ -17,7 +24,7 @@ class DailySchedulePage extends StatelessWidget {
     return AppBar(
       toolbarHeight: 62,
       title: Text(
-        "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}", // Display selected day
+        "${widget.selectedDate.day}/${widget.selectedDate.month}/${widget.selectedDate.year}", // Display selected day
         style: TextStyle(
           color: Colors.black,
           fontSize: 24.h,
@@ -64,6 +71,7 @@ class DailySchedulePage extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: appTheme.black900.withOpacity(0.2),
             blurRadius: 2.h,
             spreadRadius: 2.h,
@@ -119,10 +127,37 @@ class DailySchedulePage extends StatelessWidget {
     );
   }
 
+  final dbHelper = DatabaseHelper();
+  List<Map<String, dynamic>> tasksForDay = [];
+  @override
+  void initState() {
+    super.initState();
+    _fetchTasksForDay();
+  }
+
+  Future<void> _fetchTasksForDay() async {
+    final tasks = await dbHelper.getTasksForDate(
+        currentUser?.id, widget.selectedDate.toIso8601String().split('T')[0]);
+    setState(() {
+      tasksForDay = tasks;
+    });
+  }
+
+  List<Map<String, dynamic>> _tasksForHour(int hour) {
+    return tasksForDay.where((task) {
+      final taskTime = TimeOfDay(
+        hour: int.parse(task['time'].split(':')[0]),
+        minute: int.parse(task['time'].split(':')[1]),
+      );
+      return taskTime.hour == hour;
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: AppDecoration.linearBGcolors, // Same background as CalendarPage
+      decoration:
+          AppDecoration.linearBGcolors, // Same background as CalendarPage
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: _buildAppBar(context),
@@ -132,6 +167,7 @@ class DailySchedulePage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(16.0.h),
                 child: Text(
+                  // TODO: Change the fontstyle of this text and add in general the fontstyles we want
                   "Organize your day!",
                   style: TextStyle(
                     fontSize: 20.h,
@@ -144,6 +180,7 @@ class DailySchedulePage extends StatelessWidget {
                   itemCount: 24,
                   itemBuilder: (context, index) {
                     final time = '${index.toString().padLeft(2, '0')}:00';
+                    final tasks = _tasksForHour(index);
                     return Padding(
                       padding: EdgeInsets.symmetric(
                           vertical: 4.0.h, horizontal: 16.0.h),
@@ -154,14 +191,61 @@ class DailySchedulePage extends StatelessWidget {
                               : Colors.blue[300],
                           borderRadius: BorderRadius.circular(8.h),
                         ),
-                        child: ListTile(
-                          title: Text(time),
-                          trailing: TextButton(
-                            onPressed: () {
-                              // Add task logic here
-                            },
-                            child: Text("Add Task"),
-                          ),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: Text(time),
+                              trailing: TextButton(
+                                onPressed: () {
+                                  // AddTaskButton.showAddTaskModal(
+                                  //   context,
+                                  //   userId: currentUser?.id,
+                                  // );
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (BuildContext context) {
+                                      return AddTaskButton.showAddTaskModal(
+                                          context,
+                                          userId: currentUser?.id);
+                                    },
+                                  );
+                                },
+                                child: Text("Add Task"),
+                              ),
+                            ),
+                            ...tasks.map(
+                              (task) => ListTile(
+                                title: Text(
+                                  task['title'],
+                                  style: TextStyle(
+                                    color: appTheme.black900,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'Roboto',
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  task['description'],
+                                  style: TextStyle(
+                                    color: appTheme.black900,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w100,
+                                    fontFamily: 'Roboto',
+                                  ),
+                                ),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: appTheme.EditTaskIconColor,
+                                  ),
+                                  onPressed: () {
+                                    // Add logic to edit this task
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     );

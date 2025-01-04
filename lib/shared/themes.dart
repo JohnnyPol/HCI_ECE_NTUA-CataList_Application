@@ -173,6 +173,8 @@ class LightCodeColors {
   Color get dailyBlocks => Color(0XFFBCD3E9);
 
   Color get NavBar => Color(0XFF7C81C3);
+
+  Color get EditTaskIconColor => Color.fromARGB(255, 78, 181, 237);
   // BlueGray
   // Gray
   // Indigo

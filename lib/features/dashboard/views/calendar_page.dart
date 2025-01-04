@@ -1,3 +1,5 @@
+// calendar_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
@@ -87,11 +89,10 @@ class _CalendarPageState extends State<CalendarPage> {
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay;
                   });
-                  Navigator.push(
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => DailySchedulePage(selectedDate: selectedDay),
-                    ),
+                    AppRoutes.dailySchedule,
+                    arguments: {'selectedDate': selectedDay},
                   );
                 },
                 selectedDayPredicate: (day) {

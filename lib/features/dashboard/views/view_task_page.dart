@@ -343,7 +343,8 @@ class ViewTaskPage extends StatelessWidget {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.edit_calendar, color: Colors.blue),
+              icon:
+                  Icon(Icons.edit_calendar, color: appTheme.EditTaskIconColor),
               onPressed: () async {
                 final pickedDate = await showDatePicker(
                   context: context,
