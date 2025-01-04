@@ -11,7 +11,7 @@ import 'dart:io';
 class RecapPage extends StatelessWidget {
   RecapPage({Key? key}) : super(key: key);
 
-  Widget _buildRecapBlock(BuildContext context, String imagePath) {
+  Widget _buildRecapBlock(BuildContext context, File imageFile) {
     return Container(
       padding: const EdgeInsets.only(
         top: 0,
@@ -24,8 +24,8 @@ class RecapPage extends StatelessWidget {
           Navigator.pushNamed(context, AppRoutes.weekly);
         },
         child: Container(
-          width: 120.h, // Adjust the width as needed
-          height: 160.h, // Adjust the height as needed
+          width: 120.h,
+          height: 160.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.h),
             color: Colors.white,
@@ -39,8 +39,8 @@ class RecapPage extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12.h),
-            child: Image.asset(
-              imagePath,
+            child: Image.file(
+              imageFile,
               fit: BoxFit.cover,
             ),
           ),
@@ -52,7 +52,6 @@ class RecapPage extends StatelessWidget {
   AppBar _buildAppBar(BuildContext context) {
     final profileImagePath =
         Provider.of<ProfileProvider>(context).profileImagePath;
-
     return AppBar(
       automaticallyImplyLeading: false,
       toolbarHeight: 62,
@@ -117,15 +116,32 @@ class RecapPage extends StatelessWidget {
                 SizedBox(height: 10.h),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Container(
-                    child: Row(
-                      children: <Widget>[
-                        _buildRecapBlock(context, 'assets/images/photo1.jpg'),
-                        _buildRecapBlock(context, 'assets/images/photo1.jpg'),
-                        _buildRecapBlock(context, 'assets/images/photo1.jpg'),
-                        _buildRecapBlock(context, 'assets/images/photo1.jpg'),
-                      ],
-                    ),
+                  child: FutureBuilder<List<File>>(
+                    future: PhotoStorage().getStoredPhotos(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(
+                          child: Text(
+                            "No photos available.",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      }
+
+                      final List<File> photos = snapshot.data!.take(4).toList();
+
+                      return Row(
+                        children: photos
+                            .map((photo) => _buildRecapBlock(context, photo))
+                            .toList(),
+                      );
+                    },
                   ),
                 ),
                 Container(
@@ -144,110 +160,18 @@ class RecapPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10.h),
-                // Daily Challenges Block
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Container(
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 0,
-                            left: 15,
-                            right: 0,
-                            bottom: 20,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, AppRoutes.monthly);
-                            },
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 0,
-                            left: 24,
-                            right: 0,
-                            bottom: 20,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, AppRoutes.monthly);
-                            },
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 0,
-                            left: 24,
-                            right: 0,
-                            bottom: 20,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, AppRoutes.monthly);
-                            },
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 0,
-                            left: 24,
-                            right: 0,
-                            bottom: 20,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, AppRoutes.monthly);
-                            },
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 0,
-                            left: 24,
-                            right: 0,
-                            bottom: 20,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, AppRoutes.monthly);
-                            },
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 0,
-                            left: 24,
-                            right: 0,
-                            bottom: 20,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, AppRoutes.monthly);
-                            },
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: Row(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.monthly);
+                        },
+                        child: Recap_Block(context),
+                      ),
+                      // Additional Recap_Blocks...
+                    ],
                   ),
                 ),
                 SizedBox(height: 42.h),

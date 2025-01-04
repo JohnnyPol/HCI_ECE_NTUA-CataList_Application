@@ -110,6 +110,20 @@ class _HomePageState extends State<HomePage> {
     return AppBar(
       automaticallyImplyLeading: false, // Remove back button
       toolbarHeight: 62,
+      leading: ElevatedButton(
+        onPressed: () async {
+          final photoStorage = PhotoStorage();
+          final String? photoPath = await photoStorage.captureAndSavePhoto();
+
+          if (photoPath != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Photo saved successfully!")),
+            );
+          }
+        },
+        child: Text("Capture Photo"),
+      ),
+
       actions: <Widget>[
         Padding(
           padding: EdgeInsets.only(right: 10.h),
