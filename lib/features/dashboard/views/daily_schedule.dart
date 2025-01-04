@@ -26,7 +26,7 @@ class _DailySchedulePageState extends State<DailySchedulePage> {
       title: Text(
         "${widget.selectedDate.day}/${widget.selectedDate.month}/${widget.selectedDate.year}", // Display selected day
         style: TextStyle(
-          color: Colors.black,
+          color: Colors.white,
           fontSize: 24.h,
           fontWeight: FontWeight.bold,
         ),
@@ -172,8 +172,11 @@ class _DailySchedulePageState extends State<DailySchedulePage> {
                   // TODO: Change the fontstyle of this text and add in general the fontstyles we want
                   "Organize your day!",
                   style: TextStyle(
-                    fontSize: 20.h,
+                    color: Colors.white,
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontFamily: 'Lobster',
                   ),
                 ),
               ),
