@@ -4,17 +4,241 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/shared/widgets/custom_text_form_field.dart'; // Adjust based on your project structure
 import 'package:flutter_application_1/app_export.dart'; // Adjust based on your project structure
 
-// TODO: Add another class to add a task in the daily scheduler
 class AddTaskButton {
-  static FloatingActionButton showAddTaskModal(BuildContext context,
-      {required int? userId}) {
+  static StatefulBuilder addTaskModal(
+    BuildContext context, {
+    required int? userId,
+    DateTime? selectedDate,
+    int? selectedHour,
+  }) {
     // Controllers and state variables
     final TextEditingController titleController = TextEditingController();
     final TextEditingController descriptionController = TextEditingController();
     String? selectedCategory;
-    DateTime? selectedDate;
-    TimeOfDay? selectedTime;
+    DateTime? selectedTaskDate = selectedDate;
+    TimeOfDay? selectedTaskTime =
+        selectedHour != null ? TimeOfDay(hour: selectedHour, minute: 0) : null;
 
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets, // Adjust for keyboard
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              color: appTheme.dailyBlocks,
+            ),
+            padding: const EdgeInsets.all(10.0),
+            height: 500,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Add Task',
+                      style: TextStyle(
+                        color: Color.fromARGB(209, 37, 68, 83),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Icon(Icons.close),
+                    ),
+                  ],
+                ),
+                Divider(thickness: 1.2),
+                SizedBox(height: 20),
+                // Task Name Field
+                CustomTextFormField(
+                  controller: titleController,
+                  fillColor: Colors.white,
+                  borderDecoration: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(width: 2, color: Colors.lightBlue.shade50),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  hintText: "Task Name",
+                  textInputAction: TextInputAction.done,
+                ),
+                SizedBox(height: 20),
+                // Task Description Field
+                CustomTextFormField(
+                  controller: descriptionController,
+                  fillColor: Colors.white,
+                  borderDecoration: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(width: 2, color: Colors.lightBlue.shade50),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  hintText: "Task Description",
+                  textInputAction: TextInputAction.done,
+                ),
+                SizedBox(height: 20),
+                // Category Dropdown
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  hint: Text("Select Category"),
+                  value: selectedCategory,
+                  items: ["Daily", "Challenge"]
+                      .map((category) => DropdownMenuItem<String>(
+                            value: category,
+                            child: Text(category),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCategory = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                // Date Picker
+                GestureDetector(
+                  onTap: () async {
+                    final pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: selectedTaskDate ?? DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2100),
+                    );
+                    if (pickedDate != null) {
+                      setState(() {
+                        selectedTaskDate = pickedDate;
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(selectedTaskDate != null
+                            ? "Date: ${selectedTaskDate?.toLocal()}"
+                                .split(' ')[0]
+                            : "Select Date"),
+                        Icon(Icons.calendar_today),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                // Time Picker
+                GestureDetector(
+                  onTap: () async {
+                    final pickedTime = await showTimePicker(
+                      context: context,
+                      initialTime: selectedTaskTime ?? TimeOfDay.now(),
+                    );
+                    if (pickedTime != null) {
+                      setState(() {
+                        selectedTaskTime = pickedTime;
+                      });
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(selectedTaskTime != null
+                            ? "Time: ${selectedTaskTime?.format(context)}"
+                            : "Select Time"),
+                        Icon(Icons.access_time),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                // Add Task Button
+                ElevatedButton(
+                  style: ButtonStyle(),
+                  onPressed: () async {
+                    String taskName = titleController.text.trim();
+                    String taskDescription = descriptionController.text.trim();
+
+                    if (taskName.isEmpty ||
+                        selectedCategory == null ||
+                        selectedTaskDate == null ||
+                        selectedTaskTime == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Please fill all fields')));
+                      return;
+                    }
+
+                    // Insert task into the database
+                    if (userId == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('No logged-in user found')));
+                      return;
+                    }
+
+                    // Split the date and time
+                    String formattedDate = "${selectedTaskDate!.toLocal()}"
+                        .split(' ')[0]; // Date in YYYY-MM-DD format
+                    String formattedTime =
+                        "${selectedTaskTime!.hour.toString().padLeft(2, '0')}:${selectedTaskTime!.minute.toString().padLeft(2, '0')}:00"; // Time in HH:MM:SS format
+
+                    await DatabaseHelper().addTask(
+                      userId,
+                      taskName,
+                      taskDescription,
+                      0, // Task not completed initially
+                      selectedCategory!,
+                      formattedDate, // Store the date
+                      formattedTime, // Store the time
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Task Added Successfully')));
+                    // TODO: The page doesn't reload after hitting the add task button.
+                    // Determine the current route and refresh accordingly
+                    final currentRoute = ModalRoute.of(context)?.settings.name;
+
+                    if (currentRoute == '/home') {
+                      Navigator.of(context).popAndPushNamed('/home');
+                    } else if (currentRoute == '/search') {
+                      Navigator.of(context).popAndPushNamed('/search');
+                    } else {
+                      Navigator.of(context).pop(); // Default: just pop
+                    }
+                  },
+                  // TODO: The button doesn't show (FIX IT)
+                  child: Text(
+                    'Add Task',
+                    style: TextStyle(
+                      color: appTheme.black900,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static FloatingActionButton showAddTaskModal(BuildContext context,
+      {required int? userId}) {
     return FloatingActionButton.small(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(90)),
       child: Icon(Icons.add, color: Colors.white),
@@ -23,220 +247,7 @@ class AddTaskButton {
         context: context,
         isScrollControlled: true, // Allows the modal to adjust for keyboard
         builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return Padding(
-                padding:
-                    MediaQuery.of(context).viewInsets, // Adjust for keyboard
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    color: appTheme.dailyBlocks,
-                  ),
-                  padding: const EdgeInsets.all(10.0),
-                  height: 500,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Add Task',
-                            style: TextStyle(
-                              color: Color.fromARGB(209, 37, 68, 83),
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Icon(Icons.close),
-                          ),
-                        ],
-                      ),
-                      Divider(thickness: 1.2),
-                      SizedBox(height: 20),
-                      // Task Name Field
-                      CustomTextFormField(
-                        controller: titleController,
-                        fillColor: Colors.white,
-                        borderDecoration: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 2, color: Colors.lightBlue.shade50),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        hintText: "Task Name",
-                        textInputAction: TextInputAction.done,
-                      ),
-                      SizedBox(height: 20),
-                      // Task Description Field
-                      CustomTextFormField(
-                        controller: descriptionController,
-                        fillColor: Colors.white,
-                        borderDecoration: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 2, color: Colors.lightBlue.shade50),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        hintText: "Task Description",
-                        textInputAction: TextInputAction.done,
-                      ),
-                      SizedBox(height: 20),
-                      // Category Dropdown
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        hint: Text("Select Category"),
-                        value: selectedCategory,
-                        items: ["Daily", "Challenge"]
-                            .map((category) => DropdownMenuItem<String>(
-                                  value: category,
-                                  child: Text(category),
-                                ))
-                            .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            selectedCategory = value;
-                          });
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      // Date Picker
-                      GestureDetector(
-                        onTap: () async {
-                          final pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: selectedDate ?? DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2100),
-                          );
-                          if (pickedDate != null) {
-                            setState(() {
-                              selectedDate = pickedDate;
-                            });
-                          }
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(selectedDate != null
-                                  ? "Date: ${selectedDate?.toLocal()}"
-                                      .split(' ')[0]
-                                  : "Select Date"),
-                              Icon(Icons.calendar_today),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      // Time Picker
-                      GestureDetector(
-                        onTap: () async {
-                          final pickedTime = await showTimePicker(
-                            context: context,
-                            initialTime: selectedTime ?? TimeOfDay.now(),
-                          );
-                          if (pickedTime != null) {
-                            setState(() {
-                              selectedTime = pickedTime;
-                            });
-                          }
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(selectedTime != null
-                                  ? "Time: ${selectedTime?.format(context)}"
-                                  : "Select Time"),
-                              Icon(Icons.access_time),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      // Add Task Button
-                      ElevatedButton(
-                        onPressed: () async {
-                          String taskName = titleController.text.trim();
-                          String taskDescription =
-                              descriptionController.text.trim();
-
-                          if (taskName.isEmpty ||
-                              selectedCategory == null ||
-                              selectedDate == null ||
-                              selectedTime == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('Please fill all fields')));
-                            return;
-                          }
-
-                          // Insert task into the database
-                          if (userId == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('No logged-in user found')));
-                            return;
-                          }
-
-                          // Split the date and time
-                          String formattedDate = "${selectedDate!.toLocal()}"
-                              .split(' ')[0]; // Date in YYYY-MM-DD format
-                          String formattedTime =
-                              "${selectedTime!.hour.toString().padLeft(2, '0')}:${selectedTime!.minute.toString().padLeft(2, '0')}:00"; // Time in HH:MM:SS format
-
-                          await DatabaseHelper().addTask(
-                            userId,
-                            taskName,
-                            taskDescription,
-                            0, // Task not completed initially
-                            selectedCategory!,
-                            formattedDate, // Store the date
-                            formattedTime, // Store the time
-                          );
-
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Task Added Successfully')));
-                          // TODO: The page doesn't reload after hitting the add task button.
-                          // Determine the current route and refresh accordingly
-                          final currentRoute =
-                              ModalRoute.of(context)?.settings.name;
-
-                          if (currentRoute == '/home') {
-                            Navigator.of(context).popAndPushNamed('/home');
-                          } else if (currentRoute == '/search') {
-                            Navigator.of(context).popAndPushNamed('/search');
-                          } else {
-                            Navigator.of(context).pop(); // Default: just pop
-                          }
-                        },
-                        // TODO: The button doesn't show (FIX IT)
-                        child: Text('Add Task'),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
+          return addTaskModal(context, userId: userId);
         },
       ),
     );

@@ -197,17 +197,16 @@ class _DailySchedulePageState extends State<DailySchedulePage> {
                               title: Text(time),
                               trailing: TextButton(
                                 onPressed: () {
-                                  // AddTaskButton.showAddTaskModal(
-                                  //   context,
-                                  //   userId: currentUser?.id,
-                                  // );
                                   showModalBottomSheet(
                                     context: context,
                                     isScrollControlled: true,
                                     builder: (BuildContext context) {
-                                      return AddTaskButton.showAddTaskModal(
-                                          context,
-                                          userId: currentUser?.id);
+                                      return AddTaskButton.addTaskModal(
+                                        context,
+                                        userId: currentUser?.id,
+                                        selectedDate: widget.selectedDate,
+                                        selectedHour: index,
+                                      );
                                     },
                                   );
                                 },
