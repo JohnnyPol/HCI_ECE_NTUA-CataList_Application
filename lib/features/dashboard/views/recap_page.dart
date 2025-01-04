@@ -1,7 +1,5 @@
 // recap_page.dart
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
@@ -49,16 +47,6 @@ class RecapPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  // Mock list of local image paths (replace this with actual storage logic)
-  final List<String> localImagePaths = [
-    'assets/images/photo1.jpg', // Add the paths to stored images here
-  ];
-
-  String getRandomImage() {
-    final random = Random();
-    return localImagePaths[random.nextInt(localImagePaths.length)];
   }
 
   AppBar _buildAppBar(BuildContext context) {

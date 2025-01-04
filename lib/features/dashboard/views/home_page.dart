@@ -8,6 +8,8 @@ import 'package:flutter_application_1/shared/widgets/list_item.dart';
 import 'dart:io';
 import 'package:flutter_application_1/shared/widgets/custom_icon_button.dart';
 
+// TODO: Add a "take photo" button at the top left of the screen
+
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
