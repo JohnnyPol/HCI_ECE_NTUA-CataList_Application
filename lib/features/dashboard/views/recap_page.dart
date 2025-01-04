@@ -87,8 +87,14 @@ class RecapPage extends StatelessWidget {
                             right: 0,
                             bottom: 20,
                           ),
-                          child: Recap_Block(
-                            context,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.weekly);
+                            },
+                            child: Recap_Block(
+                              context,
+                            ),
                           ),
                         ),
                         Container(
@@ -98,8 +104,14 @@ class RecapPage extends StatelessWidget {
                             right: 0,
                             bottom: 20,
                           ),
-                          child: Recap_Block(
-                            context,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.weekly);
+                            },
+                            child: Recap_Block(
+                              context,
+                            ),
                           ),
                         ),
                         Container(
@@ -109,8 +121,14 @@ class RecapPage extends StatelessWidget {
                             right: 0,
                             bottom: 20,
                           ),
-                          child: Recap_Block(
-                            context,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.weekly);
+                            },
+                            child: Recap_Block(
+                              context,
+                            ),
                           ),
                         ),
                         Container(
@@ -120,8 +138,14 @@ class RecapPage extends StatelessWidget {
                             right: 0,
                             bottom: 20,
                           ),
-                          child: Recap_Block(
-                            context,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.weekly);
+                            },
+                            child: Recap_Block(
+                              context,
+                            ),
                           ),
                         ),
                       ],
@@ -157,8 +181,14 @@ class RecapPage extends StatelessWidget {
                             right: 0,
                             bottom: 20,
                           ),
-                          child: Recap_Block(
-                            context,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.monthly);
+                            },
+                            child: Recap_Block(
+                              context,
+                            ),
                           ),
                         ),
                         Container(
@@ -168,8 +198,14 @@ class RecapPage extends StatelessWidget {
                             right: 0,
                             bottom: 20,
                           ),
-                          child: Recap_Block(
-                            context,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.monthly);
+                            },
+                            child: Recap_Block(
+                              context,
+                            ),
                           ),
                         ),
                         Container(
@@ -179,8 +215,14 @@ class RecapPage extends StatelessWidget {
                             right: 0,
                             bottom: 20,
                           ),
-                          child: Recap_Block(
-                            context,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.monthly);
+                            },
+                            child: Recap_Block(
+                              context,
+                            ),
                           ),
                         ),
                         Container(
@@ -190,8 +232,14 @@ class RecapPage extends StatelessWidget {
                             right: 0,
                             bottom: 20,
                           ),
-                          child: Recap_Block(
-                            context,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.monthly);
+                            },
+                            child: Recap_Block(
+                              context,
+                            ),
                           ),
                         ),
                         Container(
@@ -201,8 +249,14 @@ class RecapPage extends StatelessWidget {
                             right: 0,
                             bottom: 20,
                           ),
-                          child: Recap_Block(
-                            context,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.monthly);
+                            },
+                            child: Recap_Block(
+                              context,
+                            ),
                           ),
                         ),
                         Container(
@@ -212,8 +266,14 @@ class RecapPage extends StatelessWidget {
                             right: 0,
                             bottom: 20,
                           ),
-                          child: Recap_Block(
-                            context,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.monthly);
+                            },
+                            child: Recap_Block(
+                              context,
+                            ),
                           ),
                         ),
                       ],
@@ -252,52 +312,43 @@ Widget _buildBottomNavigationBar(BuildContext context) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        // Home Button
         IconButton(
           icon: SvgPicture.asset(
-            ImageConstant.imgHome, // Replace with your SVG path
+            ImageConstant.imgHome,
             height: 24.h,
             width: 24.h,
           ),
           onPressed: () {
-            Navigator.pushNamed(context, '/home'); // Handle routing
+            Navigator.pushNamed(context, '/home');
           },
         ),
-
-        // Search Button
         IconButton(
           icon: SvgPicture.asset(
-            ImageConstant.imgSearch, // Replace with your SVG path
+            ImageConstant.imgSearch,
             height: 37.h,
             width: 37.h,
           ),
           onPressed: () {
-            Navigator.pushNamed(context, '/search'); // Handle routing
+            Navigator.pushNamed(context, '/search');
           },
         ),
-
-        // Add Task Button
         AddTaskButton.showAddTaskModal(context, userId: currentUser?.id),
-
-        // Recap Button
         IconButton(
           icon: SvgPicture.asset(
-            ImageConstant.imgRecapPressed, // Replace with your SVG path
+            ImageConstant.imgRecapPressed,
             height: 35.h,
             width: 35.h,
           ),
           onPressed: () {},
         ),
-
-        // Calendar Button
         IconButton(
           icon: SvgPicture.asset(
-            ImageConstant.imgCalendar, // Replace with your SVG path
+            ImageConstant.imgCalendar,
             height: 35.h,
             width: 35.h,
           ),
           onPressed: () {
-            Navigator.pushNamed(context, '/calendar'); // Handle routing
+            Navigator.pushNamed(context, '/calendar');
           },
         ),
       ],
