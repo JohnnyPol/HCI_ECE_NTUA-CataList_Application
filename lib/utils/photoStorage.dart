@@ -39,10 +39,28 @@ class PhotoStorage {
         .toList();
   }
 
-  // Retrieve weekly photos
-  Future<List<List<File>>> getWeeklyPhotos() async {
+  // Retrieve photos for the current user
+  Future<List<File>> getUserPhotos({required int? userId}) async {
+    if (userId == null) {
+      return []; // Return an empty list if no userId is provided
+    }
+
     final Directory appDir = await getApplicationDocumentsDirectory();
     final List<FileSystemEntity> files = appDir.listSync();
+
+    // Filter photos by userId
+    return files
+        .where((file) =>
+            file is File &&
+            file.path.endsWith(".jpg") &&
+            file.path.contains("photo_user$userId"))
+        .map((file) => File(file.path))
+        .toList();
+  }
+
+  // Retrieve weekly photos
+  Future<List<List<File>>> getWeeklyPhotos({required int? userId}) async {
+    final List<File> files = await getUserPhotos(userId: userId);
 
     // Current time for reference
     final DateTime now = DateTime.now();
@@ -51,28 +69,25 @@ class PhotoStorage {
     final List<List<File>> weeklyPhotos = List.generate(4, (_) => []);
 
     for (var file in files) {
-      if (file is File && file.path.endsWith(".jpg")) {
-        final DateTime fileDate = _extractDateFromFileName(file.path);
-        final Duration difference = now.difference(fileDate);
+      final DateTime fileDate = _extractDateFromFileName(file.path);
+      final Duration difference = now.difference(fileDate);
 
-        if (difference.inDays < 7) {
-          weeklyPhotos[0].add(file);
-        } else if (difference.inDays < 14) {
-          weeklyPhotos[1].add(file);
-        } else if (difference.inDays < 21) {
-          weeklyPhotos[2].add(file);
-        } else if (difference.inDays < 28) {
-          weeklyPhotos[3].add(file);
-        }
+      if (difference.inDays < 7) {
+        weeklyPhotos[0].add(file);
+      } else if (difference.inDays < 14) {
+        weeklyPhotos[1].add(file);
+      } else if (difference.inDays < 21) {
+        weeklyPhotos[2].add(file);
+      } else if (difference.inDays < 28) {
+        weeklyPhotos[3].add(file);
       }
     }
     return weeklyPhotos;
   }
 
   // Retrieve monthly photos
-  Future<List<List<File>>> getMonthlyPhotos() async {
-    final Directory appDir = await getApplicationDocumentsDirectory();
-    final List<FileSystemEntity> files = appDir.listSync();
+  Future<List<List<File>>> getMonthlyPhotos({required int? userId}) async {
+    final List<File> files = await getUserPhotos(userId: userId);
 
     // Current time for reference
     final DateTime now = DateTime.now();
@@ -81,24 +96,22 @@ class PhotoStorage {
     final List<List<File>> monthlyPhotos = List.generate(6, (_) => []);
 
     for (var file in files) {
-      if (file is File && file.path.endsWith(".jpg")) {
-        final DateTime fileDate = _extractDateFromFileName(file.path);
-        final int monthDifference =
-            (now.year - fileDate.year) * 12 + (now.month - fileDate.month);
+      final DateTime fileDate = _extractDateFromFileName(file.path);
+      final int monthDifference =
+          (now.year - fileDate.year) * 12 + (now.month - fileDate.month);
 
-        if (monthDifference == 0) {
-          monthlyPhotos[0].add(file);
-        } else if (monthDifference == 1) {
-          monthlyPhotos[1].add(file);
-        } else if (monthDifference == 2) {
-          monthlyPhotos[2].add(file);
-        } else if (monthDifference == 3) {
-          monthlyPhotos[3].add(file);
-        } else if (monthDifference == 4) {
-          monthlyPhotos[4].add(file);
-        } else if (monthDifference == 5) {
-          monthlyPhotos[5].add(file);
-        }
+      if (monthDifference == 0) {
+        monthlyPhotos[0].add(file);
+      } else if (monthDifference == 1) {
+        monthlyPhotos[1].add(file);
+      } else if (monthDifference == 2) {
+        monthlyPhotos[2].add(file);
+      } else if (monthDifference == 3) {
+        monthlyPhotos[3].add(file);
+      } else if (monthDifference == 4) {
+        monthlyPhotos[4].add(file);
+      } else if (monthDifference == 5) {
+        monthlyPhotos[5].add(file);
       }
     }
     return monthlyPhotos;

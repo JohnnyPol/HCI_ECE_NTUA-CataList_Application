@@ -97,6 +97,141 @@ class ProfilePage extends StatelessWidget {
                   ],
                 ),
               ),
+
+              // Add logout button
+              ElevatedButton.icon(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          "Log out",
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
+                        content: Text(
+                          "Are you sure you want to Log?",
+                        ),
+                        actions: [
+                          // Cancel Logout
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                          // Logout
+                          ElevatedButton(
+                            onPressed: () async {
+                              Navigator.pushNamed(context, AppRoutes.start);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey,
+                            ),
+                            child: Text(
+                              "Logout",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                icon: Icon(
+                  Icons.logout,
+                ),
+                label: Text(
+                  "Logout",
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  minimumSize: Size(double.maxFinite, 60),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+
+              // Add Delete all Photos button
+              ElevatedButton.icon(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          "Confirm Deletion",
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
+                        content: Text(
+                          "Are you sure you want to delete all your photos? All your data will be permanently lost.",
+                        ),
+                        actions: [
+                          // Cancel deleting photos
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                          // Delete photos
+                          ElevatedButton(
+                            onPressed: () async {
+                              // Delete all photos method
+                              await PhotoStorage().deleteAllPhotos();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content:
+                                        Text("All photos have been deleted.")),
+                              );
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: Text(
+                              "Delete",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                icon: Icon(
+                  Icons.delete_forever,
+                  color: Colors.white,
+                ),
+                label: Text(
+                  "Delete All Photos",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  minimumSize: Size(double.maxFinite, 60),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+
               // Add Delete Account Button
               ElevatedButton(
                 onPressed: () {

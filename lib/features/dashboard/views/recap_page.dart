@@ -128,7 +128,8 @@ class RecapPage extends StatelessWidget {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: FutureBuilder<List<List<File>>>(
-                    future: PhotoStorage().getWeeklyPhotos(),
+                    future:
+                        PhotoStorage().getWeeklyPhotos(userId: currentUser?.id),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
@@ -191,7 +192,8 @@ class RecapPage extends StatelessWidget {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: FutureBuilder<List<List<File>>>(
-                    future: PhotoStorage().getMonthlyPhotos(),
+                    future: PhotoStorage()
+                        .getMonthlyPhotos(userId: currentUser?.id),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
