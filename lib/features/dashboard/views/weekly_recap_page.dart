@@ -102,6 +102,7 @@ class _PageViewWithIndicatorState extends State<PageViewWithIndicator> {
           margin: EdgeInsets.symmetric(horizontal: 20.h),
           padding: EdgeInsets.all(15.h),
           decoration: BoxDecoration(
+            // ignore: deprecated_member_use
             color: Colors.white.withOpacity(0.2),
             borderRadius: BorderRadius.circular(15.h),
           ),
@@ -244,6 +245,7 @@ Widget _buildBottomNavigationBar(BuildContext context) {
       ),
       boxShadow: [
         BoxShadow(
+          // ignore: deprecated_member_use
           color: appTheme.black900.withOpacity(0.2),
           blurRadius: 2.h,
           spreadRadius: 2.h,
