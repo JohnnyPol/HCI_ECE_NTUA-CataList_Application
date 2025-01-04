@@ -1,3 +1,7 @@
+// recap_page.dart
+
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
@@ -8,6 +12,54 @@ import 'dart:io';
 // ignore: must_be_immutable
 class RecapPage extends StatelessWidget {
   RecapPage({Key? key}) : super(key: key);
+
+  Widget _buildRecapBlock(BuildContext context, String imagePath) {
+    return Container(
+      padding: const EdgeInsets.only(
+        top: 0,
+        left: 15,
+        right: 0,
+        bottom: 20,
+      ),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, AppRoutes.weekly);
+        },
+        child: Container(
+          width: 120.h, // Adjust the width as needed
+          height: 160.h, // Adjust the height as needed
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.h),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12.h),
+            child: Image.asset(
+              imagePath,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Mock list of local image paths (replace this with actual storage logic)
+  final List<String> localImagePaths = [
+    'assets/images/photo1.jpg', // Add the paths to stored images here
+  ];
+
+  String getRandomImage() {
+    final random = Random();
+    return localImagePaths[random.nextInt(localImagePaths.length)];
+  }
 
   AppBar _buildAppBar(BuildContext context) {
     final profileImagePath =
@@ -80,74 +132,10 @@ class RecapPage extends StatelessWidget {
                   child: Container(
                     child: Row(
                       children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 0,
-                            left: 15,
-                            right: 0,
-                            bottom: 20,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.weekly);
-                            },
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 0,
-                            left: 24,
-                            right: 0,
-                            bottom: 20,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.weekly);
-                            },
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 0,
-                            left: 24,
-                            right: 0,
-                            bottom: 20,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.weekly);
-                            },
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 0,
-                            left: 24,
-                            right: 0,
-                            bottom: 20,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.weekly);
-                            },
-                            child: Recap_Block(
-                              context,
-                            ),
-                          ),
-                        ),
+                        _buildRecapBlock(context, 'assets/images/photo1.jpg'),
+                        _buildRecapBlock(context, 'assets/images/photo1.jpg'),
+                        _buildRecapBlock(context, 'assets/images/photo1.jpg'),
+                        _buildRecapBlock(context, 'assets/images/photo1.jpg'),
                       ],
                     ),
                   ),
@@ -183,8 +171,7 @@ class RecapPage extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.monthly);
+                              Navigator.pushNamed(context, AppRoutes.monthly);
                             },
                             child: Recap_Block(
                               context,
@@ -200,8 +187,7 @@ class RecapPage extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.monthly);
+                              Navigator.pushNamed(context, AppRoutes.monthly);
                             },
                             child: Recap_Block(
                               context,
@@ -217,8 +203,7 @@ class RecapPage extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.monthly);
+                              Navigator.pushNamed(context, AppRoutes.monthly);
                             },
                             child: Recap_Block(
                               context,
@@ -234,8 +219,7 @@ class RecapPage extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.monthly);
+                              Navigator.pushNamed(context, AppRoutes.monthly);
                             },
                             child: Recap_Block(
                               context,
@@ -251,8 +235,7 @@ class RecapPage extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.monthly);
+                              Navigator.pushNamed(context, AppRoutes.monthly);
                             },
                             child: Recap_Block(
                               context,
@@ -268,8 +251,7 @@ class RecapPage extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.monthly);
+                              Navigator.pushNamed(context, AppRoutes.monthly);
                             },
                             child: Recap_Block(
                               context,
