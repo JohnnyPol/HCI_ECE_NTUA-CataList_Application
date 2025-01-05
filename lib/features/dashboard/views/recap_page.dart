@@ -250,6 +250,7 @@ class RecapPage extends StatelessWidget {
 }
 
 Widget _buildBottomNavigationBar(BuildContext context) {
+  final currentRoute = ModalRoute.of(context)?.settings.name;
   return Container(
     decoration: BoxDecoration(
       color: appTheme.NavBar,
@@ -290,7 +291,8 @@ Widget _buildBottomNavigationBar(BuildContext context) {
             Navigator.pushNamed(context, '/search');
           },
         ),
-        AddTaskButton.showAddTaskModal(context, userId: currentUser?.id),
+        AddTaskButton.showAddTaskModal(context,
+            userId: currentUser?.id, currentRoute: currentRoute!),
         IconButton(
           icon: SvgPicture.asset(
             ImageConstant.imgRecapPressed,

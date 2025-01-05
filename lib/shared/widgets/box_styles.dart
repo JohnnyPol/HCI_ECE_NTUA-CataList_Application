@@ -128,8 +128,6 @@ Widget Activity_Block(BuildContext context,
 
 //Quote Block
 Widget Quote_Block(BuildContext context, Map<String, double> dataMap) {
-  // TODO: Make the text white and style the pie chart.
-
   return FutureBuilder<String>(
     future: QuoteProvider.fetchDailyQuote(),
     builder: (context, snapshot) {
@@ -168,29 +166,51 @@ Widget Quote_Block(BuildContext context, Map<String, double> dataMap) {
                 height: 70.h,
                 width: 100.h,
                 child: PieChart(
+                  dataMap:
+                      dataMap, // Ensure dataMap contains 'Completed' and 'Incomplete' keys
                   colorList: [
-                    appTheme.homeBGcolor2,
-                    const Color.fromARGB(255, 241, 238, 248),
+                    appTheme.homeBGcolor2, // Color for completed tasks
+                    const Color.fromARGB(
+                        255, 241, 238, 248), // Color for incomplete tasks
                   ],
-                  dataMap: dataMap,
-                  legendOptions:
-                      LegendOptions(showLegends: false), // Hide legends
+                  legendOptions: LegendOptions(
+                    showLegends: false, // Didn't like how it looked
+                    legendTextStyle: TextStyle(
+                      fontSize: 4.h, // Match app scaling
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    legendPosition: LegendPosition.left,
+                  ),
                   chartValuesOptions: ChartValuesOptions(
                     chartValueBackgroundColor: Colors.transparent,
-                    showChartValuesInPercentage: true,
-                    showChartValuesOutside: false,
+                    showChartValuesInPercentage: true, // Show percentage values
+                    chartValueStyle: TextStyle(
+                      fontSize: 12.h,
+                      fontWeight: FontWeight.w600,
+                      color: appTheme.black900,
+                    ),
+                    decimalPlaces: 1,
                   ),
+                  chartRadius:
+                      120.h, // Adjust radius based on your app's scaling
+                  ringStrokeWidth:
+                      30, // Customize ring width for a sleek appearance
+                  animationDuration:
+                      const Duration(milliseconds: 800), // Smooth animation
                 ),
               ),
-              SizedBox(width: 16.h),
+              SizedBox(width: 6.h),
               // Daily Quote
               Expanded(
                 child: Text(
                   quoteText,
                   style: TextStyle(
                     fontSize: 16.h,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontStyle: FontStyle.italic,
+                    fontFamily: 'Roboto',
                   ),
                 ),
               ),

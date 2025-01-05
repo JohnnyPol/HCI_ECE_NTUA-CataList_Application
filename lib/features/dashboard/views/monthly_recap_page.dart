@@ -26,97 +26,95 @@ class MonthlyRecapPage extends StatelessWidget {
   }
 
   Widget _buildMonthlyRecapContent(BuildContext context) {
-  final profileImagePath =
-      Provider.of<ProfileProvider>(context).profileImagePath;
+    final profileImagePath =
+        Provider.of<ProfileProvider>(context).profileImagePath;
 
-  // Mock database images list (replace this with your actual database query)
-  final List<String> imagePaths = [
-    'assets/images/photo1.jpg',
-    'assets/images/photo1.jpg',
-    'assets/images/photo1.jpg',
-    'assets/images/photo1.jpg'
-  ];
+    // Mock database images list (replace this with your actual database query)
+    final List<String> imagePaths = [
+      'assets/images/photo1.jpg',
+      'assets/images/photo1.jpg',
+      'assets/images/photo1.jpg',
+      'assets/images/photo1.jpg'
+    ];
 
-  return Column(
-    children: [
-      AppBar(
-        toolbarHeight: 62,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          "Monthly Recap",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 16.h,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 10.h),
-            child: CustomIconButton(
-              height: 45.h,
-              width: 45.h,
-              padding: EdgeInsets.all(5.h),
-              decoration: IconButtonStyleHelper.none,
-              child: CircleAvatar(
-                radius: 20.h,
-                backgroundColor: Colors.grey[300],
-                backgroundImage: profileImagePath != null
-                    ? FileImage(File(profileImagePath))
-                    : null,
-                child: profileImagePath == null
-                    ? Icon(Icons.person, size: 20.h, color: Colors.black)
-                    :null
-              ),
-              onTap: () {
-                Navigator.pushNamed(context, AppRoutes.profile);
-              },
+    return Column(
+      children: [
+        AppBar(
+          toolbarHeight: 62,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: Text(
+            "Monthly Recap",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16.h,
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ],
-      ),
-      SizedBox(height: 50.h),
-      Container(
-        margin: EdgeInsets.symmetric(horizontal: 20.h),
-        padding: EdgeInsets.all(15.h),
-        decoration: BoxDecoration(
-          // ignore: deprecated_member_use
-          color: Colors.white.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(15.h),
-        ),
-        height: 300.h,
-        child: imagePaths.isEmpty
-            ? Center(
-                child: Text(
-                  "No images available",
-                  style: TextStyle(color: Colors.white, fontSize: 16.h),
-                ),
-              )
-            : ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: imagePaths.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.h),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15.h),
-                      child: Image.asset(
-                        imagePaths[index],
-                        fit: BoxFit.cover,
-                        width: 200.h, // Adjust width as needed
-                        height: 200.h, // Adjust height as needed
-                      ),
-                    ),
-                  );
+          centerTitle: true,
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 10.h),
+              child: CustomIconButton(
+                height: 45.h,
+                width: 45.h,
+                padding: EdgeInsets.all(5.h),
+                decoration: IconButtonStyleHelper.none,
+                child: CircleAvatar(
+                    radius: 20.h,
+                    backgroundColor: Colors.grey[300],
+                    backgroundImage: profileImagePath != null
+                        ? FileImage(File(profileImagePath))
+                        : null,
+                    child: profileImagePath == null
+                        ? Icon(Icons.person, size: 20.h, color: Colors.black)
+                        : null),
+                onTap: () {
+                  Navigator.pushNamed(context, AppRoutes.profile);
                 },
               ),
-      ),
-    ],
-  );
-}
-
+            ),
+          ],
+        ),
+        SizedBox(height: 50.h),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 20.h),
+          padding: EdgeInsets.all(15.h),
+          decoration: BoxDecoration(
+            // ignore: deprecated_member_use
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(15.h),
+          ),
+          height: 300.h,
+          child: imagePaths.isEmpty
+              ? Center(
+                  child: Text(
+                    "No images available",
+                    style: TextStyle(color: Colors.white, fontSize: 16.h),
+                  ),
+                )
+              : ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: imagePaths.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.h),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.h),
+                        child: Image.asset(
+                          imagePaths[index],
+                          fit: BoxFit.cover,
+                          width: 200.h, // Adjust width as needed
+                          height: 200.h, // Adjust height as needed
+                        ),
+                      ),
+                    );
+                  },
+                ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildScrollableTaskList(BuildContext context) {
     return ListView.builder(
@@ -139,6 +137,7 @@ class MonthlyRecapPage extends StatelessWidget {
   }
 
   Widget _buildBottomNavigationBar(BuildContext context) {
+    final currentRoute = ModalRoute.of(context)?.settings.name;
     return Container(
       decoration: BoxDecoration(
         color: appTheme.NavBar,
@@ -179,7 +178,8 @@ class MonthlyRecapPage extends StatelessWidget {
               Navigator.pushNamed(context, '/search');
             },
           ),
-          AddTaskButton.showAddTaskModal(context, userId: currentUser?.id),
+          AddTaskButton.showAddTaskModal(context,
+              userId: currentUser?.id, currentRoute: currentRoute!),
           IconButton(
             icon: SvgPicture.asset(
               ImageConstant.imgRecapPressed,

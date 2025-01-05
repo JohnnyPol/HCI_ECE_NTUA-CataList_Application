@@ -70,16 +70,20 @@ class ViewTaskPage extends StatelessWidget {
                           Navigator.pop(context); // Close the modal
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: appTheme.dailyBlocks,
+                          backgroundColor: Colors.grey[200],
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.h),
                           ),
+                          padding: EdgeInsets.symmetric(
+                            vertical: 10.h,
+                            horizontal: 20.h,
+                          ),
                         ),
-                        // TODO: Style the buttons
                         child: Text(
                           "Cancel",
                           style: TextStyle(
                             color: Colors.red,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
@@ -92,8 +96,18 @@ class ViewTaskPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.h),
                           ),
+                          padding: EdgeInsets.symmetric(
+                            vertical: 10.h,
+                            horizontal: 20.h,
+                          ),
                         ),
-                        child: Text("Save"),
+                        child: Text(
+                          "Save",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -419,6 +433,7 @@ class ViewTaskPage extends StatelessWidget {
   }
 
   Widget _buildBottomNavigationBar(BuildContext context) {
+    final currentRoute = ModalRoute.of(context)?.settings.name;
     return Container(
       decoration: BoxDecoration(
         color: appTheme.NavBar,
@@ -464,7 +479,8 @@ class ViewTaskPage extends StatelessWidget {
           ),
 
           // Add Task Button
-          AddTaskButton.showAddTaskModal(context, userId: currentUser?.id),
+          AddTaskButton.showAddTaskModal(context,
+              userId: currentUser?.id, currentRoute: currentRoute!),
 
           // Recap Button
           IconButton(

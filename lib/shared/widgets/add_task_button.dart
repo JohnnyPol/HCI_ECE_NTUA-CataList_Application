@@ -2,25 +2,25 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/shared/widgets/custom_text_form_field.dart'; // Adjust based on your project structure
-import 'package:flutter_application_1/app_export.dart'; // Adjust based on your project structure
+import 'package:flutter_application_1/app_export.dart';
+import 'package:intl/intl.dart'; // Adjust based on your project structure
 
 class AddTaskButton {
   static StatefulBuilder addTaskModal(
     BuildContext context, {
+    String? currentRoute,
     required int? userId,
     DateTime? selectedDate,
     int? selectedHour,
     TextEditingController? titleController,
     TextEditingController? descriptionController,
   }) {
-    // Use existing controllers or create new ones if not provided
     titleController ??= TextEditingController();
     descriptionController ??= TextEditingController();
     String? selectedCategory;
     DateTime? selectedTaskDate = selectedDate;
     TimeOfDay? selectedTaskTime =
         selectedHour != null ? TimeOfDay(hour: selectedHour, minute: 0) : null;
-
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
         return Padding(
@@ -129,8 +129,7 @@ class AddTaskButton {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(selectedTaskDate != null
-                            ? "Date: ${selectedTaskDate?.toLocal()}"
-                                .split(' ')[0]
+                            ? "Date: ${DateFormat('dd/MM/yyyy').format(selectedTaskDate!)}"
                             : "Select Date"),
                         Icon(Icons.calendar_today),
                       ],
@@ -170,8 +169,20 @@ class AddTaskButton {
                 ),
                 SizedBox(height: 20),
                 // Add Task Button
+
                 ElevatedButton(
-                  style: ButtonStyle(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: appTheme.startBGcolor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(15.h), // Rounded corners
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 15.h,
+                      horizontal: 20.h,
+                    ), // Padding for better touch area
+                    elevation: 5, // Slight shadow for better visibility
+                  ),
                   onPressed: () async {
                     String? taskName = titleController?.text.trim();
                     String? taskDescription =
@@ -213,8 +224,7 @@ class AddTaskButton {
                         SnackBar(content: Text('Task Added Successfully')));
                     // TODO: The page doesn't reload after hitting the add task button.
                     // Determine the current route and refresh accordingly
-                    final currentRoute = ModalRoute.of(context)?.settings.name;
-
+                    //print("Current Route: $currentRoute");
                     if (currentRoute == '/home') {
                       Navigator.of(context).popAndPushNamed('/home');
                     } else if (currentRoute == '/search') {
@@ -223,12 +233,12 @@ class AddTaskButton {
                       Navigator.of(context).pop(); // Default: just pop
                     }
                   },
-                  // TODO: Improve the style of the button
                   child: Text(
                     'Add Task',
                     style: TextStyle(
-                      color: appTheme.black900,
-                      fontSize: 12,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.h,
                     ),
                   ),
                 ),
@@ -241,9 +251,12 @@ class AddTaskButton {
   }
 
   static FloatingActionButton showAddTaskModal(BuildContext context,
-      {required int? userId}) {
+      {required int? userId, required String currentRoute}) {
     final titleController = TextEditingController();
     final descriptionController = TextEditingController();
+    // Capture the current route before opening the modal
+
+    print("Current Route: $currentRoute");
     return FloatingActionButton.small(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(90)),
       child: Icon(Icons.add, color: Colors.white),
@@ -255,6 +268,7 @@ class AddTaskButton {
           return addTaskModal(
             context,
             userId: userId,
+            currentRoute: currentRoute,
             titleController: titleController,
             descriptionController: descriptionController,
           );

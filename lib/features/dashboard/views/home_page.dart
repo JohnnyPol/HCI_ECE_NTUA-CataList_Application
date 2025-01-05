@@ -8,8 +8,6 @@ import 'package:flutter_application_1/shared/widgets/list_item.dart';
 import 'dart:io';
 import 'package:flutter_application_1/shared/widgets/custom_icon_button.dart';
 
-// TODO: Add a "take photo" button at the top left of the screen
-
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
@@ -35,7 +33,7 @@ class _HomePageState extends State<HomePage> {
         task['id'] ?? -1,
         task['category'] ?? 'Uncategorized',
         task['date'] ?? 'No Date',
-        task['time'] ?? 'No time',
+        task['time'] ?? '00:00:00',
       ];
       print('Mapped Task: $mappedTask'); // Debug mapped task
       return mappedTask;
@@ -50,7 +48,7 @@ class _HomePageState extends State<HomePage> {
       final date = dateTime.split('T')[0]; // Extract the date
       // Extract the time
       final time =
-          dateTime.split('T').length > 1 ? dateTime.split('T')[1] : 'No Time';
+          dateTime.split('T').length > 1 ? dateTime.split('T')[1] : '00:00:00';
       return [
         challenges['title'] ?? 'Unknown Title',
         challenges['completed'] == 1,
@@ -202,10 +200,10 @@ class _HomePageState extends State<HomePage> {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    // TODO: Return the same widget as if with no tasks
-                    return Center(child: Text('No daily tasks available'));
-                  } else {
+                  } // else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  //   return Center(child: Text('No daily tasks available'));
+                  // }
+                  else {
                     final tasks = snapshot.data!;
                     return Container(
                       padding: const EdgeInsets.only(
@@ -236,10 +234,9 @@ class _HomePageState extends State<HomePage> {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    // TODO: Return the same widget as if with no tasks
-                    return Center(child: Text('No challenges available'));
-                  } else {
+                  } //else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  //return Center(child: Text('No challenges available'));}
+                  else {
                     final challenges = snapshot.data!;
                     return Container(
                       padding: const EdgeInsets.only(
@@ -271,6 +268,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget NavigationBar(BuildContext context) {
+  final currentRoute = ModalRoute.of(context)?.settings.name;
   return Container(
     decoration: BoxDecoration(
       color: appTheme.NavBar,
@@ -314,7 +312,8 @@ Widget NavigationBar(BuildContext context) {
         ),
 
         // Add Task Button
-        AddTaskButton.showAddTaskModal(context, userId: currentUser?.id),
+        AddTaskButton.showAddTaskModal(context,
+            userId: currentUser?.id, currentRoute: currentRoute!),
 
         // Recap Button
         IconButton(

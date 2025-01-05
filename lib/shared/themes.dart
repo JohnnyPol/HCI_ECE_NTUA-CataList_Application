@@ -174,7 +174,7 @@ class LightCodeColors {
 
   Color get NavBar => Color(0XFF7C81C3);
 
-  Color get EditTaskIconColor => Color.fromARGB(255, 78, 181, 237);
+  Color get EditTaskIconColor => Color.fromARGB(255, 64, 163, 216);
   // BlueGray
   // Gray
   // Indigo

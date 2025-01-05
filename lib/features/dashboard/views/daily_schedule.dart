@@ -62,6 +62,7 @@ class _DailySchedulePageState extends State<DailySchedulePage> {
   }
 
   Widget _buildBottomNavigationBar(BuildContext context) {
+    final currentRoute = ModalRoute.of(context)?.settings.name;
     return Container(
       decoration: BoxDecoration(
         color: appTheme.NavBar,
@@ -102,7 +103,8 @@ class _DailySchedulePageState extends State<DailySchedulePage> {
               Navigator.pushNamed(context, '/search');
             },
           ),
-          AddTaskButton.showAddTaskModal(context, userId: currentUser?.id),
+          AddTaskButton.showAddTaskModal(context,
+              userId: currentUser?.id, currentRoute: currentRoute!),
           IconButton(
             icon: SvgPicture.asset(
               ImageConstant.imgRecap,
@@ -169,7 +171,6 @@ class _DailySchedulePageState extends State<DailySchedulePage> {
               Padding(
                 padding: EdgeInsets.all(16.0.h),
                 child: Text(
-                  // TODO: Change the fontstyle of this text and add in general the fontstyles we want
                   "Organize your day!",
                   style: TextStyle(
                     color: Colors.white,
@@ -247,7 +248,27 @@ class _DailySchedulePageState extends State<DailySchedulePage> {
                                     color: appTheme.EditTaskIconColor,
                                   ),
                                   onPressed: () {
-                                    // Add logic to edit this task
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/view_task',
+                                      // Pass all the info of the task as parameters
+                                      arguments: {
+                                        'taskId': task['id'],
+                                        'taskName': task['title'],
+                                        'taskDescription': task['description'],
+                                        'taskCategory': task['category'],
+                                        'taskCompleted': task['completed'] == 1,
+                                        'taskDate': task['date'],
+                                        'taskTime': task['time'],
+                                      },
+                                    ).then(
+                                      (value) {
+                                        if (value == true) {
+                                          Navigator.of(context)
+                                              .popAndPushNamed('/home');
+                                        }
+                                      },
+                                    );
                                   },
                                 ),
                               ),

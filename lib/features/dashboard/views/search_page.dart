@@ -7,7 +7,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
-// TODO: When searching something have a "Results" headline
 class SearchPage extends StatefulWidget {
   SearchPage({Key? key}) : super(key: key);
 
@@ -157,6 +156,7 @@ class _SearchPageState extends State<SearchPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Search Bar
                 SearchInput(context, onSearch: _onSearch),
                 SizedBox(height: 20.h),
                 searchQuery.isNotEmpty
@@ -182,15 +182,31 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildSearchResults() {
-    return Container(
-      padding: const EdgeInsets.only(left: 50),
-      child: Activity_Block(
-        context,
-        listname: searchResults,
-        circle: false,
-        border: true,
-        onTaskUpdate: _fetchTasks,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 50),
+          child: Text(
+            "Results",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.h,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        SizedBox(height: 10.h),
+        Container(
+          padding: const EdgeInsets.only(left: 50),
+          child: Activity_Block(
+            context,
+            listname: searchResults,
+            circle: false,
+            border: true,
+            onTaskUpdate: _fetchTasks,
+          ),
+        )
+      ],
     );
   }
 
@@ -258,6 +274,7 @@ class _SearchPageState extends State<SearchPage> {
 }
 
 Widget _buildBottomNavigationBar(BuildContext context) {
+  final currentRoute = ModalRoute.of(context)?.settings.name;
   return Container(
     decoration: BoxDecoration(
       color: appTheme.NavBar,
@@ -301,7 +318,8 @@ Widget _buildBottomNavigationBar(BuildContext context) {
         ),
 
         // Add Task Button
-        AddTaskButton.showAddTaskModal(context, userId: currentUser?.id),
+        AddTaskButton.showAddTaskModal(context,
+            userId: currentUser?.id, currentRoute: currentRoute!),
 
         // Recap Button
         IconButton(

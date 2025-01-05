@@ -86,11 +86,13 @@ class TaskItem extends StatelessWidget {
                           'taskDate': taskDate,
                           'taskTime': taskTime,
                         },
-                      ).then((value) {
-                        if (value == true) {
-                          Navigator.of(context).popAndPushNamed('/home');
-                        }
-                      });
+                      ).then(
+                        (value) {
+                          if (value == true) {
+                            Navigator.of(context).popAndPushNamed('/home');
+                          }
+                        },
+                      );
                     },
                     child: Icon(
                       Icons.remove_red_eye,
