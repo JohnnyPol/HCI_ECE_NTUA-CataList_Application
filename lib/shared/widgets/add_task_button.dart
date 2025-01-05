@@ -8,7 +8,7 @@ import 'package:intl/intl.dart'; // Adjust based on your project structure
 class AddTaskButton {
   static StatefulBuilder addTaskModal(
     BuildContext context, {
-    String? currentRoute,
+    // String? currentRoute,
     required int? userId,
     DateTime? selectedDate,
     int? selectedHour,
@@ -21,6 +21,10 @@ class AddTaskButton {
     DateTime? selectedTaskDate = selectedDate;
     TimeOfDay? selectedTaskTime =
         selectedHour != null ? TimeOfDay(hour: selectedHour, minute: 0) : null;
+
+    // Added variable to hold the warning message
+    // ignore: unused_local_variable
+    String? warningMessage;
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
         return Padding(
@@ -55,7 +59,20 @@ class AddTaskButton {
                   ],
                 ),
                 Divider(thickness: 1.2),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
+                // Added warning message UI
+                if (warningMessage != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      warningMessage!,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
                 // Task Name Field
                 CustomTextFormField(
                   controller: titleController,
@@ -192,15 +209,18 @@ class AddTaskButton {
                         selectedCategory == null ||
                         selectedTaskDate == null ||
                         selectedTaskTime == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Please fill all fields')));
+                      setState(() {
+                        warningMessage =
+                            'Please fill all fields'; // Display warning inside the modal
+                      });
                       return;
                     }
 
                     // Insert task into the database
                     if (userId == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('No logged-in user found')));
+                      setState(() {
+                        warningMessage = 'No logged-in user found';
+                      });
                       return;
                     }
 
@@ -220,18 +240,14 @@ class AddTaskButton {
                       formattedTime, // Store the time
                     );
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Task Added Successfully')));
                     // TODO: The page doesn't reload after hitting the add task button.
-                    // Determine the current route and refresh accordingly
-                    //print("Current Route: $currentRoute");
-                    if (currentRoute == '/home') {
-                      Navigator.of(context).popAndPushNamed('/home');
-                    } else if (currentRoute == '/search') {
-                      Navigator.of(context).popAndPushNamed('/search');
-                    } else {
-                      Navigator.of(context).pop(); // Default: just pop
-                    }
+                    Navigator.of(context).pop(); // Default: just pop
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Task Added Successfully'),
+                      ),
+                    );
                   },
                   child: Text(
                     'Add Task',
@@ -251,12 +267,11 @@ class AddTaskButton {
   }
 
   static FloatingActionButton showAddTaskModal(BuildContext context,
-      {required int? userId, required String currentRoute}) {
+      {required int? userId}) {
     final titleController = TextEditingController();
     final descriptionController = TextEditingController();
     // Capture the current route before opening the modal
 
-    print("Current Route: $currentRoute");
     return FloatingActionButton.small(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(90)),
       child: Icon(Icons.add, color: Colors.white),
@@ -268,7 +283,6 @@ class AddTaskButton {
           return addTaskModal(
             context,
             userId: userId,
-            currentRoute: currentRoute,
             titleController: titleController,
             descriptionController: descriptionController,
           );

@@ -137,7 +137,6 @@ class MonthlyRecapPage extends StatelessWidget {
   }
 
   Widget _buildBottomNavigationBar(BuildContext context) {
-    final currentRoute = ModalRoute.of(context)?.settings.name;
     return Container(
       decoration: BoxDecoration(
         color: appTheme.NavBar,
@@ -178,8 +177,10 @@ class MonthlyRecapPage extends StatelessWidget {
               Navigator.pushNamed(context, '/search');
             },
           ),
-          AddTaskButton.showAddTaskModal(context,
-              userId: currentUser?.id, currentRoute: currentRoute!),
+          AddTaskButton.showAddTaskModal(
+            context,
+            userId: currentUser?.id,
+          ),
           IconButton(
             icon: SvgPicture.asset(
               ImageConstant.imgRecapPressed,

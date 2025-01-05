@@ -433,7 +433,6 @@ class ViewTaskPage extends StatelessWidget {
   }
 
   Widget _buildBottomNavigationBar(BuildContext context) {
-    final currentRoute = ModalRoute.of(context)?.settings.name;
     return Container(
       decoration: BoxDecoration(
         color: appTheme.NavBar,
@@ -479,8 +478,10 @@ class ViewTaskPage extends StatelessWidget {
           ),
 
           // Add Task Button
-          AddTaskButton.showAddTaskModal(context,
-              userId: currentUser?.id, currentRoute: currentRoute!),
+          AddTaskButton.showAddTaskModal(
+            context,
+            userId: currentUser?.id,
+          ),
 
           // Recap Button
           IconButton(

@@ -268,7 +268,6 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget NavigationBar(BuildContext context) {
-  final currentRoute = ModalRoute.of(context)?.settings.name;
   return Container(
     decoration: BoxDecoration(
       color: appTheme.NavBar,
@@ -312,8 +311,7 @@ Widget NavigationBar(BuildContext context) {
         ),
 
         // Add Task Button
-        AddTaskButton.showAddTaskModal(context,
-            userId: currentUser?.id, currentRoute: currentRoute!),
+        AddTaskButton.showAddTaskModal(context, userId: currentUser?.id),
 
         // Recap Button
         IconButton(
