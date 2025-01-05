@@ -184,6 +184,7 @@ class WeeklyRecapPage extends StatelessWidget {
           AddTaskButton.showAddTaskModal(
             context,
             userId: currentUser?.id,
+            onTaskAdded: () {},
           ),
           IconButton(
             icon: SvgPicture.asset(

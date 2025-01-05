@@ -80,11 +80,13 @@ Widget Task_or_Challenge_Block(
 
 //Activity Block
 Widget Activity_Block(BuildContext context,
-    {required List<List<dynamic>> listname,
+    {double? height,
+    double? width,
+    required List<List<dynamic>> listname,
     required bool circle,
     required bool border,
     required VoidCallback onTaskUpdate}) {
-  print("Activity_Block listname: $listname");
+  //print("Activity_Block listname: $listname");
   final dbHelper = DatabaseHelper();
   void updateTaskInDatabase(int index, bool isCompleted) {
     final taskId = listname[index][3];
@@ -93,8 +95,8 @@ Widget Activity_Block(BuildContext context,
   }
 
   return Container(
-    height: 175.h,
-    width: 260.h,
+    height: height ?? 175.h,
+    width: width ?? 260.h,
     decoration: BoxDecoration(
       border: border
           ? Border.all(

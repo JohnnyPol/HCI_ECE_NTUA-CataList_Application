@@ -293,6 +293,7 @@ Widget _buildBottomNavigationBar(BuildContext context) {
         AddTaskButton.showAddTaskModal(
           context,
           userId: currentUser?.id,
+          onTaskAdded: () {},
         ),
         IconButton(
           icon: SvgPicture.asset(

@@ -200,6 +200,7 @@ class _SearchPageState extends State<SearchPage> {
           padding: const EdgeInsets.only(left: 50),
           child: Activity_Block(
             context,
+            height: 400.h, // height of the activity block when searching
             listname: searchResults,
             circle: false,
             border: true,
@@ -271,82 +272,84 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
-}
 
-Widget _buildBottomNavigationBar(BuildContext context) {
-  return Container(
-    decoration: BoxDecoration(
-      color: appTheme.NavBar,
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(25.h),
-        topRight: Radius.circular(25.h),
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: appTheme.NavBar,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(25.h),
+          topRight: Radius.circular(25.h),
+        ),
+        boxShadow: [
+          BoxShadow(
+            // ignore: deprecated_member_use
+            color: appTheme.black900.withOpacity(0.2),
+            blurRadius: 2.h,
+            spreadRadius: 2.h,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
-      boxShadow: [
-        BoxShadow(
-          // ignore: deprecated_member_use
-          color: appTheme.black900.withOpacity(0.2),
-          blurRadius: 2.h,
-          spreadRadius: 2.h,
-          offset: Offset(0, 2),
-        ),
-      ],
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        // Home Button
-        IconButton(
-          icon: SvgPicture.asset(
-            ImageConstant.imgHome, // Replace with your SVG path
-            height: 24.h,
-            width: 24.h,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // Home Button
+          IconButton(
+            icon: SvgPicture.asset(
+              ImageConstant.imgHome, // Replace with your SVG path
+              height: 24.h,
+              width: 24.h,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/home'); // Handle routing
+            },
           ),
-          onPressed: () {
-            Navigator.pushNamed(context, '/home'); // Handle routing
-          },
-        ),
 
-        // Search Button
-        IconButton(
-          icon: SvgPicture.asset(
-            ImageConstant.imgSearchPressed, // Replace with your SVG path
-            height: 37.h,
-            width: 37.h,
+          // Search Button
+          IconButton(
+            icon: SvgPicture.asset(
+              ImageConstant.imgSearchPressed, // Replace with your SVG path
+              height: 37.h,
+              width: 37.h,
+            ),
+            onPressed: () {},
           ),
-          onPressed: () {},
-        ),
 
-        // Add Task Button
-        AddTaskButton.showAddTaskModal(
-          context,
-          userId: currentUser?.id,
-        ),
-
-        // Recap Button
-        IconButton(
-          icon: SvgPicture.asset(
-            ImageConstant.imgRecap, // Replace with your SVG path
-            height: 35.h,
-            width: 35.h,
+          // Add Task Button
+          AddTaskButton.showAddTaskModal(
+            context,
+            userId: currentUser?.id,
+            onTaskAdded:
+                searchQuery.isNotEmpty ? _buildSearchResults : _fetchTasks,
           ),
-          onPressed: () {
-            Navigator.pushNamed(context, '/recap'); // Handle routing
-          },
-        ),
 
-        // Calendar Button
-        IconButton(
-          icon: SvgPicture.asset(
-            ImageConstant.imgCalendar, // Replace with your SVG path
-            height: 35.h,
-            width: 35.h,
+          // Recap Button
+          IconButton(
+            icon: SvgPicture.asset(
+              ImageConstant.imgRecap, // Replace with your SVG path
+              height: 35.h,
+              width: 35.h,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/recap'); // Handle routing
+            },
           ),
-          onPressed: () {
-            Navigator.pushNamed(context, '/calendar'); // Handle routing
-          },
-        ),
-      ],
-    ),
-    height: 70.h,
-  );
+
+          // Calendar Button
+          IconButton(
+            icon: SvgPicture.asset(
+              ImageConstant.imgCalendar, // Replace with your SVG path
+              height: 35.h,
+              width: 35.h,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/calendar'); // Handle routing
+            },
+          ),
+        ],
+      ),
+      height: 70.h,
+    );
+  }
 }

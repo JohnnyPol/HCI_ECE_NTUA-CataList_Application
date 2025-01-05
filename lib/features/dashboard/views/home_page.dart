@@ -265,79 +265,80 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
 
-Widget NavigationBar(BuildContext context) {
-  return Container(
-    decoration: BoxDecoration(
-      color: appTheme.NavBar,
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(25.h),
-        topRight: Radius.circular(25.h),
+  Widget NavigationBar(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: appTheme.NavBar,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(25.h),
+          topRight: Radius.circular(25.h),
+        ),
+        boxShadow: [
+          BoxShadow(
+            // ignore: deprecated_member_use
+            color: appTheme.black900.withOpacity(0.2),
+            blurRadius: 2.h,
+            spreadRadius: 2.h,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
-      boxShadow: [
-        BoxShadow(
-          // ignore: deprecated_member_use
-          color: appTheme.black900.withOpacity(0.2),
-          blurRadius: 2.h,
-          spreadRadius: 2.h,
-          offset: Offset(0, 2),
-        ),
-      ],
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        // Home Button
-        IconButton(
-          icon: SvgPicture.asset(
-            ImageConstant.imgHomePressed, // Replace with your SVG path
-            height: 24.h,
-            width: 24.h,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // Home Button
+          IconButton(
+            icon: SvgPicture.asset(
+              ImageConstant.imgHomePressed, // Replace with your SVG path
+              height: 24.h,
+              width: 24.h,
+            ),
+            onPressed: () {},
           ),
-          onPressed: () {},
-        ),
 
-        // Search Button
-        IconButton(
-          icon: SvgPicture.asset(
-            ImageConstant.imgSearch, // Replace with your SVG path
-            height: 37.h,
-            width: 37.h,
+          // Search Button
+          IconButton(
+            icon: SvgPicture.asset(
+              ImageConstant.imgSearch, // Replace with your SVG path
+              height: 37.h,
+              width: 37.h,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/search'); // Handle routing
+            },
           ),
-          onPressed: () {
-            Navigator.pushNamed(context, '/search'); // Handle routing
-          },
-        ),
 
-        // Add Task Button
-        AddTaskButton.showAddTaskModal(context, userId: currentUser?.id),
+          // Add Task Button
+          AddTaskButton.showAddTaskModal(context,
+              userId: currentUser?.id, onTaskAdded: _updateDataMap),
 
-        // Recap Button
-        IconButton(
-          icon: SvgPicture.asset(
-            ImageConstant.imgRecap, // Replace with your SVG path
-            height: 35.h,
-            width: 35.h,
+          // Recap Button
+          IconButton(
+            icon: SvgPicture.asset(
+              ImageConstant.imgRecap, // Replace with your SVG path
+              height: 35.h,
+              width: 35.h,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/recap'); // Handle routing
+            },
           ),
-          onPressed: () {
-            Navigator.pushNamed(context, '/recap'); // Handle routing
-          },
-        ),
 
-        // Calendar Button
-        IconButton(
-          icon: SvgPicture.asset(
-            ImageConstant.imgCalendar, // Replace with your SVG path
-            height: 35.h,
-            width: 35.h,
+          // Calendar Button
+          IconButton(
+            icon: SvgPicture.asset(
+              ImageConstant.imgCalendar, // Replace with your SVG path
+              height: 35.h,
+              width: 35.h,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/calendar'); // Handle routing
+            },
           ),
-          onPressed: () {
-            Navigator.pushNamed(context, '/calendar'); // Handle routing
-          },
-        ),
-      ],
-    ),
-    height: 70.h,
-  );
+        ],
+      ),
+      height: 70.h,
+    );
+  }
 }

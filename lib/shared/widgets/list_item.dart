@@ -1,7 +1,7 @@
 // list_item.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/shared/widgets/todo_list.dart';
+import 'package:flutter_application_1/app_export.dart';
 
 class ListItemNew extends StatefulWidget {
   const ListItemNew({
@@ -44,7 +44,10 @@ class ListItemStateNew extends State<ListItemNew> {
     });
   }
 
-  void deleteTask(int index) {
+  Future<void> deleteTask(index, int taskId) async {
+    final dbHelper = DatabaseHelper();
+
+    await dbHelper.deleteTask(taskId);
     setState(() {
       listname.removeAt(index);
     });
@@ -74,7 +77,7 @@ class ListItemStateNew extends State<ListItemNew> {
           onChanged: (value) => checkBoxChanged(
             index,
           ),
-          deleteFunction: (contex) => deleteTask(index),
+          deleteFunction: (contex) => deleteTask(index, listname[index][3]),
         );
       },
     );

@@ -164,7 +164,11 @@ class _CalendarPageState extends State<CalendarPage> {
               Navigator.pushNamed(context, '/search');
             },
           ),
-          AddTaskButton.showAddTaskModal(context, userId: currentUser?.id),
+          AddTaskButton.showAddTaskModal(
+            context,
+            userId: currentUser?.id,
+            onTaskAdded: () {},
+          ),
           IconButton(
             icon: SvgPicture.asset(
               ImageConstant.imgRecap,

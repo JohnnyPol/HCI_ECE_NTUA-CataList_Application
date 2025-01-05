@@ -41,6 +41,7 @@ class TaskItem extends StatelessWidget {
               SlidableAction(
                 icon: Icons.delete_rounded,
                 onPressed: deleteFunction,
+                foregroundColor: Colors.white,
                 backgroundColor: const Color.fromARGB(
                     255, 179, 11, 11), //CHANGE ICONS COLOR TO WHITE
                 borderRadius: BorderRadius.circular(15),
@@ -48,6 +49,7 @@ class TaskItem extends StatelessWidget {
             ],
           ),
           child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 8.h),
             decoration: BoxDecoration(
               color: Colors.transparent,
               borderRadius: BorderRadius.circular(15),
@@ -64,12 +66,17 @@ class TaskItem extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                Text(
-                  taskName,
-                  style: TextStyle(
+                Flexible(
+                  child: Text(
+                    taskName,
+                    style: TextStyle(
                       color: Color.fromARGB(255, 28, 62, 80),
                       fontSize: 15.h,
-                      fontWeight: FontWeight.w500),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
                 ),
                 TextButton(
                     onPressed: () {

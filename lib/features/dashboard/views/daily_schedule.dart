@@ -105,6 +105,9 @@ class _DailySchedulePageState extends State<DailySchedulePage> {
           AddTaskButton.showAddTaskModal(
             context,
             userId: currentUser?.id,
+            onTaskAdded: () {
+              _fetchTasksForDay();
+            },
           ),
           IconButton(
             icon: SvgPicture.asset(
@@ -216,6 +219,9 @@ class _DailySchedulePageState extends State<DailySchedulePage> {
                                         titleController: titleController,
                                         descriptionController:
                                             descriptionController,
+                                        onTaskAdded: () {
+                                          _fetchTasksForDay();
+                                        },
                                       );
                                     },
                                   );

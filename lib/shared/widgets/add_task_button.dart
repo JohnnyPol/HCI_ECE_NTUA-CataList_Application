@@ -10,6 +10,7 @@ class AddTaskButton {
     BuildContext context, {
     // String? currentRoute,
     required int? userId,
+    required Function onTaskAdded, // New callback parameter
     DateTime? selectedDate,
     int? selectedHour,
     TextEditingController? titleController,
@@ -240,9 +241,8 @@ class AddTaskButton {
                       formattedTime, // Store the time
                     );
 
-                    // TODO: The page doesn't reload after hitting the add task button.
                     Navigator.of(context).pop(); // Default: just pop
-
+                    onTaskAdded(); // Call the refresh function
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Task Added Successfully'),
@@ -267,7 +267,7 @@ class AddTaskButton {
   }
 
   static FloatingActionButton showAddTaskModal(BuildContext context,
-      {required int? userId}) {
+      {required int? userId, required Function onTaskAdded}) {
     final titleController = TextEditingController();
     final descriptionController = TextEditingController();
     // Capture the current route before opening the modal
@@ -283,6 +283,7 @@ class AddTaskButton {
           return addTaskModal(
             context,
             userId: userId,
+            onTaskAdded: onTaskAdded,
             titleController: titleController,
             descriptionController: descriptionController,
           );

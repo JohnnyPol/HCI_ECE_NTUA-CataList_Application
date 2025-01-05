@@ -133,7 +133,6 @@ class ViewTaskPage extends StatelessWidget {
     // Retrieve the passed arguments
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-
     if (args == null) {
       return Container(
         decoration: AppDecoration.linearBGcolors,
@@ -433,6 +432,9 @@ class ViewTaskPage extends StatelessWidget {
   }
 
   Widget _buildBottomNavigationBar(BuildContext context) {
+    // Retrieve the passed arguments
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     return Container(
       decoration: BoxDecoration(
         color: appTheme.NavBar,
@@ -481,6 +483,22 @@ class ViewTaskPage extends StatelessWidget {
           AddTaskButton.showAddTaskModal(
             context,
             userId: currentUser?.id,
+            onTaskAdded: () {
+              // Navigate to the same page with updated arguments
+              Navigator.pushReplacementNamed(
+                context,
+                AppRoutes.viewTask,
+                arguments: {
+                  'taskId': args?['taskId'],
+                  'taskName': args?['taskName'],
+                  'taskDescription': args?['taskDescription'],
+                  'taskCategory': args?['taskCategory'],
+                  'taskCompleted': args?['taskCompleted'],
+                  'taskDate': args?['taskDate'],
+                  'taskTime': args?['taskTime'],
+                },
+              );
+            },
           ),
 
           // Recap Button
