@@ -29,17 +29,6 @@ class WeeklyRecapPage extends StatelessWidget {
     final profileImagePath =
         Provider.of<ProfileProvider>(context).profileImagePath;
 
-    // Mock database images list (replace this with your actual database query)
-    final List<String> imagePaths = [
-      'assets/images/photo1.jpg',
-      'assets/images/photo1.jpg',
-      'assets/images/photo1.jpg',
-      'assets/images/photo1.jpg',
-      'assets/images/photo1.jpg',
-      'assets/images/photo1.jpg',
-      'assets/images/photo1.jpg',
-    ];
-
     return Column(
       children: [
         AppBar(
@@ -90,51 +79,119 @@ class WeeklyRecapPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.h),
           ),
           height: 300.h,
-          child: imagePaths.isEmpty
-              ? Center(
+          child: FutureBuilder<List<List<File>>>(
+            future: PhotoStorage().getWeeklyPhotos(userId: currentUser?.id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Center(
                   child: Text(
                     "No images available",
                     style: TextStyle(color: Colors.white, fontSize: 16.h),
                   ),
-                )
-              : ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: imagePaths.length,
-                  itemBuilder: (context, index) {
+                );
+              }
+
+              final weeklyPhotos = snapshot.data!;
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: weeklyPhotos.length,
+                itemBuilder: (context, index) {
+                  final weekPhotos = weeklyPhotos[index];
+                  if (weekPhotos.isEmpty) {
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.h),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15.h),
-                        child: Image.asset(
-                          imagePaths[index],
-                          fit: BoxFit.cover,
-                          width: 200.h, // Adjust width as needed
-                          height: 200.h, // Adjust height as needed
+                        child: Container(
+                          color: Colors.grey,
+                          width: 200.h,
+                          height: 200.h,
+                          child: Center(
+                            child: Text(
+                              "No photos",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ),
                       ),
                     );
-                  },
-                ),
+                  }
+
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.h),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.h),
+                      child: Image.file(
+                        weekPhotos.first,
+                        fit: BoxFit.cover,
+                        width: 200.h,
+                        height: 200.h,
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
         ),
       ],
     );
   }
 
   Widget _buildScrollableTaskList(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.all(20.h),
-      itemCount: 7, // Replace with the actual number of tasks
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.h),
-          child: Text(
-            "Task Title (${index + 1})",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.h,
-              fontWeight: FontWeight.bold,
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: DatabaseHelper().getTasks(currentUser?.id),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: Text(
+              "No tasks available",
+              style: TextStyle(color: Colors.white, fontSize: 16.h),
             ),
-          ),
+          );
+        }
+
+        final tasks = snapshot.data!;
+        return ListView.builder(
+          padding: EdgeInsets.all(20.h),
+          itemCount: tasks.length,
+          itemBuilder: (context, index) {
+            final task = tasks[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.viewTask,
+                  arguments: {
+                    'taskId': task['id'],
+                    'taskName': task['title'],
+                    'taskDescription': task['description'],
+                    'taskCategory': task['category'],
+                    'taskCompleted': task['completed'] == 1,
+                    'taskDate': task['date'],
+                    'taskTime': task['time'],
+                  },
+                );
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.h),
+                child: Text(
+                  task['title'],
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.h,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            );
+          },
         );
       },
     );
