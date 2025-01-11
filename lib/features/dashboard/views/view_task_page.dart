@@ -360,10 +360,14 @@ class ViewTaskPage extends StatelessWidget {
               icon:
                   Icon(Icons.edit_calendar, color: appTheme.EditTaskIconColor),
               onPressed: () async {
+                final currentDate = DateTime.now();
+                final initialDate = DateTime.parse(currentValue);
                 final pickedDate = await showDatePicker(
                   context: context,
-                  initialDate: DateTime.parse(currentValue),
-                  firstDate: DateTime.now(),
+                  initialDate: initialDate.isBefore(currentDate)
+                      ? currentDate
+                      : initialDate,
+                  firstDate: currentDate,
                   lastDate: DateTime(2100),
                 );
                 if (pickedDate != null) {
