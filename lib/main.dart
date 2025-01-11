@@ -112,6 +112,14 @@ Future<void> initializeDummyPhotos(int? userId) async {
       'assetPath': 'assets/dummy_photos/photo3.jpg',
       'timestamp': '2024-10-03 18:00:00'
     },
+    {
+      'assetPath': 'assets/dummy_photos/photo4.jpg',
+      'timestamp': '2024-10-03 18:00:00'
+    },
+    {
+      'assetPath': 'assets/dummy_photos/photo5.jpg',
+      'timestamp': '2024-10-03 18:00:00'
+    },
   ];
 
   for (final dummyPhoto in dummyPhotoAssets) {
