@@ -13,6 +13,7 @@
     - [Running the App](#running-the-app)
     - [Preloaded Data](#preloaded-data)
     - [Screens](#screens)
+  - [](#)
   - [Requirements](#requirements)
 ---
 
@@ -33,7 +34,7 @@
 - **Task Management**: Add, edit, delete, and categorize tasks as daily or challenges.
 - **Photo Storage**: Capture and save photos, grouped by user and timestamp.
 - **Calendar View**: View and manage tasks from any selected day using an interactive calendar interface.
-
+- **Search Functionality**: Dynamically search tasks by name or description using SQL **LIKE** queries for efficient filtering.
 - **Navigation**: Intuitive navigation between screens using gestures and buttons.
 - **Data Persistence**: Local SQLite database for user authentication, task storage, and photo management.
 - **Responsive Design**: Optimized for various screen sizes and orientations.
@@ -82,12 +83,13 @@
 - **Calendar**: View tasks by date.
 - **Recap**: Weekly and monthly task/photo summaries.
 - **Profile**: Manage user information and photos.
-
+![Home Page](/assets/screenshots/home_page.png)
 ---
 
 ## Requirements
 - **Flutter SDK**: Version `X.X.X` or higher.
 - **Android SDK**: Version `XX` or higher (supports Google API services).
 - **Dart**: Version `X.X.X` or higher.
+  
 
 ---
