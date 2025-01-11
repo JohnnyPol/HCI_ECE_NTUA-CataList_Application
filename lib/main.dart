@@ -79,6 +79,45 @@ Future<void> initializeDummyData() async {
       "14:00:00", // Time
     );
 
+    await dbHelper.addTask(
+      userId,
+      "Complete a Task",
+      "Mark a task as completed to see how the app tracks progress.",
+      0, // Not completed
+      "Daily",
+      DateTime.now()
+          .add(Duration(days: 2))
+          .toIso8601String()
+          .split("T")[0], // Day after tomorrow's date
+      "09:00:00", // Time
+    );
+
+    await dbHelper.addTask(
+      userId,
+      "Upload a Photo",
+      "Use the photo feature to capture and save a memory.",
+      0, // Not completed
+      "Challenge",
+      DateTime.now()
+          .add(Duration(days: 3))
+          .toIso8601String()
+          .split("T")[0], // Three days from now
+      "16:00:00", // Time
+    );
+
+    await dbHelper.addTask(
+      userId,
+      "Review Your Week",
+      "Go to the recap page to review your weekly progress.",
+      0, // Not completed
+      "Challenge",
+      DateTime.now()
+          .add(Duration(days: 4))
+          .toIso8601String()
+          .split("T")[0], // Four days from now
+      "18:00:00", // Time
+    );
+
     print("Dummy user and tasks have been created.");
     await initializeDummyPhotos(userId);
   } else {
@@ -102,23 +141,23 @@ Future<void> initializeDummyPhotos(int? userId) async {
   final List<Map<String, dynamic>> dummyPhotoAssets = [
     {
       'assetPath': 'assets/dummy_photos/photo1.jpg',
-      'timestamp': '2025-01-01 10:00:00'
+      'timestamp': '2025-01-11 10:00:00'
     },
     {
       'assetPath': 'assets/dummy_photos/photo2.jpg',
-      'timestamp': '2025-01-02 14:00:00'
+      'timestamp': '2025-01-01 14:00:00'
     },
     {
       'assetPath': 'assets/dummy_photos/photo3.jpg',
-      'timestamp': '2024-10-03 18:00:00'
+      'timestamp': '2024-12-20 18:00:00'
     },
     {
       'assetPath': 'assets/dummy_photos/photo4.jpg',
-      'timestamp': '2024-10-03 18:00:00'
+      'timestamp': '2024-11-25 18:00:00'
     },
     {
       'assetPath': 'assets/dummy_photos/photo5.jpg',
-      'timestamp': '2024-10-03 18:00:00'
+      'timestamp': '2024-10-05 18:00:00'
     },
   ];
 

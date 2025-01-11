@@ -3,6 +3,7 @@
 ## Table of Contents
 - [CataList - Task Management Application](#catalist---task-management-application)
   - [Table of Contents](#table-of-contents)
+  - [Contributors](#contributors)
   - [Introduction](#introduction)
   - [Features](#features)
   - [Installation and Setup](#installation-and-setup)
@@ -15,6 +16,14 @@
   - [Requirements](#requirements)
 ---
 
+## Contributors
+
+- [Giannis Polychronopoulos](https://github.com/JohnnyPol)
+- [Sofia Savva](https://github.com/el21189)
+- [Nikos Pantazopoulos](https://github.com/Nickp03)
+
+
+---
 ## Introduction
 **CataList** is a Flutter-based task management application designed to help users organize their daily and long-term goals efficiently. The app includes features such as task tracking, photo management.
 
@@ -23,6 +32,8 @@
 ## Features
 - **Task Management**: Add, edit, delete, and categorize tasks as daily or challenges.
 - **Photo Storage**: Capture and save photos, grouped by user and timestamp.
+- **Calendar View**: View and manage tasks from any selected day using an interactive calendar interface.
+
 - **Navigation**: Intuitive navigation between screens using gestures and buttons.
 - **Data Persistence**: Local SQLite database for user authentication, task storage, and photo management.
 - **Responsive Design**: Optimized for various screen sizes and orientations.
