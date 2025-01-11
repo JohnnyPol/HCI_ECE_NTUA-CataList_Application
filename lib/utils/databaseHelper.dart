@@ -81,6 +81,19 @@ class DatabaseHelper {
     return result.isNotEmpty ? result.first : null;
   }
 
+  // Get ID by username
+  Future<int?> getUserId(String username) async {
+    final db = await database;
+    final result = await db.query(
+      'users',
+      columns: ['id'],
+      where: 'username = ?',
+      whereArgs: [username],
+      limit: 1,
+    );
+    return result.isNotEmpty ? result.first['id'] as int : null;
+  }
+
   // Add a new user to the database
   Future<int> addUser(String username, String firstName, String lastName,
       String email, String password) async {
@@ -107,6 +120,16 @@ class DatabaseHelper {
       'users',
       where: 'username = ? AND password = ?',
       whereArgs: [username, password],
+    );
+  }
+
+  // Check if user exists
+  Future<List<Map<String, dynamic>>> getUserByUsername(String username) async {
+    final db = await database;
+    return db.query(
+      'users',
+      where: 'username = ?',
+      whereArgs: [username],
     );
   }
 

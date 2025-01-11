@@ -1,12 +1,18 @@
+'''
+Python Script to generate the random quotes used when an internet connection is unavailable.
+'''
+
 import requests
 import json
 import argparse
 import os
 
 # Constants
-API_URL = "https://qapi.vercel.app/api/random"  # Replace with your preferred API if needed
+# Replace with your preferred API if needed
+API_URL = "https://qapi.vercel.app/api/random"
 DEFAULT_QUOTE_COUNT = 10
 OUTPUT_FILE = "quotes.json"
+
 
 def fetch_quote():
     """Fetch a single quote from the API."""
@@ -19,6 +25,7 @@ def fetch_quote():
         print(f"Error fetching quote: {e}")
         return {"quote": "Failed to fetch quote."}
 
+
 def generate_quotes(count):
     """Generate a list of quotes."""
     quotes = []
@@ -29,6 +36,7 @@ def generate_quotes(count):
         print(f"{i + 1}: {quote['quote']}")
     return quotes
 
+
 def save_to_file(quotes, output_file):
     """Save quotes to a JSON file."""
     try:
@@ -38,9 +46,11 @@ def save_to_file(quotes, output_file):
     except IOError as e:
         print(f"Error saving quotes to file: {e}")
 
+
 def main():
     """Main function to handle script execution."""
-    parser = argparse.ArgumentParser(description="Generate a JSON file with random inspirational quotes.")
+    parser = argparse.ArgumentParser(
+        description="Generate a JSON file with random inspirational quotes.")
     parser.add_argument(
         "-c", "--count", type=int, default=DEFAULT_QUOTE_COUNT,
         help="Number of quotes to fetch (default: 10)"
@@ -53,9 +63,10 @@ def main():
 
     # Generate quotes
     quotes = generate_quotes(args.count)
-    
+
     # Save to file
     save_to_file(quotes, args.output)
+
 
 if __name__ == "__main__":
     main()

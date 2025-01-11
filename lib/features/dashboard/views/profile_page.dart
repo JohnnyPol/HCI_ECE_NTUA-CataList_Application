@@ -109,7 +109,7 @@ class ProfilePage extends StatelessWidget {
                               color: Colors.red, fontWeight: FontWeight.bold),
                         ),
                         content: Text(
-                          "Are you sure you want to Log?",
+                          "Are you sure you want to log out?",
                         ),
                         actions: [
                           // Cancel Logout
@@ -257,6 +257,7 @@ class ProfilePage extends StatelessWidget {
                           ),
                           ElevatedButton(
                             onPressed: () async {
+                              await PhotoStorage().deleteAllPhotos();
                               final userId = currentUser
                                   ?.id; // Retrieve the current user's ID
                               if (userId != null) {
