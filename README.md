@@ -13,8 +13,10 @@
     - [Running the App](#running-the-app)
     - [Preloaded Data](#preloaded-data)
     - [Screens](#screens)
+    - [Changes from Prototype](#changes-from-prototype)
   - [](#)
   - [Requirements](#requirements)
+  - [Demo Video](#demo-video)
 ---
 
 ## Contributors
@@ -83,13 +85,25 @@
 - **Calendar**: View tasks by date.
 - **Recap**: Weekly and monthly task/photo summaries.
 - **Profile**: Manage user information and photos.
+
+### Changes from Prototype
+1. Added photo storage functionality for weekly/monthly recaps.
+2. Style of Add Task button in the navigation bar
+
+
+
 ![Home Page](/assets/screenshots/home_page.png)
 ---
 
 ## Requirements
-- **Flutter SDK**: Version `X.X.X` or higher.
-- **Android SDK**: Version `XX` or higher (supports Google API services).
-- **Dart**: Version `X.X.X` or higher.
+- **Flutter SDK**: Version `3.27.1` or higher.
+- **Android SDK**: Version `35` or higher.
+  - **Minimum SDK Version**: 21 (Android 5.0)
+  - **Target SDK Version**: 35 (Android 13)
+  - **Compile SDK Version**: 35 (Android 13)
+- **Dart**: Version `3.6.0` or higher.
   
-
 ---
+
+## Demo Video
+Watch the app in action: [CataList Demo](assets/media/sample.mkv)
