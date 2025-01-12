@@ -55,8 +55,8 @@
 ### Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/JohnnyPol/catalist.git
-   cd catalist
+   git clone https://github.com/JohnnyPol/HCI_ECE_NTUA-CataList_Application.git
+   cd HCI_ECE_NTUA-CataList_Application
    ```
 2. Install dependencies:
    ```bash
