@@ -92,7 +92,7 @@
 3. Added "delete account", "delete photos", and "logout" functionalities in the profile page.
 
 
-
+![Home Search Page](/assets/screenshots/home_search.png)
 ![Home Page](/assets/screenshots/home_page.png)
 ![Profile Page](/assets/screenshots/Profile_page.png)
 ![Add task Page](/assets/screenshots/Add_task_page.png)
