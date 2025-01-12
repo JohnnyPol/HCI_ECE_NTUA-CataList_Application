@@ -10,14 +10,19 @@ class MonthlyRecapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final monthIndex = arguments?['monthIndex'];
     return Container(
       decoration: AppDecoration.linearBGcolors,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
           children: [
-            _buildMonthlyRecapContent(context),
-            Expanded(child: _buildScrollableTaskList(context)),
+            _buildMonthlyRecapContent(context, monthIndex: monthIndex),
+            Expanded(
+                child:
+                    _buildScrollableTaskList(context, monthIndex: monthIndex)),
           ],
         ),
         bottomNavigationBar: _buildBottomNavigationBar(context),
@@ -25,17 +30,12 @@ class MonthlyRecapPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMonthlyRecapContent(BuildContext context) {
+  Widget _buildMonthlyRecapContent(
+    BuildContext context, {
+    required monthIndex,
+  }) {
     final profileImagePath =
         Provider.of<ProfileProvider>(context).profileImagePath;
-
-    // Mock database images list (replace this with your actual database query)
-    final List<String> imagePaths = [
-      'assets/images/photo1.jpg',
-      'assets/images/photo1.jpg',
-      'assets/images/photo1.jpg',
-      'assets/images/photo1.jpg'
-    ];
 
     return Column(
       children: [
@@ -61,14 +61,15 @@ class MonthlyRecapPage extends StatelessWidget {
                 padding: EdgeInsets.all(5.h),
                 decoration: IconButtonStyleHelper.none,
                 child: CircleAvatar(
-                    radius: 20.h,
-                    backgroundColor: Colors.grey[300],
-                    backgroundImage: profileImagePath != null
-                        ? FileImage(File(profileImagePath))
-                        : null,
-                    child: profileImagePath == null
-                        ? Icon(Icons.person, size: 20.h, color: Colors.black)
-                        : null),
+                  radius: 20.h,
+                  backgroundColor: Colors.grey[300],
+                  backgroundImage: profileImagePath != null
+                      ? FileImage(File(profileImagePath))
+                      : null,
+                  child: profileImagePath == null
+                      ? Icon(Icons.person, size: 20.h, color: Colors.black)
+                      : null,
+                ),
                 onTap: () {
                   Navigator.pushNamed(context, AppRoutes.profile);
                 },
@@ -86,51 +87,167 @@ class MonthlyRecapPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.h),
           ),
           height: 300.h,
-          child: imagePaths.isEmpty
-              ? Center(
+          child: FutureBuilder<List<List<File>>>(
+            future: PhotoStorage().getMonthlyPhotos(userId: currentUser?.id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Center(
                   child: Text(
                     "No images available",
                     style: TextStyle(color: Colors.white, fontSize: 16.h),
                   ),
-                )
-              : ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: imagePaths.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.h),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.h),
-                        child: Image.asset(
-                          imagePaths[index],
-                          fit: BoxFit.cover,
-                          width: 200.h, // Adjust width as needed
-                          height: 200.h, // Adjust height as needed
-                        ),
+                );
+              }
+
+              final monthlyPhotos = snapshot.data!;
+
+              // Validate that the weekIndex exists in the data
+              if (monthIndex >= monthlyPhotos.length || monthIndex < 0) {
+                return Center(
+                  child: Text(
+                    "No photos for this month",
+                    style: TextStyle(color: Colors.white, fontSize: 16.h),
+                  ),
+                );
+              }
+              final selectedMonthPhotos = monthlyPhotos[monthIndex];
+              // If there are no photos for the specific week
+              if (selectedMonthPhotos.isEmpty) {
+                return Center(
+                  child: Text(
+                    "No photos available for month $monthIndex",
+                    style: TextStyle(color: Colors.white, fontSize: 16.h),
+                  ),
+                );
+              }
+              return PageView.builder(
+                itemCount: selectedMonthPhotos.length,
+                itemBuilder: (context, photoIndex) {
+                  final photo = selectedMonthPhotos[photoIndex];
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.h),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.h),
+                      child: Image.file(
+                        photo,
+                        fit: BoxFit.cover,
+                        width: 200.h,
+                        height: 200.h,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildScrollableTaskList(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.all(20.h),
-      itemCount: 7, // Replace with the actual number of tasks
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.h),
-          child: Text(
-            "Task Title (${index + 1})",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.h,
-              fontWeight: FontWeight.bold,
+  Widget _buildScrollableTaskList(
+    BuildContext context, {
+    required int monthIndex,
+  }) {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: DatabaseHelper().getTasksForMonth(currentUser?.id, monthIndex),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: Text(
+              "No tasks available",
+              style: TextStyle(color: Colors.white, fontSize: 16.h),
             ),
-          ),
+          );
+        }
+
+        final tasks = snapshot.data!;
+        return ListView.builder(
+          padding: EdgeInsets.all(20.h),
+          itemCount: tasks.length,
+          itemBuilder: (context, index) {
+            final task = tasks[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.viewTask,
+                  arguments: {
+                    'taskId': task['id'],
+                    'taskName': task['title'],
+                    'taskDescription': task['description'],
+                    'taskCategory': task['category'],
+                    'taskCompleted': task['completed'] == 1,
+                    'taskDate': task['date'],
+                    'taskTime': task['time'],
+                  },
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 8.h),
+                padding: EdgeInsets.all(15.h),
+                decoration: BoxDecoration(
+                  // ignore: deprecated_member_use
+                  color: Colors.white.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(12.h),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      task['title'],
+                      style: TextStyle(
+                        color: appTheme.black900,
+                        fontSize: 18.h,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 5.h),
+                    Text(
+                      task['description'],
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 14.h,
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Date: ${task['date']}",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 12.h,
+                          ),
+                        ),
+                        Text(
+                          "Time: ${task['time']}",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 12.h,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         );
       },
     );

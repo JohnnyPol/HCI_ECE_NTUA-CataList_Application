@@ -13,8 +13,13 @@ import 'dart:io';
 class RecapPage extends StatelessWidget {
   RecapPage({Key? key}) : super(key: key);
 
-  Widget _buildRecapBlock(BuildContext context,
-      {File? imageFile, String? message}) {
+  Widget _buildRecapBlock(
+    BuildContext context, {
+    required String type, // "week" or "month"
+    required int index,
+    File? imageFile,
+    String? message,
+  }) {
     return Container(
       padding: const EdgeInsets.only(
         top: 0,
@@ -24,7 +29,20 @@ class RecapPage extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, AppRoutes.weekly);
+          if (type == "week") {
+            print("Weekly Index from Recap: $index");
+            Navigator.pushNamed(
+              context,
+              '/weekly',
+              arguments: {'weekIndex': index},
+            );
+          } else if (type == "month") {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.monthly,
+              arguments: {'monthIndex': index},
+            );
+          }
         },
         child: Container(
           width: 120.h,
@@ -160,10 +178,14 @@ class RecapPage extends StatelessWidget {
                               final randomPhoto =
                                   weekPhotos[random.nextInt(weekPhotos.length)];
                               return _buildRecapBlock(context,
+                                  type: "week",
+                                  index: weekIndex,
                                   imageFile: randomPhoto);
                             } else {
                               return _buildRecapBlock(
                                 context,
+                                type: "week",
+                                index: weekIndex,
                                 message: "No photos this week",
                               );
                             }
@@ -225,10 +247,14 @@ class RecapPage extends StatelessWidget {
                               final randomPhoto = monthPhotos[
                                   random.nextInt(monthPhotos.length)];
                               return _buildRecapBlock(context,
+                                  type: "month",
+                                  index: monthIndex,
                                   imageFile: randomPhoto);
                             } else {
                               return _buildRecapBlock(
                                 context,
+                                type: "month",
+                                index: monthIndex,
                                 message: "No photos this month",
                               );
                             }

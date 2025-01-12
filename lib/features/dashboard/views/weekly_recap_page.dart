@@ -1,3 +1,5 @@
+// weekly_recap_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app_export.dart';
 import '../../../shared/widgets/custom_icon_button.dart';
@@ -10,14 +12,23 @@ class WeeklyRecapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final weekIndex = arguments?['weekIndex'];
+    // Print the weeklyIndex to the debug console
+    print("Weekly Index from Weekly Recap: $weekIndex");
     return Container(
       decoration: AppDecoration.linearBGcolors,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
           children: [
-            _buildWeeklyRecapContent(context),
-            Expanded(child: _buildScrollableTaskList(context)),
+            _buildWeeklyRecapContent(context, weekIndex: weekIndex),
+            Expanded(
+                child: _buildScrollableTaskList(
+              context,
+              weekIndex: weekIndex,
+            )),
           ],
         ),
         bottomNavigationBar: _buildBottomNavigationBar(context),
@@ -25,7 +36,7 @@ class WeeklyRecapPage extends StatelessWidget {
     );
   }
 
-  Widget _buildWeeklyRecapContent(BuildContext context) {
+  Widget _buildWeeklyRecapContent(BuildContext context, {required weekIndex}) {
     final profileImagePath =
         Provider.of<ProfileProvider>(context).profileImagePath;
 
@@ -95,37 +106,36 @@ class WeeklyRecapPage extends StatelessWidget {
               }
 
               final weeklyPhotos = snapshot.data!;
-              return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: weeklyPhotos.length,
-                itemBuilder: (context, index) {
-                  final weekPhotos = weeklyPhotos[index];
-                  if (weekPhotos.isEmpty) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.h),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.h),
-                        child: Container(
-                          color: Colors.grey,
-                          width: 200.h,
-                          height: 200.h,
-                          child: Center(
-                            child: Text(
-                              "No photos",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }
 
+              // Validate that the weekIndex exists in the data
+              if (weekIndex >= weeklyPhotos.length || weekIndex < 0) {
+                return Center(
+                  child: Text(
+                    "No photos for this week",
+                    style: TextStyle(color: Colors.white, fontSize: 16.h),
+                  ),
+                );
+              }
+              final selectedWeekPhotos = weeklyPhotos[weekIndex];
+              // If there are no photos for the specific week
+              if (selectedWeekPhotos.isEmpty) {
+                return Center(
+                  child: Text(
+                    "No photos available for week $weekIndex",
+                    style: TextStyle(color: Colors.white, fontSize: 16.h),
+                  ),
+                );
+              }
+              return PageView.builder(
+                itemCount: selectedWeekPhotos.length,
+                itemBuilder: (context, photoIndex) {
+                  final photo = selectedWeekPhotos[photoIndex];
                   return Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10.h),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15.h),
                       child: Image.file(
-                        weekPhotos.first,
+                        photo,
                         fit: BoxFit.cover,
                         width: 200.h,
                         height: 200.h,
@@ -141,9 +151,12 @@ class WeeklyRecapPage extends StatelessWidget {
     );
   }
 
-  Widget _buildScrollableTaskList(BuildContext context) {
+  Widget _buildScrollableTaskList(
+    BuildContext context, {
+    required int weekIndex,
+  }) {
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: DatabaseHelper().getTasks(currentUser?.id),
+      future: DatabaseHelper().getTasksForWeek(currentUser?.id, weekIndex),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -179,15 +192,61 @@ class WeeklyRecapPage extends StatelessWidget {
                   },
                 );
               },
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.h),
-                child: Text(
-                  task['title'],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.h,
-                    fontWeight: FontWeight.bold,
-                  ),
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 8.h),
+                padding: EdgeInsets.all(15.h),
+                decoration: BoxDecoration(
+                  // ignore: deprecated_member_use
+                  color: Colors.white.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(12.h),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      task['title'],
+                      style: TextStyle(
+                        color: appTheme.black900,
+                        fontSize: 18.h,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 5.h),
+                    Text(
+                      task['description'],
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 14.h,
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Date: ${task['date']}",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 12.h,
+                          ),
+                        ),
+                        Text(
+                          "Time: ${task['time']}",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 12.h,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             );

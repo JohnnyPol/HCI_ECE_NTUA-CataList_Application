@@ -24,7 +24,7 @@ class AppRoutes {
   static const String search = '/search';
   static const String recap = '/recap';
   static const String weekly = '/weekly';
-  static const String monthly= '/monthly';
+  static const String monthly = '/monthly';
   static const String calendar = '/calendar';
   static const String profile = '/profile';
   static const String viewTask = '/view_task';
@@ -47,9 +47,11 @@ class AppRoutes {
       case recap:
         return MaterialPageRoute(builder: (context) => RecapPage());
       case weekly:
-        return MaterialPageRoute(builder: (context) => WeeklyRecapPage());
+        return MaterialPageRoute(
+            builder: (context) => WeeklyRecapPage(), settings: settings);
       case monthly:
-        return MaterialPageRoute(builder: (context) => MonthlyRecapPage());
+        return MaterialPageRoute(
+            builder: (context) => MonthlyRecapPage(), settings: settings);
       case calendar:
         return MaterialPageRoute(builder: (context) => CalendarPage());
       case profile:

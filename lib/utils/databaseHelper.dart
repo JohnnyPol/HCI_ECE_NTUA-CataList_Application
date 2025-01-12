@@ -168,6 +168,58 @@ class DatabaseHelper {
     );
   }
 
+  // Get tasks for weekly recap
+  Future<List<Map<String, dynamic>>> getTasksForWeek(
+      int? userId, int weekIndex) async {
+    final db = await database;
+
+    // Calculate the start and end dates for the week
+    final now = DateTime.now();
+    final startOfWeek =
+        now.subtract(Duration(days: now.weekday - 1 + weekIndex * 7));
+    final endOfWeek = startOfWeek.add(Duration(days: 6));
+
+    final String startDate = startOfWeek.toIso8601String().split('T')[0];
+    final String endDate = endOfWeek.toIso8601String().split('T')[0];
+
+    // Fetch tasks within the week range
+    return db.query(
+      'tasks',
+      where: 'user_id = ? AND date BETWEEN ? AND ?',
+      whereArgs: [userId, startDate, endDate],
+      orderBy: 'date ASC, time ASC',
+    );
+  }
+
+  // Get tasks for monthly recap
+  Future<List<Map<String, dynamic>>> getTasksForMonth(
+      int? userId, int monthIndex) async {
+    final db = await database;
+
+    // Get the current date
+    final now = DateTime.now();
+
+    // Calculate the target month and year
+    final DateTime targetMonth = DateTime(now.year, now.month - monthIndex, 1);
+
+    // Calculate the start and end dates for the month
+    final DateTime startOfMonth =
+        DateTime(targetMonth.year, targetMonth.month, 1);
+    final DateTime endOfMonth = DateTime(
+        targetMonth.year, targetMonth.month + 1, 0); // Last day of the month
+
+    final String startDate = startOfMonth.toIso8601String().split('T')[0];
+    final String endDate = endOfMonth.toIso8601String().split('T')[0];
+
+    // Fetch tasks within the month range
+    return db.query(
+      'tasks',
+      where: 'user_id = ? AND date BETWEEN ? AND ?',
+      whereArgs: [userId, startDate, endDate],
+      orderBy: 'date ASC, time ASC',
+    );
+  }
+
   // Add a new task
   Future<int> addTask(int? userId, String title, String description,
       int completed, String category, String date, String time) async {
