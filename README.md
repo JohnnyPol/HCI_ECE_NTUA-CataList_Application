@@ -77,6 +77,7 @@
 ### Preloaded Data
 - **Username**: `anonymous`
 - **Password**: `testing`
+- **Photos**: Loaded jpg photos from the `assets/images` folder
 
 ### Screens
 - **Home**: Overview of daily tasks and challenges.
@@ -106,4 +107,4 @@
 ---
 
 ## Demo Video
-Watch the app in action: [CataList Demo](assets/media/test.mkv)
+Watch the app in action: [CataList Demo](assets/media/HCI_Application_Presentation.mp4)
