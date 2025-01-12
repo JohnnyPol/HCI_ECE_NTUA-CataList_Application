@@ -106,4 +106,4 @@
 ---
 
 ## Demo Video
-Watch the app in action: [CataList Demo](assets/media/sample.mkv)
+Watch the app in action: [CataList Demo](assets/media/test.mkv)
