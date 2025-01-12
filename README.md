@@ -95,7 +95,7 @@
 
 ![Home Page](/assets/screenshots/Home_page.png)
 ![Profile Page](/assets/screenshots/Profile_page.png)
-![Add task Page](/assets/screenshots/Add_tast_page.png)
+![Add task Page](/assets/screenshots/Add_task_page.png)
 ![Search Page](/assets/screenshots/Search_page.png)
 ![Recap Page](/assets/screenshots/Recap_page.png)
 ![Calendar Page](/assets/screenshots/Calendar_page.png)
