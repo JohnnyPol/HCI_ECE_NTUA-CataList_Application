@@ -88,7 +88,8 @@
 
 ### Changes from Prototype
 1. Added photo storage functionality for weekly/monthly recaps.
-2. Style of Add Task button in the navigation bar
+2. Style of Add Task button in the navigation bar.
+3. Added "delete account", "delete photos", and "logout" functionalities in the profile page.
 
 
 
