@@ -14,7 +14,6 @@
     - [Preloaded Data](#preloaded-data)
     - [Screens](#screens)
     - [Changes from Prototype](#changes-from-prototype)
-  - [](#)
   - [Requirements](#requirements)
   - [Demo Video](#demo-video)
 ---
@@ -92,14 +91,9 @@
 3. Added "delete account", "delete photos", and "logout" functionalities in the profile page.
 
 
-![Home Search Page](/assets/screenshots/home_search.png)
-![Home Page](/assets/screenshots/home_page.png)
-![Profile Page](/assets/screenshots/Profile_page.png)
-![Add task Page](/assets/screenshots/Add_task_page.png)
-![Search Page](/assets/screenshots/Search_page.png)
-![Recap Page](/assets/screenshots/Recap_page.png)
-![Calendar Page](/assets/screenshots/Calendar_page.png)
----
+![Home Search Add Task Page](/assets/screenshots/home_search_addTask.png)
+![Calendar Recap Profile Page](/assets/screenshots/recap_calendar_profile.png)
+
 
 ## Requirements
 - **Flutter SDK**: Version `3.27.1` or higher.
