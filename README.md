@@ -93,7 +93,7 @@
 
 
 
-![Home Page](/assets/screenshots/Home_page.png)
+![Home Page](/assets/screenshots/home_page.png)
 ![Profile Page](/assets/screenshots/Profile_page.png)
 ![Add task Page](/assets/screenshots/Add_task_page.png)
 ![Search Page](/assets/screenshots/Search_page.png)
